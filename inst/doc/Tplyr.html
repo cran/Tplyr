@@ -355,18 +355,14 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb1-5"><a href="#cb1-5"></a><span class="co">#&gt;  Name:  adsl</span></span>
 <span id="cb1-6"><a href="#cb1-6"></a><span class="co">#&gt;  Rows:  254</span></span>
 <span id="cb1-7"><a href="#cb1-7"></a><span class="co">#&gt;  Columns:  49 </span></span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="co">#&gt; pop_data (data.frame)</span></span>
-<span id="cb1-9"><a href="#cb1-9"></a><span class="co">#&gt;  Name:  target </span></span>
-<span id="cb1-10"><a href="#cb1-10"></a><span class="co">#&gt;  Rows:  254 </span></span>
-<span id="cb1-11"><a href="#cb1-11"></a><span class="co">#&gt;  Columns:  49 </span></span>
-<span id="cb1-12"><a href="#cb1-12"></a><span class="co">#&gt; treat_var variable (quosure)</span></span>
-<span id="cb1-13"><a href="#cb1-13"></a><span class="co">#&gt;  TRT01P</span></span>
-<span id="cb1-14"><a href="#cb1-14"></a><span class="co">#&gt; header_n:  header groups</span></span>
-<span id="cb1-15"><a href="#cb1-15"></a><span class="co">#&gt; treat_grps groupings (list)</span></span>
-<span id="cb1-16"><a href="#cb1-16"></a><span class="co">#&gt; Table Columns (cols):</span></span>
-<span id="cb1-17"><a href="#cb1-17"></a><span class="co">#&gt; where: == SAFFL Y</span></span>
-<span id="cb1-18"><a href="#cb1-18"></a><span class="co">#&gt; Number of layer(s): 0</span></span>
-<span id="cb1-19"><a href="#cb1-19"></a><span class="co">#&gt; layer_output: 0</span></span></code></pre></div>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="co">#&gt; treat_var variable (quosure)</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="co">#&gt;  TRT01P</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="co">#&gt; header_n:  header groups</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="co">#&gt; treat_grps groupings (list)</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a><span class="co">#&gt; Table Columns (cols):</span></span>
+<span id="cb1-13"><a href="#cb1-13"></a><span class="co">#&gt; where: == SAFFL Y</span></span>
+<span id="cb1-14"><a href="#cb1-14"></a><span class="co">#&gt; Number of layer(s): 0</span></span>
+<span id="cb1-15"><a href="#cb1-15"></a><span class="co">#&gt; layer_output: 0</span></span></code></pre></div>
 </div>
 <div id="the-tplyr_layer-object" class="section level2">
 <h2>The <code>tplyr_layer</code> Object</h2>
@@ -388,8 +384,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>cnt &lt;-<span class="st"> </span><span class="kw">group_count</span>(t, AGEGR1)</span>
 <span id="cb2-2"><a href="#cb2-2"></a>cnt</span>
 <span id="cb2-3"><a href="#cb2-3"></a><span class="co">#&gt; *** count_layer ***</span></span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="co">#&gt; Self:  count_layer &lt; 0x55d86dd96b50 &gt;</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="co">#&gt; Parent:  tplyr_table &lt; 0x55d86e48fab0 &gt;</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="co">#&gt; Self:  count_layer &lt; 0x55cd8a0c8060 &gt;</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="co">#&gt; Parent:  tplyr_table &lt; 0x55cd8a71b2b0 &gt;</span></span>
 <span id="cb2-6"><a href="#cb2-6"></a><span class="co">#&gt; target_var: </span></span>
 <span id="cb2-7"><a href="#cb2-7"></a><span class="co">#&gt;  AGEGR1</span></span>
 <span id="cb2-8"><a href="#cb2-8"></a><span class="co">#&gt; by: </span></span>
@@ -399,8 +395,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb2-12"><a href="#cb2-12"></a>dsc &lt;-<span class="st"> </span><span class="kw">group_desc</span>(t, AGE)</span>
 <span id="cb2-13"><a href="#cb2-13"></a>dsc</span>
 <span id="cb2-14"><a href="#cb2-14"></a><span class="co">#&gt; *** desc_layer ***</span></span>
-<span id="cb2-15"><a href="#cb2-15"></a><span class="co">#&gt; Self:  desc_layer &lt; 0x55d86d9c7998 &gt;</span></span>
-<span id="cb2-16"><a href="#cb2-16"></a><span class="co">#&gt; Parent:  tplyr_table &lt; 0x55d86e48fab0 &gt;</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a><span class="co">#&gt; Self:  desc_layer &lt; 0x55cd89cc0d58 &gt;</span></span>
+<span id="cb2-16"><a href="#cb2-16"></a><span class="co">#&gt; Parent:  tplyr_table &lt; 0x55cd8a71b2b0 &gt;</span></span>
 <span id="cb2-17"><a href="#cb2-17"></a><span class="co">#&gt; target_var: </span></span>
 <span id="cb2-18"><a href="#cb2-18"></a><span class="co">#&gt;  AGE</span></span>
 <span id="cb2-19"><a href="#cb2-19"></a><span class="co">#&gt; by: </span></span>
@@ -410,8 +406,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb2-23"><a href="#cb2-23"></a>shf &lt;-<span class="st"> </span><span class="kw">group_shift</span>(t, <span class="kw">vars</span>(<span class="dt">row=</span>COMP8FL, <span class="dt">column=</span>COMP24FL))</span>
 <span id="cb2-24"><a href="#cb2-24"></a>shf</span>
 <span id="cb2-25"><a href="#cb2-25"></a><span class="co">#&gt; *** shift_layer ***</span></span>
-<span id="cb2-26"><a href="#cb2-26"></a><span class="co">#&gt; Self:  shift_layer &lt; 0x55d86d6c6e98 &gt;</span></span>
-<span id="cb2-27"><a href="#cb2-27"></a><span class="co">#&gt; Parent:  tplyr_table &lt; 0x55d86e48fab0 &gt;</span></span>
+<span id="cb2-26"><a href="#cb2-26"></a><span class="co">#&gt; Self:  shift_layer &lt; 0x55cd89956fa0 &gt;</span></span>
+<span id="cb2-27"><a href="#cb2-27"></a><span class="co">#&gt; Parent:  tplyr_table &lt; 0x55cd8a71b2b0 &gt;</span></span>
 <span id="cb2-28"><a href="#cb2-28"></a><span class="co">#&gt; target_var: </span></span>
 <span id="cb2-29"><a href="#cb2-29"></a><span class="co">#&gt;  COMP8FL</span></span>
 <span id="cb2-30"><a href="#cb2-30"></a><span class="co">#&gt;  COMP24FL</span></span>
@@ -455,6 +451,16 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb6-7"><a href="#cb6-7"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb6-8"><a href="#cb6-8"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="15%"></col>
+<col width="8%"></col>
+<col width="9%"></col>
+<col width="19%"></col>
+<col width="18%"></col>
+<col width="11%"></col>
+<col width="8%"></col>
+<col width="8%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -612,6 +618,16 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb8-12"><a href="#cb8-12"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb8-13"><a href="#cb8-13"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="9%"></col>
+<col width="8%"></col>
+<col width="11%"></col>
+<col width="20%"></col>
+<col width="19%"></col>
+<col width="12%"></col>
+<col width="9%"></col>
+<col width="9%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -676,6 +692,16 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb9-6"><a href="#cb9-6"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb9-7"><a href="#cb9-7"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="11%"></col>
+<col width="8%"></col>
+<col width="10%"></col>
+<col width="20%"></col>
+<col width="19%"></col>
+<col width="12%"></col>
+<col width="9%"></col>
+<col width="9%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -730,6 +756,16 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb10-7"><a href="#cb10-7"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb10-8"><a href="#cb10-8"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="11%"></col>
+<col width="8%"></col>
+<col width="10%"></col>
+<col width="20%"></col>
+<col width="19%"></col>
+<col width="12%"></col>
+<col width="9%"></col>
+<col width="9%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -784,6 +820,16 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb11-6"><a href="#cb11-6"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb11-7"><a href="#cb11-7"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="11%"></col>
+<col width="8%"></col>
+<col width="11%"></col>
+<col width="19%"></col>
+<col width="18%"></col>
+<col width="12%"></col>
+<col width="9%"></col>
+<col width="9%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -845,6 +891,16 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb12-5"><a href="#cb12-5"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb12-6"><a href="#cb12-6"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="9%"></col>
+<col width="8%"></col>
+<col width="10%"></col>
+<col width="20%"></col>
+<col width="19%"></col>
+<col width="12%"></col>
+<col width="9%"></col>
+<col width="9%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -934,6 +990,16 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb13-11"><a href="#cb13-11"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb13-12"><a href="#cb13-12"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="9%"></col>
+<col width="14%"></col>
+<col width="10%"></col>
+<col width="18%"></col>
+<col width="17%"></col>
+<col width="11%"></col>
+<col width="8%"></col>
+<col width="8%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -968,6 +1034,19 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb14-5"><a href="#cb14-5"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb14-6"><a href="#cb14-6"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="11%"></col>
+<col width="5%"></col>
+<col width="6%"></col>
+<col width="12%"></col>
+<col width="12%"></col>
+<col width="6%"></col>
+<col width="12%"></col>
+<col width="12%"></col>
+<col width="7%"></col>
+<col width="5%"></col>
+<col width="5%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -1077,6 +1156,16 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb15-6"><a href="#cb15-6"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb15-7"><a href="#cb15-7"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="11%"></col>
+<col width="8%"></col>
+<col width="10%"></col>
+<col width="20%"></col>
+<col width="19%"></col>
+<col width="12%"></col>
+<col width="9%"></col>
+<col width="9%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -1142,6 +1231,14 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb16-7"><a href="#cb16-7"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb16-8"><a href="#cb16-8"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="30%"></col>
+<col width="9%"></col>
+<col width="19%"></col>
+<col width="18%"></col>
+<col width="12%"></col>
+<col width="9%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -1172,7 +1269,17 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb17-5"><a href="#cb17-5"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb17-6"><a href="#cb17-6"></a><span class="st">  </span><span class="kw">head</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb17-7"><a href="#cb17-7"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
-<table>
+<table style="width:100%;">
+<colgroup>
+<col width="21%"></col>
+<col width="21%"></col>
+<col width="7%"></col>
+<col width="14%"></col>
+<col width="13%"></col>
+<col width="8%"></col>
+<col width="6%"></col>
+<col width="6%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -1264,7 +1371,23 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb18-9"><a href="#cb18-9"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb18-10"><a href="#cb18-10"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb18-11"><a href="#cb18-11"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
-<table>
+<table style="width:100%;">
+<colgroup>
+<col width="7%"></col>
+<col width="3%"></col>
+<col width="5%"></col>
+<col width="5%"></col>
+<col width="5%"></col>
+<col width="9%"></col>
+<col width="9%"></col>
+<col width="9%"></col>
+<col width="9%"></col>
+<col width="9%"></col>
+<col width="9%"></col>
+<col width="5%"></col>
+<col width="4%"></col>
+<col width="4%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>

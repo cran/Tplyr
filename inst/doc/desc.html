@@ -330,6 +330,16 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb1-13"><a href="#cb1-13"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb1-14"><a href="#cb1-14"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="9%"></col>
+<col width="8%"></col>
+<col width="10%"></col>
+<col width="20%"></col>
+<col width="19%"></col>
+<col width="12%"></col>
+<col width="9%"></col>
+<col width="9%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -417,6 +427,11 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h2>Built-in Summaries</h2>
 <p>We’ve built a number of default summaries into ‘Tplyr’, which allows you to perform these summaries without having to specify the functions to calculate them yourself. The summaries built in to ‘Tplyr’ are listed below. In the second column are the names that you would use within an <code>f_str()</code> call to use them. In the third column, we have the syntax used to make the function call.</p>
 <table>
+<colgroup>
+<col width="19%"></col>
+<col width="14%"></col>
+<col width="65%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="center">Statistic</th>
@@ -573,7 +588,17 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <span id="cb4-11"><a href="#cb4-11"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb4-12"><a href="#cb4-12"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span><span class="kw">starts_with</span>(<span class="st">&quot;ord&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb4-13"><a href="#cb4-13"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
-<table>
+<table style="width:100%;">
+<colgroup>
+<col width="7%"></col>
+<col width="12%"></col>
+<col width="9%"></col>
+<col width="15%"></col>
+<col width="15%"></col>
+<col width="9%"></col>
+<col width="15%"></col>
+<col width="15%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -615,6 +640,14 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <span id="cb5-6"><a href="#cb5-6"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb5-7"><a href="#cb5-7"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="10%"></col>
+<col width="12%"></col>
+<col width="25%"></col>
+<col width="24%"></col>
+<col width="15%"></col>
+<col width="11%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -651,6 +684,14 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <span id="cb6-12"><a href="#cb6-12"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb6-13"><a href="#cb6-13"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="10%"></col>
+<col width="12%"></col>
+<col width="25%"></col>
+<col width="24%"></col>
+<col width="15%"></col>
+<col width="11%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -693,6 +734,13 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <span id="cb7-13"><a href="#cb7-13"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span><span class="kw">starts_with</span>(<span class="st">&quot;ord&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb7-14"><a href="#cb7-14"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="12%"></col>
+<col width="12%"></col>
+<col width="15%"></col>
+<col width="30%"></col>
+<col width="29%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -756,6 +804,13 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <span id="cb8-13"><a href="#cb8-13"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span><span class="kw">starts_with</span>(<span class="st">&quot;ord&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb8-14"><a href="#cb8-14"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="12%"></col>
+<col width="12%"></col>
+<col width="15%"></col>
+<col width="30%"></col>
+<col width="29%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -819,6 +874,13 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <span id="cb9-13"><a href="#cb9-13"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span><span class="kw">starts_with</span>(<span class="st">&quot;ord&quot;</span>)) <span class="op">%&gt;%</span></span>
 <span id="cb9-14"><a href="#cb9-14"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="12%"></col>
+<col width="12%"></col>
+<col width="15%"></col>
+<col width="30%"></col>
+<col width="29%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -883,6 +945,16 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <span id="cb10-10"><a href="#cb10-10"></a><span class="st">  </span><span class="kw">head</span>(<span class="dv">20</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb10-11"><a href="#cb10-11"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="8%"></col>
+<col width="8%"></col>
+<col width="15%"></col>
+<col width="19%"></col>
+<col width="18%"></col>
+<col width="11%"></col>
+<col width="8%"></col>
+<col width="8%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -962,6 +1034,16 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <span id="cb11-10"><a href="#cb11-10"></a><span class="st">  </span><span class="kw">head</span>(<span class="dv">20</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb11-11"><a href="#cb11-11"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="8%"></col>
+<col width="8%"></col>
+<col width="14%"></col>
+<col width="19%"></col>
+<col width="18%"></col>
+<col width="12%"></col>
+<col width="9%"></col>
+<col width="9%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -1042,7 +1124,23 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <span id="cb12-11"><a href="#cb12-11"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb12-12"><a href="#cb12-12"></a><span class="st">  </span><span class="kw">head</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb12-13"><a href="#cb12-13"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
-<table>
+<table style="width:100%;">
+<colgroup>
+<col width="4%"></col>
+<col width="4%"></col>
+<col width="6%"></col>
+<col width="9%"></col>
+<col width="9%"></col>
+<col width="6%"></col>
+<col width="9%"></col>
+<col width="9%"></col>
+<col width="6%"></col>
+<col width="9%"></col>
+<col width="9%"></col>
+<col width="5%"></col>
+<col width="4%"></col>
+<col width="4%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
