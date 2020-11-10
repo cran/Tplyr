@@ -11,6 +11,15 @@
 #' total row will be determined by using the `denoms_by` variables.
 #'
 #' @param e A layer object
+#' @param fmt An f_str object used to format the total row. If
+#'   none is provided, display is based on the layer formatting.
+#' @param count_missings Whether or not to ignore the denominators passed
+#'   in `set_denom_ignore` when calculating a pct on a total row. This is
+#'   useful if you need to exclude/include the missing counts in your total
+#'   row. Defaults to FALSE meaning total row percentage will not ignore any
+#'   values.
+#' @param sort_value The value that will appear in the ordering column
+#'   for total rows. This must be a numeric value.
 #'
 #' @export
 #' @examples
@@ -20,13 +29,18 @@
 #' tplyr_table(mtcars, gear) %>%
 #'   add_layer(
 #'     group_count(cyl) %>%
-#'       add_total_row()
+#'       add_total_row(f_str("xxxx", n))
 #'    ) %>%
 #'    build()
-add_total_row <- function(e) {
+add_total_row <- function(e, fmt = NULL, count_missings = FALSE, sort_value = NULL) {
   assert_inherits_class(e, "count_layer")
+  if(!is.null(fmt)) assert_inherits_class(fmt, "f_str")
+  if(!is.null(sort_value)) assert_inherits_class(sort_value, "numeric")
 
   env_bind(e, include_total_row = TRUE)
+  env_bind(e, total_denom_ignore = count_missings)
+  env_bind(e, total_count_format = fmt)
+  env_bind(e, total_row_sort_value = sort_value)
 
   e
 }
@@ -385,9 +399,13 @@ set_result_order_var <- function(e, result_order_var) {
 #' will display the values in a different way.
 #'
 #' @param e A count layer
-#' @param f_str An f_str object to change the display of the missing counts
-#' @param string A named string representing the value to rename missing values
-#'   This value can be named to change the row name in the table.
+#' @param fmt An f_str object to change the display of the missing counts
+#' @param sort_value A numeric value that will be used in the ordering
+#'   column. This should be numeric. If it is not suplied the ordering column
+#'   will be the maximum value of what appears in the table plus one.
+#' @param ... Parameters used to note which values to describe as missing.
+#'   Generally NA and "Missing" would be used here. Parameters can be named
+#'   character vectors where the names become the row label.
 #'
 #' @return The modified layer
 #' @export
@@ -398,25 +416,29 @@ set_result_order_var <- function(e, result_order_var) {
 #'   mtcars2 <- mtcars %>%
 #' mutate_all(as.character)
 #' mtcars2[mtcars$cyl == 6, "cyl"] <- NA
-#' mtcars2[mtcars$cyl == 8, "cyl"] <- NA
 #'
 #' tplyr_table(mtcars2, gear) %>%
 #'   add_layer(
 #'     group_count(cyl) %>%
-#'       set_missing_count(f_str("xx ", n), string = c(Missing = "NA")) %>%
-#'       set_denom_ignore("Unknown", "NA")
+#'       set_missing_count(f_str("xx ", n), Missing = NA) %>%
+#'       set_denom_ignore(NA)
 #'   ) %>%
 #'   build()
-set_missing_count <- function(e, f_str, string = "NA") {
+set_missing_count <- function(e, fmt, sort_value = NULL, ...) {
 
-  assert_inherits_class(f_str, "f_str")
+  missings <- list(...)
+  assert_that(length(missings) > 0, msg = "No missing values were specified.")
 
-  if(is.null(names(string))) missing_name <- "Missing"
-  else missing_name <- names(string)
+  assert_inherits_class(fmt, "f_str")
+  if(!is.null(sort_value)) assert_inherits_class(sort_value, "numeric")
 
-  env_bind(e, missing_count_string = f_str)
-  env_bind(e, missing_string = string)
-  env_bind(e, missing_name = missing_name)
+  # f_str object for formatting
+  env_bind(e, missing_count_string = fmt)
+  # Named list of strings and their replacements
+  env_bind(e, missing_count_list = missings)
+  # All replacements without names
+  env_bind(e, missing_string = names(missings))
+  env_bind(e, missing_sort_value = sort_value)
 
   e
 }
@@ -430,7 +452,9 @@ set_missing_count <- function(e, f_str, string = "NA") {
 #' notes different values as "missing" and excludes them from the denominators.
 #'
 #' @param e A count_layer object
-#' @param ... Values to exclude from the percentage calculation.
+#' @param ... Values to exclude from the percentage calculation. If you use
+#'   `set_missing_counts()` this should be the name of the parameters instead of
+#'   the values, see the example below.
 #'
 #' @return The modified layer object
 #' @export
@@ -439,13 +463,13 @@ set_missing_count <- function(e, f_str, string = "NA") {
 #' library(magrittr)
 #' mtcars2 <- mtcars
 #' mtcars2[mtcars$cyl == 6, "cyl"] <- NA
-#' mtcars2[mtcars$cyl == 8, "cyl"] <- NA
+#' mtcars2[mtcars$cyl == 8, "cyl"] <- "Not Found"
 #'
 #' tplyr_table(mtcars2, gear) %>%
 #'   add_layer(
 #'     group_count(cyl) %>%
-#'       set_missing_count(f_str("xx ", n), string = c(Missing = "NA")) %>%
-#'       set_denom_ignore("Unknown", "NA")
+#'       set_missing_count(f_str("xx ", n), Missing = c(NA, "Not Found")) %>%
+#'       set_denom_ignore("Missing")
 #'   ) %>%
 #'   build()
 set_denom_ignore <- function(e, ...) {
@@ -477,3 +501,63 @@ set_outer_sort_position <- function(e, outer_sort_position) {
 
   e
 }
+
+#' Set Logic for denominator subsetting
+#'
+#' By default, denominators in count layers are subset based on the layer level
+#' where logic. In some cases this might not be correct. This functions allows
+#' the user to override this behavior and pass custom logic that will be used to
+#' subset the target(pop_data)
+#'
+#' @param e A Tplyr layer
+#' @param denom_where Logic for not subsetting the target for percentage
+#'   denominator. If you don't want any subsetting, pass `TRUE` to this function.
+#'
+#' @return The modified Tplyr layer object
+#' @export
+#'
+#' @examples
+#' library(magrittr)
+#' t10 <- tplyr_table(mtcars, gear) %>%
+#'   add_layer(
+#'     group_count(cyl, where = cyl != 6) %>%
+#'     set_denom_where(TRUE)
+#'     # The denominators will be based on all of the values, including 6
+#'   ) %>%
+#'  build()
+#'
+set_denom_where <- function(e, denom_where) {
+  denom_where <- enquo(denom_where)
+
+  assert_that(is_logical_or_call(denom_where),
+              msg = "The `where` parameter must contain subsetting logic (enter without quotes)")
+
+  env_bind(e, denom_where = denom_where)
+
+  e
+}
+
+set_denoms_by.count_layer <- function(x, ...) {
+  dots <- vars(...)
+  dots_chr <- map_chr(dots, as_name)
+
+  # Pull these variables to make sure the denoms used make sense
+  by_ <- map_chr(env_get(x, "by"), as_name)
+  cols_ <- map_chr(env_get(x, "cols", inherit = TRUE), as_name)
+  treat_var_ <- as_name(env_get(x, "treat_var", inherit = TRUE))
+  target_var <- env_get(x, "target_var")
+  target_var_ <- map_chr(target_var, as_name)
+
+  assert_that(all(dots_chr %in% c(by_, cols_, treat_var_, target_var_)),
+              msg = "A denom_by wasn't found as a grouping variable in the layer/table.")
+
+  # If the row variable is here, rename it to summary_var
+  if(as_name(target_var[[1]]) %in% dots_chr) {
+    dots[[which(as_name(target_var[[1]]) %in% dots_chr)]] <- quo(summary_var)
+  }
+
+  env_bind(x, denoms_by = dots)
+
+  x
+}
+
