@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Shift Layers</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Shift Layers</h1>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#a-basic-example">A Basic Example</a></li>
+<li><a href="#filling-missing-groups-using-factors">Filling Missing Groups Using Factors</a></li>
+<li><a href="#where-to-go-from-here">Where to go from here</a></li>
+</ul>
+</div>
+
+<p>Shift tables are a special kind of frequency table - but what they count are changes in state. This is most common when looking at laboratory ranges, where you may be interested in seeing how a subject’s results related to normal ranges. The ‘change in state’ would refer to how that subject’s results were at baseline versus different points of measure. Shift tables allow you to see the distribution of how subjects move between normal ranges, and if the population is improving or worsening as the study progresses.</p>
+<p>While shift tables are very similar to a normal frequency table, there’s more nuance here, and thus we decided to create <code>group_shift()</code>. This function is largely an abstraction of a count layer, and in fact re-uses a good deal of the same underlying code. But we handle some of the complexity for you to make the interface easy to use and the behavior similar to that of the <code>group_count()</code> and <code>group_desc()</code> APIs. Given that shift tables are built on count layers, many of functions that work with count layers behave in the same way when using shift layers. However, the following cannot be used in shift layers:</p>
+<ul>
+<li>Functions related to nested counts, including <code>set_nest_count()</code>, <code>set_outer_sort_position()</code></li>
+<li>Functions related to total rows and missing rows, including <code>set_missing_count()</code>, <code>add_total_row()</code>, <code>set_total_row_label()</code></li>
+<li>Risk difference, including <code>add_risk_diff()</code></li>
+<li>and finally, result based sorting methods, including <code>set_order_count_method()</code>, <code>set_ordering_cols()</code>, <code>set_result_order_var()</code></li>
+</ul>
+<p>One thing to note - the <code>group_shift()</code> API is intended to be used on shift tables where one group is presented in rows and the other group in columns. Occasionally, shift tables will have a row based approach that shows “Low to High”, “Normal to High”, etc. For those situations, <code>group_count()</code> will do just fine.</p>
+<div id="a-basic-example" class="section level2">
+<h2>A Basic Example</h2>
+<p>Let’s look at an example.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">tplyr_table</span>(adlb, TRTA, <span class="dt">where=</span>PARAMCD <span class="op">==</span><span class="st"> &quot;CK&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="st">  </span><span class="kw">add_layer</span>(</span>
+<span id="cb1-3"><a href="#cb1-3"></a>    <span class="kw">group_shift</span>(<span class="kw">vars</span>(<span class="dt">row =</span> BNRIND, <span class="dt">column =</span> ANRIND), <span class="dt">by =</span> <span class="kw">vars</span>(PARAM, VISIT))</span>
+<span id="cb1-4"><a href="#cb1-4"></a>  ) <span class="op">%&gt;%</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="st">  </span><span class="kw">head</span>(<span class="dv">20</span>) <span class="op">%&gt;%</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">row_label2</th>
+<th align="left">row_label3</th>
+<th align="left">var1_Placebo_H</th>
+<th align="left">var1_Placebo_N</th>
+<th align="left">var1_Xanomeline High Dose_H</th>
+<th align="left">var1_Xanomeline High Dose_N</th>
+<th align="left">var1_Xanomeline Low Dose_H</th>
+<th align="left">var1_Xanomeline Low Dose_N</th>
+<th align="right">ord_layer_index</th>
+<th align="right">ord_layer_1</th>
+<th align="right">ord_layer_2</th>
+<th align="right">ord_layer_3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">WEEK 12</td>
+<td align="left">H</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">WEEK 12</td>
+<td align="left">N</td>
+<td align="left">1</td>
+<td align="left">11</td>
+<td align="left">1</td>
+<td align="left">6</td>
+<td align="left">1</td>
+<td align="left">6</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">1</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">WEEK 24</td>
+<td align="left">H</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">WEEK 24</td>
+<td align="left">N</td>
+<td align="left">2</td>
+<td align="left">10</td>
+<td align="left">0</td>
+<td align="left">2</td>
+<td align="left">0</td>
+<td align="left">2</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">2</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">WEEK 8</td>
+<td align="left">H</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">3</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">WEEK 8</td>
+<td align="left">N</td>
+<td align="left">1</td>
+<td align="left">6</td>
+<td align="left">1</td>
+<td align="left">9</td>
+<td align="left">0</td>
+<td align="left">6</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">3</td>
+<td align="right">3</td>
+</tr>
+</tbody>
+</table>
+<p>First, let’s look at the differences in the shift API. Shift layers <em>must</em> take a row and a column variable, as the layer is designed to create a box for you that explains the changes in state. The row variable will typically be your “from” variable, and the column variable will typically be your “to” variable. Behind the scenes, Tplyr breaks this down for you to properly count and present the data.</p>
+<p>For the most part, the last example gets us where we want to go - but there’s still some that’s left to be desired. It doesn’t look like there are any ‘L’ values for BNRIND in the dataset so we are not getting and rows containing ‘L’. Let’s see if we can fix that by dummying in the possible values.</p>
+</div>
+<div id="filling-missing-groups-using-factors" class="section level2">
+<h2>Filling Missing Groups Using Factors</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>adlb<span class="op">$</span>ANRIND &lt;-<span class="st"> </span><span class="kw">factor</span>(adlb<span class="op">$</span>ANRIND, <span class="dt">levels=</span><span class="kw">c</span>(<span class="st">&quot;L&quot;</span>, <span class="st">&quot;N&quot;</span>, <span class="st">&quot;H&quot;</span>))</span>
+<span id="cb2-2"><a href="#cb2-2"></a>adlb<span class="op">$</span>BNRIND &lt;-<span class="st"> </span><span class="kw">factor</span>(adlb<span class="op">$</span>BNRIND, <span class="dt">levels=</span><span class="kw">c</span>(<span class="st">&quot;L&quot;</span>, <span class="st">&quot;N&quot;</span>, <span class="st">&quot;H&quot;</span>))</span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="kw">tplyr_table</span>(adlb, TRTA, <span class="dt">where=</span>PARAMCD <span class="op">==</span><span class="st"> &quot;CK&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="st">  </span><span class="kw">add_layer</span>(</span>
+<span id="cb2-5"><a href="#cb2-5"></a>    <span class="kw">group_shift</span>(<span class="kw">vars</span>(<span class="dt">row =</span> BNRIND, <span class="dt">column =</span> ANRIND), <span class="dt">by =</span> <span class="kw">vars</span>(PARAM, VISIT))</span>
+<span id="cb2-6"><a href="#cb2-6"></a>  ) <span class="op">%&gt;%</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="st">  </span><span class="kw">head</span>(<span class="dv">20</span>) <span class="op">%&gt;%</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">row_label2</th>
+<th align="left">row_label3</th>
+<th align="left">var1_Placebo_L</th>
+<th align="left">var1_Placebo_N</th>
+<th align="left">var1_Placebo_H</th>
+<th align="left">var1_Xanomeline High Dose_L</th>
+<th align="left">var1_Xanomeline High Dose_N</th>
+<th align="left">var1_Xanomeline High Dose_H</th>
+<th align="left">var1_Xanomeline Low Dose_L</th>
+<th align="left">var1_Xanomeline Low Dose_N</th>
+<th align="left">var1_Xanomeline Low Dose_H</th>
+<th align="right">ord_layer_index</th>
+<th align="right">ord_layer_1</th>
+<th align="right">ord_layer_2</th>
+<th align="right">ord_layer_3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">WEEK 12</td>
+<td align="left">L</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">WEEK 12</td>
+<td align="left">N</td>
+<td align="left">0</td>
+<td align="left">11</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">6</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">6</td>
+<td align="left">1</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">WEEK 12</td>
+<td align="left">H</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">1</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">WEEK 24</td>
+<td align="left">L</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">WEEK 24</td>
+<td align="left">N</td>
+<td align="left">0</td>
+<td align="left">10</td>
+<td align="left">2</td>
+<td align="left">0</td>
+<td align="left">2</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">2</td>
+<td align="left">0</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">2</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">WEEK 24</td>
+<td align="left">H</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">2</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">WEEK 8</td>
+<td align="left">L</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">3</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">WEEK 8</td>
+<td align="left">N</td>
+<td align="left">0</td>
+<td align="left">6</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">9</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">6</td>
+<td align="left">0</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">3</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">WEEK 8</td>
+<td align="left">H</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">3</td>
+<td align="right">3</td>
+</tr>
+</tbody>
+</table>
+<p>There we go. This is another situation where using factors in R let’s us dummy values within the dataset. Furthermore, since factors are ordered, it automatically corrected the sort order of the row labels too.</p>
+</div>
+<div id="where-to-go-from-here" class="section level2">
+<h2>Where to go from here</h2>
+<p>There’s much more to learn! Check out the sorting vignette for more information on sorting. Additionally, check out our vignette on denominators to understand controlling more of the nuance in shift tables.</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1987 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Totals, Missings, and Denominators</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Totals, Missings, and Denominators</h1>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#population-data-in-the-denominator">Population Data in the Denominator</a></li>
+<li><a href="#denominator-grouping">Denominator Grouping</a><ul>
+<li><a href="#count-layers">Count layers</a></li>
+<li><a href="#shift-layers">Shift layers</a></li>
+</ul></li>
+<li><a href="#controlling-the-denominator-filter">Controlling the Denominator Filter</a></li>
+<li><a href="#missing-counts">Missing Counts</a></li>
+<li><a href="#adding-a-total-row">Adding a ‘Total’ Row</a></li>
+</ul>
+</div>
+
+<p>Counting is pretty easy, right? There’s not all that much to it. With a few considerations we can cover most of the scenarios that users will encounter while using Tplyr. Denominators, on the other hand, get <em><em>a lot</em></em> more complicated. Why? Because there are a lot of ways to do it. What values do we exclude from the denominator? What variables establish denominator grouping? Does the denominator use a different filter than the values being counted? If you’ve programmed enough of these tables, you know that it’s all very situational.</p>
+<p>Given the complexity, we’ve spent a lot of time trying to make this easy for you, the user. In doing this it became very clear that denominators needed their own vignette. Additionally, a few other things go hand in hand with denominators.</p>
+<p>Make sure you have a good understand of count and shift layers before you review this content. If you’ve done your due diligence, then - here we go.</p>
+<div id="population-data-in-the-denominator" class="section level2">
+<h2>Population Data in the Denominator</h2>
+<p>What do you do when your target dataset doesn’t <em>have</em> the information necessary to create your denominator? For example - when you create an adverse event table, the adverse event dataset likely only contains records for subjects who experienced an adverse event. But subjects who did <em>not</em> have an adverse event are still part of the study population and must be considered in the denominator.</p>
+<p>For this reason, Tplyr allows lets you set a separate population dataset - but there are a couple things you need to do to trigger Tplyr to use the population data as your denominator.</p>
+<p>Consider these two examples.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">tplyr_table</span>(adae, TRTA) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="st">  </span><span class="kw">add_layer</span>(</span>
+<span id="cb1-3"><a href="#cb1-3"></a>    <span class="kw">group_count</span>(AEDECOD) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="st">      </span><span class="kw">set_distinct_by</span>(USUBJID) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="st">      </span><span class="kw">set_format_strings</span>(<span class="kw">f_str</span>(<span class="st">&#39;xx (xx.x%)&#39;</span>, distinct, distinct_pct))</span>
+<span id="cb1-6"><a href="#cb1-6"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="st">  </span><span class="kw">head</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">var1_Placebo</th>
+<th align="left">var1_Xanomeline High Dose</th>
+<th align="left">var1_Xanomeline Low Dose</th>
+<th align="right">ord_layer_index</th>
+<th align="right">ord_layer_1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ACTINIC KERATOSIS</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">1 ( 2.4%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">ALOPECIA</td>
+<td align="left">1 ( 4.8%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">BLISTER</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">1 ( 2.4%)</td>
+<td align="left">5 (11.9%)</td>
+<td align="right">1</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">COLD SWEAT</td>
+<td align="left">1 ( 4.8%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">DERMATITIS ATOPIC</td>
+<td align="left">1 ( 4.8%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">DERMATITIS CONTACT</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">1 ( 2.4%)</td>
+<td align="right">1</td>
+<td align="right">6</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">tplyr_table</span>(adae, TRTA) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="st">  </span><span class="kw">set_pop_data</span>(adsl) <span class="op">%&gt;%</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="st">  </span><span class="kw">set_pop_treat_var</span>(TRT01A) <span class="op">%&gt;%</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="st">  </span><span class="kw">add_layer</span>(</span>
+<span id="cb2-5"><a href="#cb2-5"></a>    <span class="kw">group_count</span>(AEDECOD) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="st">      </span><span class="kw">set_distinct_by</span>(USUBJID) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="st">      </span><span class="kw">set_format_strings</span>(<span class="kw">f_str</span>(<span class="st">&#39;xx (xx.x%)&#39;</span>, distinct, distinct_pct))</span>
+<span id="cb2-8"><a href="#cb2-8"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb2-10"><a href="#cb2-10"></a><span class="st">  </span><span class="kw">head</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb2-11"><a href="#cb2-11"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">var1_Placebo</th>
+<th align="left">var1_Xanomeline High Dose</th>
+<th align="left">var1_Xanomeline Low Dose</th>
+<th align="right">ord_layer_index</th>
+<th align="right">ord_layer_1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ACTINIC KERATOSIS</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">ALOPECIA</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">BLISTER</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">5 ( 6.0%)</td>
+<td align="right">1</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">COLD SWEAT</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">DERMATITIS ATOPIC</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">DERMATITIS CONTACT</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="right">1</td>
+<td align="right">6</td>
+</tr>
+</tbody>
+</table>
+<p>There are three things done above that use the population data:</p>
+<ul>
+<li>Population data must be set in the first place using <code>set_pop_where()</code> and the population treatment variable must be specified using <code>set_pop_treat_var()</code></li>
+<li><code>set_distinct_by()</code> must be used. Why? Because when you need to use a separate population dataset, the target dataset is likely more than one record per subject. So <code>set_distinct_by()</code> in this scenario would be used to get distinct counts per subject. In this example, we’re looking at the number of unique subjects who experienced a specific adverse event.</li>
+<li>The population denominator is then used when calculating <code>distinct_pct</code>. It is also worth noting that the default count layer formats use distinct values.</li>
+</ul>
+<p>Note that if you need more control over the values used in the denominator from the population data, you can set a separate filter on the population data used <code>set_pop_where()</code>.</p>
+<p>Fortunately, denominators are much simpler when they’re kept within a single dataset. Just kidding! Let’s get weird.</p>
+</div>
+<div id="denominator-grouping" class="section level2">
+<h2>Denominator Grouping</h2>
+<p>When you’re looking within a single dataset, there are a couple factors that you need to consider for a denominator. The first is which grouping variables create those denominators. Let’s look at this from two perspectives - count layers and shift layers.</p>
+<div id="count-layers" class="section level3">
+<h3>Count layers</h3>
+<p>Most of the complexity of denominators comes from nuanced situations. A solid 80% of the time, defaults will work. For example, in a frequency table, you will typically want data within a column to sum to 100%. For example:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>adsl &lt;-<span class="st"> </span>adsl <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">DCSREAS =</span> <span class="kw">ifelse</span>(DCSREAS <span class="op">==</span><span class="st"> &#39;&#39;</span>, <span class="st">&#39;Completed&#39;</span>, DCSREAS))</span>
+<span id="cb3-3"><a href="#cb3-3"></a>         </span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="kw">tplyr_table</span>(adsl, TRT01P) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="st">  </span><span class="kw">add_layer</span>(</span>
+<span id="cb3-6"><a href="#cb3-6"></a>    <span class="kw">group_count</span>(DCSREAS)</span>
+<span id="cb3-7"><a href="#cb3-7"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">var1_Placebo</th>
+<th align="left">var1_Xanomeline High Dose</th>
+<th align="left">var1_Xanomeline Low Dose</th>
+<th align="right">ord_layer_index</th>
+<th align="right">ord_layer_1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Adverse Event</td>
+<td align="left">8 ( 9.3%)</td>
+<td align="left">40 ( 47.6%)</td>
+<td align="left">44 ( 52.4%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Completed</td>
+<td align="left">58 ( 67.4%)</td>
+<td align="left">27 ( 32.1%)</td>
+<td align="left">25 ( 29.8%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Death</td>
+<td align="left">2 ( 2.3%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="right">1</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">I/E Not Met</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">2 ( 2.4%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">Lack of Efficacy</td>
+<td align="left">3 ( 3.5%)</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">Lost to Follow-up</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="right">1</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">Physician Decision</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">2 ( 2.4%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">7</td>
+</tr>
+<tr class="even">
+<td align="left">Protocol Violation</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="right">1</td>
+<td align="right">8</td>
+</tr>
+<tr class="odd">
+<td align="left">Sponsor Decision</td>
+<td align="left">2 ( 2.3%)</td>
+<td align="left">3 ( 3.6%)</td>
+<td align="left">2 ( 2.4%)</td>
+<td align="right">1</td>
+<td align="right">9</td>
+</tr>
+<tr class="even">
+<td align="left">Withdrew Consent</td>
+<td align="left">9 ( 10.5%)</td>
+<td align="left">8 ( 9.5%)</td>
+<td align="left">10 ( 11.9%)</td>
+<td align="right">1</td>
+<td align="right">10</td>
+</tr>
+<tr class="odd">
+<td align="left">By default, when not</td>
+<td align="left">using the popul</td>
+<td align="left">ation data strategy shown ab</td>
+<td align="left">ove, a count layer assumes</td>
+<td align="right">that you want colu</td>
+<td align="right">mns to sum to 100%. But that’s not always the case. Perhaps you’d like to break this summary down by sex presented row-wise.</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">tplyr_table</span>(adsl, TRT01P) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="st">  </span><span class="kw">add_layer</span>(</span>
+<span id="cb4-3"><a href="#cb4-3"></a>    <span class="kw">group_count</span>(DCSREAS, <span class="dt">by=</span>SEX)</span>
+<span id="cb4-4"><a href="#cb4-4"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">row_label2</th>
+<th align="left">var1_Placebo</th>
+<th align="left">var1_Xanomeline High Dose</th>
+<th align="left">var1_Xanomeline Low Dose</th>
+<th align="right">ord_layer_index</th>
+<th align="right">ord_layer_1</th>
+<th align="right">ord_layer_2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">F</td>
+<td align="left">Adverse Event</td>
+<td align="left">6 ( 7.0%)</td>
+<td align="left">20 ( 23.8%)</td>
+<td align="left">26 ( 31.0%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">F</td>
+<td align="left">Completed</td>
+<td align="left">34 ( 39.5%)</td>
+<td align="left">13 ( 15.5%)</td>
+<td align="left">17 ( 20.2%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">F</td>
+<td align="left">Death</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">F</td>
+<td align="left">I/E Not Met</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">F</td>
+<td align="left">Lack of Efficacy</td>
+<td align="left">2 ( 2.3%)</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">F</td>
+<td align="left">Lost to Follow-up</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">F</td>
+<td align="left">Physician Decision</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">7</td>
+</tr>
+<tr class="even">
+<td align="left">F</td>
+<td align="left">Protocol Violation</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">8</td>
+</tr>
+<tr class="odd">
+<td align="left">F</td>
+<td align="left">Sponsor Decision</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">9</td>
+</tr>
+<tr class="even">
+<td align="left">F</td>
+<td align="left">Withdrew Consent</td>
+<td align="left">6 ( 7.0%)</td>
+<td align="left">4 ( 4.8%)</td>
+<td align="left">5 ( 6.0%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">10</td>
+</tr>
+<tr class="odd">
+<td align="left">M</td>
+<td align="left">Adverse Event</td>
+<td align="left">2 ( 2.3%)</td>
+<td align="left">20 ( 23.8%)</td>
+<td align="left">18 ( 21.4%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">M</td>
+<td align="left">Completed</td>
+<td align="left">24 ( 27.9%)</td>
+<td align="left">14 ( 16.7%)</td>
+<td align="left">8 ( 9.5%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">M</td>
+<td align="left">Death</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">M</td>
+<td align="left">I/E Not Met</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">2 ( 2.4%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">M</td>
+<td align="left">Lack of Efficacy</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">M</td>
+<td align="left">Lost to Follow-up</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">M</td>
+<td align="left">Physician Decision</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">7</td>
+</tr>
+<tr class="even">
+<td align="left">M</td>
+<td align="left">Protocol Violation</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">8</td>
+</tr>
+<tr class="odd">
+<td align="left">M</td>
+<td align="left">Sponsor Decision</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">3 ( 3.6%)</td>
+<td align="left">2 ( 2.4%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">9</td>
+</tr>
+<tr class="even">
+<td align="left">M</td>
+<td align="left">Withdrew Consent</td>
+<td align="left">3 ( 3.5%)</td>
+<td align="left">4 ( 4.8%)</td>
+<td align="left">5 ( 6.0%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">10</td>
+</tr>
+</tbody>
+</table>
+<p>Ok - so, now this is a little bit off. By breaking sex down as a row group, the denominators are still the total treatment group. Does that make sense? 34 female Placebo group subjects completed, but that calculated 39.5% also includes male subjects in the denominator. Let’s fix this using <code>set_denoms_by()</code>.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">tplyr_table</span>(adsl, TRT01P) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="st">  </span><span class="kw">add_layer</span>(</span>
+<span id="cb5-3"><a href="#cb5-3"></a>    <span class="kw">group_count</span>(DCSREAS, <span class="dt">by=</span>SEX) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="st">      </span><span class="kw">set_denoms_by</span>(SEX, TRT01P)</span>
+<span id="cb5-5"><a href="#cb5-5"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb5-7"><a href="#cb5-7"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">row_label2</th>
+<th align="left">var1_Placebo</th>
+<th align="left">var1_Xanomeline High Dose</th>
+<th align="left">var1_Xanomeline Low Dose</th>
+<th align="right">ord_layer_index</th>
+<th align="right">ord_layer_1</th>
+<th align="right">ord_layer_2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">F</td>
+<td align="left">Adverse Event</td>
+<td align="left">6 ( 11.3%)</td>
+<td align="left">20 ( 50.0%)</td>
+<td align="left">26 ( 52.0%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">F</td>
+<td align="left">Completed</td>
+<td align="left">34 ( 64.2%)</td>
+<td align="left">13 ( 32.5%)</td>
+<td align="left">17 ( 34.0%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">F</td>
+<td align="left">Death</td>
+<td align="left">1 ( 1.9%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">1 ( 2.0%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">F</td>
+<td align="left">I/E Not Met</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">F</td>
+<td align="left">Lack of Efficacy</td>
+<td align="left">2 ( 3.8%)</td>
+<td align="left">1 ( 2.5%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">F</td>
+<td align="left">Lost to Follow-up</td>
+<td align="left">1 ( 1.9%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">1 ( 2.0%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">F</td>
+<td align="left">Physician Decision</td>
+<td align="left">1 ( 1.9%)</td>
+<td align="left">1 ( 2.5%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">7</td>
+</tr>
+<tr class="even">
+<td align="left">F</td>
+<td align="left">Protocol Violation</td>
+<td align="left">1 ( 1.9%)</td>
+<td align="left">1 ( 2.5%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">8</td>
+</tr>
+<tr class="odd">
+<td align="left">F</td>
+<td align="left">Sponsor Decision</td>
+<td align="left">1 ( 1.9%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">9</td>
+</tr>
+<tr class="even">
+<td align="left">F</td>
+<td align="left">Withdrew Consent</td>
+<td align="left">6 ( 11.3%)</td>
+<td align="left">4 ( 10.0%)</td>
+<td align="left">5 ( 10.0%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">10</td>
+</tr>
+<tr class="odd">
+<td align="left">M</td>
+<td align="left">Adverse Event</td>
+<td align="left">2 ( 6.1%)</td>
+<td align="left">20 ( 45.5%)</td>
+<td align="left">18 ( 52.9%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">M</td>
+<td align="left">Completed</td>
+<td align="left">24 ( 72.7%)</td>
+<td align="left">14 ( 31.8%)</td>
+<td align="left">8 ( 23.5%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">M</td>
+<td align="left">Death</td>
+<td align="left">1 ( 3.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">M</td>
+<td align="left">I/E Not Met</td>
+<td align="left">1 ( 3.0%)</td>
+<td align="left">2 ( 4.5%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">M</td>
+<td align="left">Lack of Efficacy</td>
+<td align="left">1 ( 3.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">M</td>
+<td align="left">Lost to Follow-up</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">M</td>
+<td align="left">Physician Decision</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">1 ( 2.3%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">7</td>
+</tr>
+<tr class="even">
+<td align="left">M</td>
+<td align="left">Protocol Violation</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">1 ( 2.9%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">8</td>
+</tr>
+<tr class="odd">
+<td align="left">M</td>
+<td align="left">Sponsor Decision</td>
+<td align="left">1 ( 3.0%)</td>
+<td align="left">3 ( 6.8%)</td>
+<td align="left">2 ( 5.9%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">9</td>
+</tr>
+<tr class="even">
+<td align="left">M</td>
+<td align="left">Withdrew Consent</td>
+<td align="left">3 ( 9.1%)</td>
+<td align="left">4 ( 9.1%)</td>
+<td align="left">5 ( 14.7%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">10</td>
+</tr>
+</tbody>
+</table>
+<p>Ok - much better. <code>set_denoms_by()</code> now changed the denominator grouping for us, so the denominator used for those 34 female Placebo subjects are now the total number of female Placebo subjects. Makes sense, right? <code>set_denoms_by()</code> allows you to specify:</p>
+<ul>
+<li>The treatment variable</li>
+<li>any <code>cols</code> variables specified at the table level</li>
+<li>any <code>by</code> variables specified at the layer level</li>
+</ul>
+<p>Depending on your presentation, what you require may change - but the flexibility is there to choose what you need.</p>
+</div>
+<div id="shift-layers" class="section level3">
+<h3>Shift layers</h3>
+<p>A major part of the shift API is the control of the denominators used in the calculation of the percentages. In shift tables, most percentages are relative to the “box” that is formed from the “from” and “to” groups of the shift for each treatment group. Just like the count layers, the <code>set_denoms_by()</code> functions any variable name from the treatment variable, <code>cols</code> argument, <code>by</code> variables. The difference with shift layers is that now you can also include your target variables used for the row or column.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">tplyr_table</span>(adlb, TRTA, <span class="dt">where=</span>PARAMCD <span class="op">==</span><span class="st"> &quot;CK&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="st">  </span><span class="kw">add_layer</span>(</span>
+<span id="cb6-3"><a href="#cb6-3"></a>    <span class="kw">group_shift</span>(<span class="kw">vars</span>(<span class="dt">row =</span> BNRIND, <span class="dt">column =</span> ANRIND), <span class="dt">by =</span> <span class="kw">vars</span>(PARAM, AVISIT)) <span class="op">%&gt;%</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="st">      </span><span class="kw">set_format_strings</span>(<span class="kw">f_str</span>(<span class="st">&quot;xx (xxx.x%)&quot;</span>, n, pct)) <span class="op">%&gt;%</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="st">      </span><span class="co"># This is the default, the 3x3 box formed by the target variables</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a><span class="st">      </span><span class="kw">set_denoms_by</span>(TRTA, PARAM, AVISIT) </span>
+<span id="cb6-7"><a href="#cb6-7"></a>  ) <span class="op">%&gt;%</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span></span>
+<span id="cb6-9"><a href="#cb6-9"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">row_label2</th>
+<th align="left">row_label3</th>
+<th align="left">var1_Placebo_H</th>
+<th align="left">var1_Placebo_N</th>
+<th align="left">var1_Xanomeline High Dose_H</th>
+<th align="left">var1_Xanomeline High Dose_N</th>
+<th align="left">var1_Xanomeline Low Dose_H</th>
+<th align="left">var1_Xanomeline Low Dose_N</th>
+<th align="right">ord_layer_index</th>
+<th align="right">ord_layer_1</th>
+<th align="right">ord_layer_2</th>
+<th align="right">ord_layer_3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">Week 12</td>
+<td align="left">H</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">1 ( 12.5%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">12</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">Week 12</td>
+<td align="left">N</td>
+<td align="left">1 ( 8.3%)</td>
+<td align="left">11 ( 91.7%)</td>
+<td align="left">1 ( 12.5%)</td>
+<td align="left">6 ( 75.0%)</td>
+<td align="left">1 ( 14.3%)</td>
+<td align="left">6 ( 85.7%)</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">12</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">Week 24</td>
+<td align="left">H</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">24</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">Week 24</td>
+<td align="left">N</td>
+<td align="left">2 ( 16.7%)</td>
+<td align="left">10 ( 83.3%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">2 (100.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">2 (100.0%)</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">24</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">Week 8</td>
+<td align="left">H</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">8</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">Week 8</td>
+<td align="left">N</td>
+<td align="left">1 ( 14.3%)</td>
+<td align="left">6 ( 85.7%)</td>
+<td align="left">1 ( 10.0%)</td>
+<td align="left">9 ( 90.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">6 (100.0%)</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">8</td>
+<td align="right">3</td>
+</tr>
+</tbody>
+</table>
+<p>In the example above, the denominators were based on the by and treatment variables, <code>TRTA</code>, <code>PARAM</code> and <code>VISIT</code>. This creates a 3 X 3 box, where the denominator is the total of all record within the <strong>FROM</strong> and <strong>TO</strong> shift variables, within each parameter, visit, and treatment. This is the default, and this is how ‘Tplyr’ will create the denominators if <code>set_denoms_by()</code> isn’t specified.</p>
+<p>In the next example, the percentage denominators are calculated row-wise, each row percentage sums to 100%.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">tplyr_table</span>(adlb, TRTA, <span class="dt">where=</span>PARAMCD <span class="op">==</span><span class="st"> &quot;CK&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="st">  </span><span class="kw">add_layer</span>(</span>
+<span id="cb7-3"><a href="#cb7-3"></a>    <span class="kw">group_shift</span>(<span class="kw">vars</span>(<span class="dt">row =</span> BNRIND, <span class="dt">column =</span> ANRIND), <span class="dt">by =</span> <span class="kw">vars</span>(PARAM, AVISIT)) <span class="op">%&gt;%</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="st">      </span><span class="kw">set_format_strings</span>(<span class="kw">f_str</span>(<span class="st">&quot;xx (xxx.x%)&quot;</span>, n, pct)) <span class="op">%&gt;%</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="st">      </span><span class="kw">set_denoms_by</span>(TRTA, PARAM, AVISIT, BNRIND) <span class="co"># Each row made by TRTA, BNRIND</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a>  ) <span class="op">%&gt;%</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span></span>
+<span id="cb7-8"><a href="#cb7-8"></a><span class="st">  </span><span class="kw">arrange</span>(ord_layer_<span class="dv">1</span>, ord_layer_<span class="dv">2</span>, ord_layer_<span class="dv">3</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb7-9"><a href="#cb7-9"></a><span class="st">  </span><span class="kw">head</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb7-10"><a href="#cb7-10"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">row_label2</th>
+<th align="left">row_label3</th>
+<th align="left">var1_Placebo_H</th>
+<th align="left">var1_Placebo_N</th>
+<th align="left">var1_Xanomeline High Dose_H</th>
+<th align="left">var1_Xanomeline High Dose_N</th>
+<th align="left">var1_Xanomeline Low Dose_H</th>
+<th align="left">var1_Xanomeline Low Dose_N</th>
+<th align="right">ord_layer_index</th>
+<th align="right">ord_layer_1</th>
+<th align="right">ord_layer_2</th>
+<th align="right">ord_layer_3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">Week 8</td>
+<td align="left">H</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">8</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">Week 8</td>
+<td align="left">N</td>
+<td align="left">1 ( 14.3%)</td>
+<td align="left">6 ( 85.7%)</td>
+<td align="left">1 ( 10.0%)</td>
+<td align="left">9 ( 90.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">6 (100.0%)</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">8</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">Week 12</td>
+<td align="left">H</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">1 (100.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">12</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">Week 12</td>
+<td align="left">N</td>
+<td align="left">1 ( 8.3%)</td>
+<td align="left">11 ( 91.7%)</td>
+<td align="left">1 ( 14.3%)</td>
+<td align="left">6 ( 85.7%)</td>
+<td align="left">1 ( 14.3%)</td>
+<td align="left">6 ( 85.7%)</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">12</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">Week 24</td>
+<td align="left">H</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">24</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">Week 24</td>
+<td align="left">N</td>
+<td align="left">2 ( 16.7%)</td>
+<td align="left">10 ( 83.3%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">2 (100.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">2 (100.0%)</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">24</td>
+<td align="right">3</td>
+</tr>
+</tbody>
+</table>
+<p>While not practical, in this last example the denominators are changed to be based on the entire column instead of the 3 x 3 box. By passing the column variables, <code>TRTA</code> and <code>ANRIND</code> the layer will use those denominators when determining the percentages.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">tplyr_table</span>(adlb, TRTA, <span class="dt">where =</span> PARAMCD <span class="op">==</span><span class="st"> &quot;CK&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="st">  </span><span class="kw">add_layer</span>(</span>
+<span id="cb8-3"><a href="#cb8-3"></a>    <span class="kw">group_shift</span>(<span class="kw">vars</span>(<span class="dt">row =</span> BNRIND, <span class="dt">column =</span> ANRIND), <span class="dt">by =</span> <span class="kw">vars</span>(PARAM, AVISIT)) <span class="op">%&gt;%</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="st">      </span><span class="kw">set_format_strings</span>(<span class="kw">f_str</span>(<span class="st">&quot;xx (xx.xx%)&quot;</span>, n, pct)) <span class="op">%&gt;%</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="st">      </span><span class="kw">set_denoms_by</span>(TRTA, ANRIND) <span class="co"># Use the column total as the denominator</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a>  ) <span class="op">%&gt;%</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="st">  </span><span class="kw">arrange</span>(ord_layer_<span class="dv">1</span>, ord_layer_<span class="dv">2</span>, ord_layer_<span class="dv">3</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="st">  </span><span class="kw">head</span>() <span class="op">%&gt;%</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">row_label2</th>
+<th align="left">row_label3</th>
+<th align="left">var1_Placebo_H</th>
+<th align="left">var1_Placebo_N</th>
+<th align="left">var1_Xanomeline High Dose_H</th>
+<th align="left">var1_Xanomeline High Dose_N</th>
+<th align="left">var1_Xanomeline Low Dose_H</th>
+<th align="left">var1_Xanomeline Low Dose_N</th>
+<th align="right">ord_layer_index</th>
+<th align="right">ord_layer_1</th>
+<th align="right">ord_layer_2</th>
+<th align="right">ord_layer_3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">Week 8</td>
+<td align="left">H</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">8</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">Week 8</td>
+<td align="left">N</td>
+<td align="left">1 (25.00%)</td>
+<td align="left">6 (22.22%)</td>
+<td align="left">1 (33.33%)</td>
+<td align="left">9 (52.94%)</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">6 (42.86%)</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">8</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">Week 12</td>
+<td align="left">H</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">1 (33.33%)</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">12</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">Week 12</td>
+<td align="left">N</td>
+<td align="left">1 (25.00%)</td>
+<td align="left">11 (40.74%)</td>
+<td align="left">1 (33.33%)</td>
+<td align="left">6 (35.29%)</td>
+<td align="left">1 (100.00%)</td>
+<td align="left">6 (42.86%)</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">12</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">Week 24</td>
+<td align="left">H</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">24</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">Week 24</td>
+<td align="left">N</td>
+<td align="left">2 (50.00%)</td>
+<td align="left">10 (37.04%)</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">2 (11.76%)</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">2 (14.29%)</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">24</td>
+<td align="right">3</td>
+</tr>
+</tbody>
+</table>
+<p>Our hope is that this gives you the flexibility you need to structure your denominator however required.</p>
+</div>
+</div>
+<div id="controlling-the-denominator-filter" class="section level2">
+<h2>Controlling the Denominator Filter</h2>
+<p>There are some circumstances that you’ll encounter where the filter used for a denominator needs to be different than the filter used to count. Disposition tables are an example of this, and we’ll use that example to paint this picture.</p>
+<p>‘Tplyr’ offers you the ability to specifically control the filter used within the denominator. This is provided through the function <code>set_denom_where()</code>. The default for <code>set_denom_where()</code> is the layer level <code>where</code> parameter, if one was supplied. <code>set_denom_where()</code> allows you to replace this layer level filter with a custom filter of your choosing. This is done on top of any filtering specified in the <code>tplyr_table()</code> where parameter - which means that the <code>set_denom_where()</code> filter is applied <em>in addition to</em> any table level filtering.</p>
+<p>Yeah we know - there are a lot of different places that filtering can happen…</p>
+<p>So let’s take the example shown below. The first layer has no layer level filtering applied, so the table level <code>where</code> is the only filter applied. The second layer has a layer level filter applied, so the denominators will be based on that layer level filter. Notice how in this case, the percentages in the second layer add up to 100%. This is because the denominator only includes values used in that layer.</p>
+<p>The third layer has a layer level filter applied, but additionally uses <code>set_denom_where()</code>. The <code>set_denom_where()</code> in this example is actually <em>removing</em> the layer level filter for the denominators. This is because in R, when you filter using <code>TRUE</code>, the filter returns all records. So by using <code>TRUE</code> in <code>set_denom_where()</code>, the layer level filter is effectively removed. This causes the denominator to include all values available from the table and not just those selected for that layer - so for this layer, the percentages will <em>not add up to 100%</em>. This is important - this allows the percentages from Layer 3 to sum to the total percentage of “DISCONTINUED” from Layer 1.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>adsl2 &lt;-<span class="st"> </span>adsl <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">DISCONTEXT =</span> <span class="kw">if_else</span>(DISCONFL <span class="op">==</span><span class="st"> &#39;Y&#39;</span>, <span class="st">&#39;DISCONTINUED&#39;</span>, <span class="st">&#39;COMPLETED&#39;</span>))</span>
+<span id="cb9-3"><a href="#cb9-3"></a></span>
+<span id="cb9-4"><a href="#cb9-4"></a>t &lt;-<span class="st"> </span><span class="kw">tplyr_table</span>(adsl2, TRT01P, <span class="dt">where =</span> SAFFL <span class="op">==</span><span class="st"> &#39;Y&#39;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="st">  </span><span class="kw">add_layer</span>(</span>
+<span id="cb9-6"><a href="#cb9-6"></a>    <span class="kw">group_count</span>(DISCONTEXT)</span>
+<span id="cb9-7"><a href="#cb9-7"></a>  ) <span class="op">%&gt;%</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="st">  </span><span class="kw">add_layer</span>(</span>
+<span id="cb9-9"><a href="#cb9-9"></a>    <span class="kw">group_count</span>(DCSREAS, <span class="dt">where =</span> DISCONFL <span class="op">==</span><span class="st"> &#39;Y&#39;</span>)</span>
+<span id="cb9-10"><a href="#cb9-10"></a>  ) <span class="op">%&gt;%</span></span>
+<span id="cb9-11"><a href="#cb9-11"></a><span class="st">  </span><span class="kw">add_layer</span>(</span>
+<span id="cb9-12"><a href="#cb9-12"></a>    <span class="kw">group_count</span>(DCSREAS, <span class="dt">where =</span> DISCONFL <span class="op">==</span><span class="st"> &#39;Y&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb9-13"><a href="#cb9-13"></a><span class="st">    </span><span class="kw">set_denom_where</span>(<span class="ot">TRUE</span>)</span>
+<span id="cb9-14"><a href="#cb9-14"></a>  ) <span class="op">%&gt;%</span></span>
+<span id="cb9-15"><a href="#cb9-15"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span></span>
+<span id="cb9-16"><a href="#cb9-16"></a><span class="st">  </span><span class="kw">arrange</span>(ord_layer_index, ord_layer_<span class="dv">1</span>) </span>
+<span id="cb9-17"><a href="#cb9-17"></a></span>
+<span id="cb9-18"><a href="#cb9-18"></a>t <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb9-19"><a href="#cb9-19"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">var1_Placebo</th>
+<th align="left">var1_Xanomeline High Dose</th>
+<th align="left">var1_Xanomeline Low Dose</th>
+<th align="right">ord_layer_index</th>
+<th align="right">ord_layer_1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">COMPLETED</td>
+<td align="left">58 ( 67.4%)</td>
+<td align="left">27 ( 32.1%)</td>
+<td align="left">25 ( 29.8%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">DISCONTINUED</td>
+<td align="left">28 ( 32.6%)</td>
+<td align="left">57 ( 67.9%)</td>
+<td align="left">59 ( 70.2%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Adverse Event</td>
+<td align="left">8 ( 28.6%)</td>
+<td align="left">40 ( 70.2%)</td>
+<td align="left">44 ( 74.6%)</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Death</td>
+<td align="left">2 ( 7.1%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">1 ( 1.7%)</td>
+<td align="right">2</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">I/E Not Met</td>
+<td align="left">1 ( 3.6%)</td>
+<td align="left">2 ( 3.5%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">2</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">Lack of Efficacy</td>
+<td align="left">3 ( 10.7%)</td>
+<td align="left">1 ( 1.8%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">2</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">Lost to Follow-up</td>
+<td align="left">1 ( 3.6%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">1 ( 1.7%)</td>
+<td align="right">2</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">Physician Decision</td>
+<td align="left">1 ( 3.6%)</td>
+<td align="left">2 ( 3.5%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">2</td>
+<td align="right">7</td>
+</tr>
+<tr class="odd">
+<td align="left">Protocol Violation</td>
+<td align="left">1 ( 3.6%)</td>
+<td align="left">1 ( 1.8%)</td>
+<td align="left">1 ( 1.7%)</td>
+<td align="right">2</td>
+<td align="right">8</td>
+</tr>
+<tr class="even">
+<td align="left">Sponsor Decision</td>
+<td align="left">2 ( 7.1%)</td>
+<td align="left">3 ( 5.3%)</td>
+<td align="left">2 ( 3.4%)</td>
+<td align="right">2</td>
+<td align="right">9</td>
+</tr>
+<tr class="odd">
+<td align="left">Withdrew Consent</td>
+<td align="left">9 ( 32.1%)</td>
+<td align="left">8 ( 14.0%)</td>
+<td align="left">10 ( 16.9%)</td>
+<td align="right">2</td>
+<td align="right">10</td>
+</tr>
+<tr class="even">
+<td align="left">Adverse Event</td>
+<td align="left">8 ( 9.3%)</td>
+<td align="left">40 ( 47.6%)</td>
+<td align="left">44 ( 52.4%)</td>
+<td align="right">3</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Death</td>
+<td align="left">2 ( 2.3%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="right">3</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">I/E Not Met</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">2 ( 2.4%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">3</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">Lack of Efficacy</td>
+<td align="left">3 ( 3.5%)</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">3</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">Lost to Follow-up</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="right">3</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">Physician Decision</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">2 ( 2.4%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">3</td>
+<td align="right">7</td>
+</tr>
+<tr class="even">
+<td align="left">Protocol Violation</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="right">3</td>
+<td align="right">8</td>
+</tr>
+<tr class="odd">
+<td align="left">Sponsor Decision</td>
+<td align="left">2 ( 2.3%)</td>
+<td align="left">3 ( 3.6%)</td>
+<td align="left">2 ( 2.4%)</td>
+<td align="right">3</td>
+<td align="right">9</td>
+</tr>
+<tr class="even">
+<td align="left">Withdrew Consent</td>
+<td align="left">9 ( 10.5%)</td>
+<td align="left">8 ( 9.5%)</td>
+<td align="left">10 ( 11.9%)</td>
+<td align="right">3</td>
+<td align="right">10</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="missing-counts" class="section level2">
+<h2>Missing Counts</h2>
+<p>Missing counts are a tricky area for frequency tables, and they play directly in with denominators as well. These values raise a number of questions. For example, do you want to format the missing counts the same way as the event counts? Do you want to present missing counts with percentages? Do missing counts belong in the denominator?</p>
+<p>The <code>set_missing_count()</code> function can take a new <code>f_str()</code> object to set the display of missing values. If not specified, the associated count layer’s format will be used. Using the <code>...</code> parameter, you are able to specify the row label desired for missing values and values that you determine to be considered ‘missing’. For example, you may have NA values in the target variable, and then values like “Not Collected” that you also wish to consider “missing”. <code>set_missing_count()</code> allows you to group those together. Actually - you’re able to establish as many different “missing” groups as you want - even though that scenario is fairly unlikely.</p>
+<p>In the example below 50 random values are removed and NA is specified as the missing string. This leads us to another parameter - <code>denom_ignore</code>. By default, if you specify missing values they will still be considered within the denominator, but when you have missing counts, you may wish to exclude them from the totals being summarized. By setting <code>denom_ignore</code> to TRUE, your denominators will ignore any groups of missing values that you’ve specified.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>adae2 &lt;-<span class="st"> </span>adae</span>
+<span id="cb10-2"><a href="#cb10-2"></a>adae2[<span class="kw">sample</span>(<span class="kw">nrow</span>(adae2), <span class="dv">50</span>), <span class="st">&quot;AESEV&quot;</span>] &lt;-<span class="st"> </span><span class="ot">NA</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a></span>
+<span id="cb10-4"><a href="#cb10-4"></a>t &lt;-<span class="st"> </span><span class="kw">tplyr_table</span>(adae2, TRTA) <span class="op">%&gt;%</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="st">  </span><span class="kw">add_layer</span>(</span>
+<span id="cb10-6"><a href="#cb10-6"></a>    <span class="kw">group_count</span>(AESEV) <span class="op">%&gt;%</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="st">      </span><span class="kw">set_format_strings</span>(<span class="kw">f_str</span>(<span class="st">&quot;xxx (xx.xx%)&quot;</span>, n, pct)) <span class="op">%&gt;%</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="st">      </span><span class="kw">set_missing_count</span>(<span class="kw">f_str</span>(<span class="st">&quot;xxx&quot;</span>, n), <span class="dt">sort_value=</span><span class="ot">Inf</span>, <span class="dt">denom_ignore=</span><span class="ot">TRUE</span>, <span class="dt">Missing =</span> <span class="ot">NA</span>)</span>
+<span id="cb10-9"><a href="#cb10-9"></a>  ) <span class="op">%&gt;%</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb10-11"><a href="#cb10-11"></a><span class="st">  </span><span class="kw">arrange</span>(ord_layer_<span class="dv">1</span>)</span>
+<span id="cb10-12"><a href="#cb10-12"></a></span>
+<span id="cb10-13"><a href="#cb10-13"></a>t <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb10-14"><a href="#cb10-14"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">var1_Placebo</th>
+<th align="left">var1_Xanomeline High Dose</th>
+<th align="left">var1_Xanomeline Low Dose</th>
+<th align="right">ord_layer_index</th>
+<th align="right">ord_layer_1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">MILD</td>
+<td align="left">26 (61.90%)</td>
+<td align="left">71 (75.53%)</td>
+<td align="left">40 (44.44%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">MODERATE</td>
+<td align="left">16 (38.10%)</td>
+<td align="left">22 (23.40%)</td>
+<td align="left">47 (52.22%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">SEVERE</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">1 ( 1.06%)</td>
+<td align="left">3 ( 3.33%)</td>
+<td align="right">1</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Missing</td>
+<td align="left">5</td>
+<td align="left">17</td>
+<td align="left">28</td>
+<td align="right">1</td>
+<td align="right">Inf</td>
+</tr>
+</tbody>
+</table>
+<p>We did one more other thing worth explaining in the example above - gave the missing count its own sort value. If you leave this field null, it will simply be the maximum value in the order layer plus 1, to put the Missing counts at the bottom during an ascending sort. But tables can be sorted a lot of different ways, as you’ll see in the sort vignette. So instead of trying to come up with novel ways for you to control where the missing row goes - we decided to just let you specify your own value.</p>
+</div>
+<div id="adding-a-total-row" class="section level2">
+<h2>Adding a ‘Total’ Row</h2>
+<p>In addition to missing counts, some summaries require the addition of a ‘Total’ row. ‘Tplyr’ has the helper function <code>add_total_row()</code> to ease this process for you. Like most other things within ‘Tplyr’ - particularly in this vignette - this too has a significant bit of nuance to it.</p>
+<p>Much of this functionality is similar to <code>set_missing_count()</code>. You’re able to specify a different format for the total, but if not specified, the associated count layer’s format will be used. You’re able to set your own sort value to specify where you want the total row to sit.</p>
+<p>More nuance comes in two places:</p>
+<ul>
+<li>By default, <code>add_total_row()</code> <em>will count missing values</em>, but you can exclude those values using the <code>count_missings</code> parameter. ‘Tplyr’ will warn you when <code>set_count_missing()</code> has <code>denom_ignore</code> set to <code>TRUE</code>, <code>add_total_row()</code> has <code>count_missings</code> set to <code>TRUE</code> and the format contains a percentage. Why? Because if the denominator is ignoring missing values but you’re still counting them in your total, the percentage shown can exceed 100%.</li>
+<li><code>add_total_row()</code> will throw a warning when a <code>by</code> variable is used, because it becomes ambiguous what total should be calculated. You can rectify this by using <code>set_denoms_by()</code>, which allows the user to control exactly which groups are used to form the denominator. This way the totals presented by <code>add_total_row()</code> will align with denominators specified in <code>set_denom_by()</code> and generate total rows that match the grouping of your denominator values.</li>
+</ul>
+<p>In the example below, we summarize age groups by sex. The denominators are determined by treatment group and sex, and since we are not excluding any values from the denominator, the total row ends up matching the denominator that was used. The ‘Missing’ row tells us the number of missing values, but because <code>count_missings</code> is set to <code>TRUE</code>, the missing counts are included in the total row. This probably isn’t how you would choose to display things, but here we’re trying to show the flexibility built into ‘Tplyr’.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>adsl2 &lt;-<span class="st"> </span>adsl</span>
+<span id="cb11-2"><a href="#cb11-2"></a>adsl2[<span class="kw">sample</span>(<span class="kw">nrow</span>(adsl2), <span class="dv">50</span>), <span class="st">&quot;AGEGR1&quot;</span>] &lt;-<span class="st"> </span><span class="ot">NA</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a></span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="kw">tplyr_table</span>(adsl2, TRT01P) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb11-5"><a href="#cb11-5"></a><span class="st">  </span><span class="kw">add_layer</span>(</span>
+<span id="cb11-6"><a href="#cb11-6"></a>    <span class="kw">group_count</span>(AGEGR1, <span class="dt">by=</span>SEX) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb11-7"><a href="#cb11-7"></a><span class="st">      </span><span class="kw">set_denoms_by</span>(TRT01P, SEX) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># This gives me a Total row each group</span></span>
+<span id="cb11-8"><a href="#cb11-8"></a><span class="st">      </span><span class="kw">add_total_row</span>(<span class="kw">f_str</span>(<span class="st">&quot;xxx&quot;</span>, n), <span class="dt">count_missings=</span><span class="ot">TRUE</span>, <span class="dt">sort_value=</span><span class="op">-</span><span class="ot">Inf</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb11-9"><a href="#cb11-9"></a><span class="st">      </span><span class="kw">set_total_row_label</span>(<span class="st">&quot;All Age Groups&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb11-10"><a href="#cb11-10"></a><span class="st">      </span><span class="kw">set_missing_count</span>(<span class="kw">f_str</span>(<span class="st">&quot;xx (xx.x%)&quot;</span>, n, pct), <span class="dt">Missing =</span> <span class="ot">NA</span>, <span class="dt">sort_value=</span><span class="ot">Inf</span>)</span>
+<span id="cb11-11"><a href="#cb11-11"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb11-12"><a href="#cb11-12"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb11-13"><a href="#cb11-13"></a><span class="st">  </span><span class="kw">arrange</span>(ord_layer_<span class="dv">1</span>, ord_layer_<span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb11-14"><a href="#cb11-14"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">row_label2</th>
+<th align="left">var1_Placebo</th>
+<th align="left">var1_Xanomeline High Dose</th>
+<th align="left">var1_Xanomeline Low Dose</th>
+<th align="right">ord_layer_index</th>
+<th align="right">ord_layer_1</th>
+<th align="right">ord_layer_2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">F</td>
+<td align="left">All Age Groups</td>
+<td align="left">53</td>
+<td align="left">40</td>
+<td align="left">50</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">-Inf</td>
+</tr>
+<tr class="even">
+<td align="left">F</td>
+<td align="left">65-80</td>
+<td align="left">19 ( 35.8%)</td>
+<td align="left">22 ( 55.0%)</td>
+<td align="left">22 ( 44.0%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">F</td>
+<td align="left">&lt;65</td>
+<td align="left">4 ( 7.5%)</td>
+<td align="left">3 ( 7.5%)</td>
+<td align="left">5 ( 10.0%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">F</td>
+<td align="left">&gt;80</td>
+<td align="left">19 ( 35.8%)</td>
+<td align="left">5 ( 12.5%)</td>
+<td align="left">15 ( 30.0%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">F</td>
+<td align="left">Missing</td>
+<td align="left">11 (20.8%)</td>
+<td align="left">10 (25.0%)</td>
+<td align="left">8 (16.0%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">Inf</td>
+</tr>
+<tr class="even">
+<td align="left">M</td>
+<td align="left">All Age Groups</td>
+<td align="left">33</td>
+<td align="left">44</td>
+<td align="left">34</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">-Inf</td>
+</tr>
+<tr class="odd">
+<td align="left">M</td>
+<td align="left">65-80</td>
+<td align="left">15 ( 45.5%)</td>
+<td align="left">21 ( 47.7%)</td>
+<td align="left">15 ( 44.1%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">M</td>
+<td align="left">&lt;65</td>
+<td align="left">3 ( 9.1%)</td>
+<td align="left">6 ( 13.6%)</td>
+<td align="left">3 ( 8.8%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">M</td>
+<td align="left">&gt;80</td>
+<td align="left">8 ( 24.2%)</td>
+<td align="left">9 ( 20.5%)</td>
+<td align="left">10 ( 29.4%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">M</td>
+<td align="left">Missing</td>
+<td align="left">7 (21.2%)</td>
+<td align="left">8 (18.2%)</td>
+<td align="left">6 (17.6%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">Inf</td>
+</tr>
+<tr class="odd">
+<td align="left">The default t</td>
+<td align="left">ext for the Total</td>
+<td align="left">row is “Total”</td>
+<td align="left">, but we provide `set_total_</td>
+<td align="left">row_label()` to allow you t</td>
+<td align="right">o customize the te</td>
+<td align="right">xt used in you</td>
+<td align="right">r display.</td>
+</tr>
+</tbody>
+</table>
+<p>Let’s look at a more practical version of the table above. If you display missings, you probably want to exclude them from the total. Here we do that using <code>set_missing_count()</code>. So more commonly, you’ll see this:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">tplyr_table</span>(adsl2, TRT01P) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="st">  </span><span class="kw">add_layer</span>(</span>
+<span id="cb12-3"><a href="#cb12-3"></a>    <span class="kw">group_count</span>(AGEGR1, <span class="dt">by=</span>SEX) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="st">      </span><span class="kw">set_denoms_by</span>(TRT01P, SEX) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># This gives me a Total row each group</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a><span class="st">      </span><span class="kw">add_total_row</span>(<span class="kw">f_str</span>(<span class="st">&quot;xxx&quot;</span>, n), <span class="dt">count_missings=</span><span class="ot">FALSE</span>, <span class="dt">sort_value=</span><span class="op">-</span><span class="ot">Inf</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb12-6"><a href="#cb12-6"></a><span class="st">      </span><span class="kw">set_total_row_label</span>(<span class="st">&quot;All Age Groups&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb12-7"><a href="#cb12-7"></a><span class="st">      </span><span class="kw">set_missing_count</span>(<span class="kw">f_str</span>(<span class="st">&quot;xxx&quot;</span>, n), <span class="dt">Missing =</span> <span class="ot">NA</span>, <span class="dt">sort_value=</span><span class="ot">Inf</span>, <span class="dt">denom_ignore=</span><span class="ot">TRUE</span>)</span>
+<span id="cb12-8"><a href="#cb12-8"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb12-9"><a href="#cb12-9"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb12-10"><a href="#cb12-10"></a><span class="st">  </span><span class="kw">arrange</span>(ord_layer_<span class="dv">1</span>, ord_layer_<span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb12-11"><a href="#cb12-11"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">row_label2</th>
+<th align="left">var1_Placebo</th>
+<th align="left">var1_Xanomeline High Dose</th>
+<th align="left">var1_Xanomeline Low Dose</th>
+<th align="right">ord_layer_index</th>
+<th align="right">ord_layer_1</th>
+<th align="right">ord_layer_2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">F</td>
+<td align="left">All Age Groups</td>
+<td align="left">42</td>
+<td align="left">30</td>
+<td align="left">42</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">-Inf</td>
+</tr>
+<tr class="even">
+<td align="left">F</td>
+<td align="left">65-80</td>
+<td align="left">19 ( 45.2%)</td>
+<td align="left">22 ( 73.3%)</td>
+<td align="left">22 ( 52.4%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">F</td>
+<td align="left">&lt;65</td>
+<td align="left">4 ( 9.5%)</td>
+<td align="left">3 ( 10.0%)</td>
+<td align="left">5 ( 11.9%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">F</td>
+<td align="left">&gt;80</td>
+<td align="left">19 ( 45.2%)</td>
+<td align="left">5 ( 16.7%)</td>
+<td align="left">15 ( 35.7%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">F</td>
+<td align="left">Missing</td>
+<td align="left">11</td>
+<td align="left">10</td>
+<td align="left">8</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">Inf</td>
+</tr>
+<tr class="even">
+<td align="left">M</td>
+<td align="left">All Age Groups</td>
+<td align="left">26</td>
+<td align="left">36</td>
+<td align="left">28</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">-Inf</td>
+</tr>
+<tr class="odd">
+<td align="left">M</td>
+<td align="left">65-80</td>
+<td align="left">15 ( 57.7%)</td>
+<td align="left">21 ( 58.3%)</td>
+<td align="left">15 ( 53.6%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">M</td>
+<td align="left">&lt;65</td>
+<td align="left">3 ( 11.5%)</td>
+<td align="left">6 ( 16.7%)</td>
+<td align="left">3 ( 10.7%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">M</td>
+<td align="left">&gt;80</td>
+<td align="left">8 ( 30.8%)</td>
+<td align="left">9 ( 25.0%)</td>
+<td align="left">10 ( 35.7%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">M</td>
+<td align="left">Missing</td>
+<td align="left">7</td>
+<td align="left">8</td>
+<td align="left">6</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">Inf</td>
+</tr>
+</tbody>
+</table>
+<p>Now the table is more intuitive. We used <code>set_missing_count()</code> to update our denominators, so missing have been excluded. Now, the total row intuitively matches the denominators used within each group, and we can see how many missing records were excluded.</p>
+<p>And that’s it for denominators! Happy counting!</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -384,8 +384,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>cnt &lt;-<span class="st"> </span><span class="kw">group_count</span>(t, AGEGR1)</span>
 <span id="cb2-2"><a href="#cb2-2"></a>cnt</span>
 <span id="cb2-3"><a href="#cb2-3"></a><span class="co">#&gt; *** count_layer ***</span></span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="co">#&gt; Self:  count_layer &lt; 0x5555e21b86e0 &gt;</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="co">#&gt; Parent:  tplyr_table &lt; 0x5555e2bb2198 &gt;</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="co">#&gt; Self:  count_layer &lt; 0x564137e98290 &gt;</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="co">#&gt; Parent:  tplyr_table &lt; 0x56413833de98 &gt;</span></span>
 <span id="cb2-6"><a href="#cb2-6"></a><span class="co">#&gt; target_var: </span></span>
 <span id="cb2-7"><a href="#cb2-7"></a><span class="co">#&gt;  AGEGR1</span></span>
 <span id="cb2-8"><a href="#cb2-8"></a><span class="co">#&gt; by: </span></span>
@@ -395,8 +395,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb2-12"><a href="#cb2-12"></a>dsc &lt;-<span class="st"> </span><span class="kw">group_desc</span>(t, AGE)</span>
 <span id="cb2-13"><a href="#cb2-13"></a>dsc</span>
 <span id="cb2-14"><a href="#cb2-14"></a><span class="co">#&gt; *** desc_layer ***</span></span>
-<span id="cb2-15"><a href="#cb2-15"></a><span class="co">#&gt; Self:  desc_layer &lt; 0x5555e1dd4c30 &gt;</span></span>
-<span id="cb2-16"><a href="#cb2-16"></a><span class="co">#&gt; Parent:  tplyr_table &lt; 0x5555e2bb2198 &gt;</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a><span class="co">#&gt; Self:  desc_layer &lt; 0x564137d19830 &gt;</span></span>
+<span id="cb2-16"><a href="#cb2-16"></a><span class="co">#&gt; Parent:  tplyr_table &lt; 0x56413833de98 &gt;</span></span>
 <span id="cb2-17"><a href="#cb2-17"></a><span class="co">#&gt; target_var: </span></span>
 <span id="cb2-18"><a href="#cb2-18"></a><span class="co">#&gt;  AGE</span></span>
 <span id="cb2-19"><a href="#cb2-19"></a><span class="co">#&gt; by: </span></span>
@@ -406,8 +406,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb2-23"><a href="#cb2-23"></a>shf &lt;-<span class="st"> </span><span class="kw">group_shift</span>(t, <span class="kw">vars</span>(<span class="dt">row=</span>COMP8FL, <span class="dt">column=</span>COMP24FL))</span>
 <span id="cb2-24"><a href="#cb2-24"></a>shf</span>
 <span id="cb2-25"><a href="#cb2-25"></a><span class="co">#&gt; *** shift_layer ***</span></span>
-<span id="cb2-26"><a href="#cb2-26"></a><span class="co">#&gt; Self:  shift_layer &lt; 0x5555e1c09168 &gt;</span></span>
-<span id="cb2-27"><a href="#cb2-27"></a><span class="co">#&gt; Parent:  tplyr_table &lt; 0x5555e2bb2198 &gt;</span></span>
+<span id="cb2-26"><a href="#cb2-26"></a><span class="co">#&gt; Self:  shift_layer &lt; 0x564137abde68 &gt;</span></span>
+<span id="cb2-27"><a href="#cb2-27"></a><span class="co">#&gt; Parent:  tplyr_table &lt; 0x56413833de98 &gt;</span></span>
 <span id="cb2-28"><a href="#cb2-28"></a><span class="co">#&gt; target_var: </span></span>
 <span id="cb2-29"><a href="#cb2-29"></a><span class="co">#&gt;  COMP8FL</span></span>
 <span id="cb2-30"><a href="#cb2-30"></a><span class="co">#&gt;  COMP24FL</span></span>
@@ -1337,13 +1337,14 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h1>Where to go from here?</h1>
 <p>There’s quite a bit more to learn! And we’ve prepared a number of other vignettes to help you get what you need out of ‘Tplyr’.</p>
 <ul>
-<li>Learn more about table level settings in <code>vignettes(&quot;table&quot;)</code></li>
-<li>Learn more about descriptive statistics layers in <code>vignettes(&quot;desc&quot;)</code></li>
-<li>Learn more about count and shift layers in <code>vignettes(&quot;count_shift&quot;)</code></li>
-<li>Learn more about calculating risk differences in <code>vignettes(&quot;riskdiff&quot;)</code></li>
-<li>Learn more about sorting ‘Tplyr’ tables in <code>vignettes(&quot;sort&quot;)</code></li>
-<li>Learn more about using ‘Tplyr’ options in <code>vignettes(&quot;options&quot;)</code></li>
-<li>And finally, learn more about producing and outputting styled tables using ‘Tplyr’ in <code>vignettes(&quot;styled-table&quot;)</code></li>
+<li>Learn more about table level settings in <code>vignette(&quot;table&quot;)</code></li>
+<li>Learn more about descriptive statistics layers in <code>vignette(&quot;desc&quot;)</code></li>
+<li>Learn more about count and shift layers in <code>vignette(&quot;count&quot;)</code></li>
+<li>Learn more about shift layers in <code>vignette(&quot;shift&quot;)</code></li>
+<li>Learn more about calculating risk differences in <code>vignette(&quot;riskdiff&quot;)</code></li>
+<li>Learn more about sorting ‘Tplyr’ tables in <code>vignette(&quot;sort&quot;)</code></li>
+<li>Learn more about using ‘Tplyr’ options in <code>vignette(&quot;options&quot;)</code></li>
+<li>And finally, learn more about producing and outputting styled tables using ‘Tplyr’ in <code>vignette(&quot;styled-table&quot;)</code></li>
 </ul>
 </div>
 <div id="references" class="section level1">
