@@ -33,7 +33,7 @@ t <- tplyr_table(adae, TRTA) %>%
   add_layer(
     group_count(AEDECOD) %>%
       set_distinct_by(USUBJID) %>%
-      set_format_strings(f_str("xxx (xx.xx%) [xxx]", distinct, distinct_pct, n))
+      set_format_strings(f_str("xxx (xx.xx%) [xxx]", distinct_n, distinct_pct, n))
   ) %>%
   build() %>%
   head()

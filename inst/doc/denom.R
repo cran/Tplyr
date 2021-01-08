@@ -17,7 +17,7 @@ tplyr_table(adae, TRTA) %>%
   add_layer(
     group_count(AEDECOD) %>% 
       set_distinct_by(USUBJID) %>% 
-      set_format_strings(f_str('xx (xx.x%)', distinct, distinct_pct))
+      set_format_strings(f_str('xx (xx.x%)', distinct_n, distinct_pct))
   ) %>% 
   build() %>% 
   head() %>% 
@@ -30,7 +30,7 @@ tplyr_table(adae, TRTA) %>%
   add_layer(
     group_count(AEDECOD) %>% 
       set_distinct_by(USUBJID) %>% 
-      set_format_strings(f_str('xx (xx.x%)', distinct, distinct_pct))
+      set_format_strings(f_str('xx (xx.x%)', distinct_n, distinct_pct))
   ) %>% 
   build() %>% 
   head() %>% 

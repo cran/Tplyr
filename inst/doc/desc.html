@@ -14,6 +14,70 @@
 
 <title>Descriptive Statistic Layers</title>
 
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
+<style type="text/css">
+a.anchor-section {margin-left: 10px; visibility: hidden; color: inherit;}
+a.anchor-section::before {content: '#';}
+.hasAnchor:hover a.anchor-section {visibility: visible;}
+</style>
+<script>// Anchor sections v1.0 written by Atsushi Yasumoto on Oct 3rd, 2020.
+document.addEventListener('DOMContentLoaded', function() {
+  // Do nothing if AnchorJS is used
+  if (typeof window.anchors === 'object' && anchors.hasOwnProperty('hasAnchorJSLink')) {
+    return;
+  }
+
+  const h = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+  // Do nothing if sections are already anchored
+  if (Array.from(h).some(x => x.classList.contains('hasAnchor'))) {
+    return null;
+  }
+
+  // Use section id when pandoc runs with --section-divs
+  const section_id = function(x) {
+    return ((x.classList.contains('section') || (x.tagName === 'SECTION'))
+            ? x.id : '');
+  };
+
+  // Add anchors
+  h.forEach(function(x) {
+    const id = x.id || section_id(x.parentElement);
+    if (id === '') {
+      return null;
+    }
+    let anchor = document.createElement('a');
+    anchor.href = '#' + id;
+    anchor.classList = ['anchor-section'];
+    x.classList.add('hasAnchor');
+    x.appendChild(anchor);
+  });
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -330,6 +394,16 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb1-13"><a href="#cb1-13"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb1-14"><a href="#cb1-14"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="9%"></col>
+<col width="8%"></col>
+<col width="10%"></col>
+<col width="20%"></col>
+<col width="19%"></col>
+<col width="12%"></col>
+<col width="9%"></col>
+<col width="9%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -417,6 +491,11 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h2>Built-in Summaries</h2>
 <p>We’ve built a number of default summaries into ‘Tplyr’, which allows you to perform these summaries without having to specify the functions to calculate them yourself. The summaries built in to ‘Tplyr’ are listed below. In the second column are the names that you would use within an <code>f_str()</code> call to use them. In the third column, we have the syntax used to make the function call.</p>
 <table>
+<colgroup>
+<col width="19%"></col>
+<col width="14%"></col>
+<col width="65%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="center">Statistic</th>
@@ -573,7 +652,17 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <span id="cb4-11"><a href="#cb4-11"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb4-12"><a href="#cb4-12"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span><span class="kw">starts_with</span>(<span class="st">&quot;ord&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb4-13"><a href="#cb4-13"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
-<table>
+<table style="width:100%;">
+<colgroup>
+<col width="7%"></col>
+<col width="12%"></col>
+<col width="9%"></col>
+<col width="15%"></col>
+<col width="15%"></col>
+<col width="9%"></col>
+<col width="15%"></col>
+<col width="15%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -615,6 +704,14 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <span id="cb5-6"><a href="#cb5-6"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb5-7"><a href="#cb5-7"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="10%"></col>
+<col width="12%"></col>
+<col width="25%"></col>
+<col width="24%"></col>
+<col width="15%"></col>
+<col width="11%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -651,6 +748,14 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <span id="cb6-12"><a href="#cb6-12"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb6-13"><a href="#cb6-13"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="10%"></col>
+<col width="12%"></col>
+<col width="25%"></col>
+<col width="24%"></col>
+<col width="15%"></col>
+<col width="11%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -697,7 +802,6 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <tr class="header">
 <th align="left">row_label1</th>
 <th align="left">row_label2</th>
-<th align="left">var1_Placebo</th>
 <th align="left">var1_Xanomeline High Dose</th>
 <th align="left">var1_Xanomeline Low Dose</th>
 </tr>
@@ -706,35 +810,30 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <tr class="odd">
 <td align="left">BUN</td>
 <td align="left">Mean (SD)</td>
-<td align="left"></td>
 <td align="left">5 ( 1)</td>
 <td align="left">6 ( 3)</td>
 </tr>
 <tr class="even">
 <td align="left">CA</td>
 <td align="left">Mean (SD)</td>
-<td align="left"></td>
 <td align="left">2 ( 0)</td>
 <td align="left">2 ( 0)</td>
 </tr>
 <tr class="odd">
 <td align="left">CK</td>
 <td align="left">Mean (SD)</td>
-<td align="left"></td>
 <td align="left">64 ( 94)</td>
 <td align="left">58 ( 78)</td>
 </tr>
 <tr class="even">
 <td align="left">GGT</td>
 <td align="left">Mean (SD)</td>
-<td align="left"></td>
 <td align="left">17 ( 49)</td>
 <td align="left">21 ( 27)</td>
 </tr>
 <tr class="odd">
 <td align="left">URATE</td>
 <td align="left">Mean (SD)</td>
-<td align="left"></td>
 <td align="left">271 ( 88)</td>
 <td align="left">231 ( 87)</td>
 </tr>
@@ -760,7 +859,6 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <tr class="header">
 <th align="left">row_label1</th>
 <th align="left">row_label2</th>
-<th align="left">var1_Placebo</th>
 <th align="left">var1_Xanomeline High Dose</th>
 <th align="left">var1_Xanomeline Low Dose</th>
 </tr>
@@ -769,35 +867,30 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <tr class="odd">
 <td align="left">BUN</td>
 <td align="left">Mean (SD)</td>
-<td align="left">MISSING</td>
 <td align="left">4.57 ( 1.301)</td>
 <td align="left">5.71 ( 2.940)</td>
 </tr>
 <tr class="even">
 <td align="left">CA</td>
 <td align="left">Mean (SD)</td>
-<td align="left">MISSING</td>
 <td align="left">2.19 ( 0.137)</td>
 <td align="left">2.15 ( 0.083)</td>
 </tr>
 <tr class="odd">
 <td align="left">CK</td>
 <td align="left">Mean (SD)</td>
-<td align="left">MISSING</td>
 <td align="left">64.25 ( 93.986)</td>
 <td align="left">58.33 ( 77.915)</td>
 </tr>
 <tr class="even">
 <td align="left">GGT</td>
 <td align="left">Mean (SD)</td>
-<td align="left">MISSING</td>
 <td align="left">16.75 ( 48.692)</td>
 <td align="left">21.33 ( 26.989)</td>
 </tr>
 <tr class="odd">
 <td align="left">URATE</td>
 <td align="left">Mean (SD)</td>
-<td align="left">MISSING</td>
 <td align="left">271.23 ( 88.161)</td>
 <td align="left">230.98 ( 87.006)</td>
 </tr>
@@ -823,7 +916,6 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <tr class="header">
 <th align="left">row_label1</th>
 <th align="left">row_label2</th>
-<th align="left">var1_Placebo</th>
 <th align="left">var1_Xanomeline High Dose</th>
 <th align="left">var1_Xanomeline Low Dose</th>
 </tr>
@@ -832,35 +924,30 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <tr class="odd">
 <td align="left">BUN</td>
 <td align="left">Mean (SD)</td>
-<td align="left">NA ( NA)</td>
 <td align="left">4.57 ( 1.301)</td>
 <td align="left">5.71 ( 2.940)</td>
 </tr>
 <tr class="even">
 <td align="left">CA</td>
 <td align="left">Mean (SD)</td>
-<td align="left">NA ( NA)</td>
 <td align="left">2.19 ( 0.137)</td>
 <td align="left">2.15 ( 0.083)</td>
 </tr>
 <tr class="odd">
 <td align="left">CK</td>
 <td align="left">Mean (SD)</td>
-<td align="left">NA ( NA)</td>
 <td align="left">64.25 ( 93.986)</td>
 <td align="left">58.33 ( 77.915)</td>
 </tr>
 <tr class="even">
 <td align="left">GGT</td>
 <td align="left">Mean (SD)</td>
-<td align="left">NA ( NA)</td>
 <td align="left">16.75 ( 48.692)</td>
 <td align="left">21.33 ( 26.989)</td>
 </tr>
 <tr class="odd">
 <td align="left">URATE</td>
 <td align="left">Mean (SD)</td>
-<td align="left">NA ( NA)</td>
 <td align="left">271.23 ( 88.161)</td>
 <td align="left">230.98 ( 87.006)</td>
 </tr>
@@ -883,6 +970,16 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <span id="cb10-10"><a href="#cb10-10"></a><span class="st">  </span><span class="kw">head</span>(<span class="dv">20</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb10-11"><a href="#cb10-11"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="8%"></col>
+<col width="8%"></col>
+<col width="15%"></col>
+<col width="19%"></col>
+<col width="18%"></col>
+<col width="11%"></col>
+<col width="8%"></col>
+<col width="8%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -962,6 +1059,16 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <span id="cb11-10"><a href="#cb11-10"></a><span class="st">  </span><span class="kw">head</span>(<span class="dv">20</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb11-11"><a href="#cb11-11"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="8%"></col>
+<col width="8%"></col>
+<col width="14%"></col>
+<col width="19%"></col>
+<col width="18%"></col>
+<col width="12%"></col>
+<col width="9%"></col>
+<col width="9%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -1042,7 +1149,23 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <span id="cb12-11"><a href="#cb12-11"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb12-12"><a href="#cb12-12"></a><span class="st">  </span><span class="kw">head</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb12-13"><a href="#cb12-13"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
-<table>
+<table style="width:100%;">
+<colgroup>
+<col width="4%"></col>
+<col width="4%"></col>
+<col width="6%"></col>
+<col width="9%"></col>
+<col width="9%"></col>
+<col width="6%"></col>
+<col width="9%"></col>
+<col width="9%"></col>
+<col width="6%"></col>
+<col width="9%"></col>
+<col width="9%"></col>
+<col width="5%"></col>
+<col width="4%"></col>
+<col width="4%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>

@@ -1,6 +1,6 @@
 Package: Tplyr
 Title: A Grammar of Clinical Data Summary
-Version: 0.2.2
+Version: 0.3.1
 Authors@R: 
     c(
     person(given = "Eli",
@@ -42,7 +42,7 @@ VignetteBuilder: knitr
 RoxygenNote: 7.1.1
 RdMacros: lifecycle
 NeedsCompilation: no
-Packaged: 2020-11-30 22:28:04 UTC; eli.miller
+Packaged: 2021-01-08 15:59:20 UTC; eli.miller
 Author: Eli Miller [aut] (<https://orcid.org/0000-0002-2127-9456>),
   Mike Stackhouse [aut, cre] (<https://orcid.org/0000-0001-6030-723X>),
   Ashley Tarasiewicz [aut],
@@ -50,4 +50,4 @@ Author: Eli Miller [aut] (<https://orcid.org/0000-0002-2127-9456>),
   Atorus Research LLC [cph]
 Maintainer: Mike Stackhouse <mike.stackhouse@atorusresearch.com>
 Repository: CRAN
-Date/Publication: 2020-12-01 00:30:27 UTC
+Date/Publication: 2021-01-08 17:50:02 UTC

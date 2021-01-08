@@ -14,6 +14,70 @@
 
 <title>Getting Started</title>
 
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
+<style type="text/css">
+a.anchor-section {margin-left: 10px; visibility: hidden; color: inherit;}
+a.anchor-section::before {content: '#';}
+.hasAnchor:hover a.anchor-section {visibility: visible;}
+</style>
+<script>// Anchor sections v1.0 written by Atsushi Yasumoto on Oct 3rd, 2020.
+document.addEventListener('DOMContentLoaded', function() {
+  // Do nothing if AnchorJS is used
+  if (typeof window.anchors === 'object' && anchors.hasOwnProperty('hasAnchorJSLink')) {
+    return;
+  }
+
+  const h = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+  // Do nothing if sections are already anchored
+  if (Array.from(h).some(x => x.classList.contains('hasAnchor'))) {
+    return null;
+  }
+
+  // Use section id when pandoc runs with --section-divs
+  const section_id = function(x) {
+    return ((x.classList.contains('section') || (x.tagName === 'SECTION'))
+            ? x.id : '');
+  };
+
+  // Add anchors
+  h.forEach(function(x) {
+    const id = x.id || section_id(x.parentElement);
+    if (id === '') {
+      return null;
+    }
+    let anchor = document.createElement('a');
+    anchor.href = '#' + id;
+    anchor.classList = ['anchor-section'];
+    x.classList.add('hasAnchor');
+    x.appendChild(anchor);
+  });
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -384,8 +448,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>cnt &lt;-<span class="st"> </span><span class="kw">group_count</span>(t, AGEGR1)</span>
 <span id="cb2-2"><a href="#cb2-2"></a>cnt</span>
 <span id="cb2-3"><a href="#cb2-3"></a><span class="co">#&gt; *** count_layer ***</span></span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="co">#&gt; Self:  count_layer &lt; 0x564137e98290 &gt;</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="co">#&gt; Parent:  tplyr_table &lt; 0x56413833de98 &gt;</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="co">#&gt; Self:  count_layer &lt; 0x55b708d88980 &gt;</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="co">#&gt; Parent:  tplyr_table &lt; 0x55b708953b38 &gt;</span></span>
 <span id="cb2-6"><a href="#cb2-6"></a><span class="co">#&gt; target_var: </span></span>
 <span id="cb2-7"><a href="#cb2-7"></a><span class="co">#&gt;  AGEGR1</span></span>
 <span id="cb2-8"><a href="#cb2-8"></a><span class="co">#&gt; by: </span></span>
@@ -395,8 +459,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb2-12"><a href="#cb2-12"></a>dsc &lt;-<span class="st"> </span><span class="kw">group_desc</span>(t, AGE)</span>
 <span id="cb2-13"><a href="#cb2-13"></a>dsc</span>
 <span id="cb2-14"><a href="#cb2-14"></a><span class="co">#&gt; *** desc_layer ***</span></span>
-<span id="cb2-15"><a href="#cb2-15"></a><span class="co">#&gt; Self:  desc_layer &lt; 0x564137d19830 &gt;</span></span>
-<span id="cb2-16"><a href="#cb2-16"></a><span class="co">#&gt; Parent:  tplyr_table &lt; 0x56413833de98 &gt;</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a><span class="co">#&gt; Self:  desc_layer &lt; 0x55b708ed2210 &gt;</span></span>
+<span id="cb2-16"><a href="#cb2-16"></a><span class="co">#&gt; Parent:  tplyr_table &lt; 0x55b708953b38 &gt;</span></span>
 <span id="cb2-17"><a href="#cb2-17"></a><span class="co">#&gt; target_var: </span></span>
 <span id="cb2-18"><a href="#cb2-18"></a><span class="co">#&gt;  AGE</span></span>
 <span id="cb2-19"><a href="#cb2-19"></a><span class="co">#&gt; by: </span></span>
@@ -406,8 +470,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb2-23"><a href="#cb2-23"></a>shf &lt;-<span class="st"> </span><span class="kw">group_shift</span>(t, <span class="kw">vars</span>(<span class="dt">row=</span>COMP8FL, <span class="dt">column=</span>COMP24FL))</span>
 <span id="cb2-24"><a href="#cb2-24"></a>shf</span>
 <span id="cb2-25"><a href="#cb2-25"></a><span class="co">#&gt; *** shift_layer ***</span></span>
-<span id="cb2-26"><a href="#cb2-26"></a><span class="co">#&gt; Self:  shift_layer &lt; 0x564137abde68 &gt;</span></span>
-<span id="cb2-27"><a href="#cb2-27"></a><span class="co">#&gt; Parent:  tplyr_table &lt; 0x56413833de98 &gt;</span></span>
+<span id="cb2-26"><a href="#cb2-26"></a><span class="co">#&gt; Self:  shift_layer &lt; 0x55b708fe44d8 &gt;</span></span>
+<span id="cb2-27"><a href="#cb2-27"></a><span class="co">#&gt; Parent:  tplyr_table &lt; 0x55b708953b38 &gt;</span></span>
 <span id="cb2-28"><a href="#cb2-28"></a><span class="co">#&gt; target_var: </span></span>
 <span id="cb2-29"><a href="#cb2-29"></a><span class="co">#&gt;  COMP8FL</span></span>
 <span id="cb2-30"><a href="#cb2-30"></a><span class="co">#&gt;  COMP24FL</span></span>
@@ -451,6 +515,16 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb6-7"><a href="#cb6-7"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb6-8"><a href="#cb6-8"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="15%"></col>
+<col width="8%"></col>
+<col width="9%"></col>
+<col width="19%"></col>
+<col width="18%"></col>
+<col width="11%"></col>
+<col width="8%"></col>
+<col width="8%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -608,6 +682,16 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb8-12"><a href="#cb8-12"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb8-13"><a href="#cb8-13"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="9%"></col>
+<col width="8%"></col>
+<col width="11%"></col>
+<col width="20%"></col>
+<col width="19%"></col>
+<col width="12%"></col>
+<col width="9%"></col>
+<col width="9%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -663,7 +747,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <li>When two summaries are placed on the same <code>f_str()</code> call, then those two summaries are formatted into the same string. This allows you to do a “Mean (SD)” type format where both numbers appear.</li>
 </ul>
 <p>This simple user input controls a significant amount of work in the back end of the data processing, and the <code>f_str()</code> object allows that metadata to be collected.</p>
-<p><code>f_str()</code> objects are also used with count layers as well to control the data presentation. Instead of specifying the summaries performed, you use <code>n</code>, <code>pct</code>, <code>distinct</code>, and <code>distinct_pct</code> for your parameters and specify how you would like the values displayed. Using <code>distinct</code> and <code>distinct_pct</code> should be combined with specifying a <code>distinct_by()</code> variable using <code>set_distinct_by()</code>.</p>
+<p><code>f_str()</code> objects are also used with count layers as well to control the data presentation. Instead of specifying the summaries performed, you use <code>n</code>, <code>pct</code>, <code>distinct_n</code>, and <code>distinct_pct</code> for your parameters and specify how you would like the values displayed. Using <code>distinct_n</code> and <code>distinct_pct</code> should be combined with specifying a <code>distinct_by()</code> variable using <code>set_distinct_by()</code>.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">tplyr_table</span>(adsl, TRT01P) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb9-2"><a href="#cb9-2"></a><span class="st">  </span><span class="kw">add_layer</span>(</span>
 <span id="cb9-3"><a href="#cb9-3"></a>    <span class="kw">group_count</span>(AGEGR1, <span class="dt">by =</span> <span class="st">&quot;Age categories&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
@@ -672,6 +756,16 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb9-6"><a href="#cb9-6"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb9-7"><a href="#cb9-7"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="11%"></col>
+<col width="8%"></col>
+<col width="10%"></col>
+<col width="20%"></col>
+<col width="19%"></col>
+<col width="12%"></col>
+<col width="9%"></col>
+<col width="9%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -726,6 +820,16 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb10-7"><a href="#cb10-7"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb10-8"><a href="#cb10-8"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="11%"></col>
+<col width="8%"></col>
+<col width="10%"></col>
+<col width="20%"></col>
+<col width="19%"></col>
+<col width="12%"></col>
+<col width="9%"></col>
+<col width="9%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -780,6 +884,16 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb11-6"><a href="#cb11-6"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb11-7"><a href="#cb11-7"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="11%"></col>
+<col width="8%"></col>
+<col width="11%"></col>
+<col width="19%"></col>
+<col width="18%"></col>
+<col width="12%"></col>
+<col width="9%"></col>
+<col width="9%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -841,6 +955,16 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb12-5"><a href="#cb12-5"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb12-6"><a href="#cb12-6"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="9%"></col>
+<col width="8%"></col>
+<col width="10%"></col>
+<col width="20%"></col>
+<col width="19%"></col>
+<col width="12%"></col>
+<col width="9%"></col>
+<col width="9%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -930,6 +1054,16 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb13-11"><a href="#cb13-11"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb13-12"><a href="#cb13-12"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="9%"></col>
+<col width="14%"></col>
+<col width="10%"></col>
+<col width="18%"></col>
+<col width="17%"></col>
+<col width="11%"></col>
+<col width="8%"></col>
+<col width="8%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -964,6 +1098,19 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb14-5"><a href="#cb14-5"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb14-6"><a href="#cb14-6"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="11%"></col>
+<col width="5%"></col>
+<col width="6%"></col>
+<col width="12%"></col>
+<col width="12%"></col>
+<col width="6%"></col>
+<col width="12%"></col>
+<col width="12%"></col>
+<col width="7%"></col>
+<col width="5%"></col>
+<col width="5%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -1073,6 +1220,16 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb15-6"><a href="#cb15-6"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb15-7"><a href="#cb15-7"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="11%"></col>
+<col width="8%"></col>
+<col width="10%"></col>
+<col width="20%"></col>
+<col width="19%"></col>
+<col width="12%"></col>
+<col width="9%"></col>
+<col width="9%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -1138,6 +1295,14 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb16-7"><a href="#cb16-7"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb16-8"><a href="#cb16-8"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="30%"></col>
+<col width="9%"></col>
+<col width="19%"></col>
+<col width="18%"></col>
+<col width="12%"></col>
+<col width="9%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -1168,7 +1333,17 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb17-5"><a href="#cb17-5"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb17-6"><a href="#cb17-6"></a><span class="st">  </span><span class="kw">head</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb17-7"><a href="#cb17-7"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
-<table>
+<table style="width:100%;">
+<colgroup>
+<col width="21%"></col>
+<col width="21%"></col>
+<col width="7%"></col>
+<col width="14%"></col>
+<col width="13%"></col>
+<col width="8%"></col>
+<col width="6%"></col>
+<col width="6%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -1260,7 +1435,23 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb18-9"><a href="#cb18-9"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb18-10"><a href="#cb18-10"></a><span class="st">  </span><span class="kw">build</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb18-11"><a href="#cb18-11"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
-<table>
+<table style="width:100%;">
+<colgroup>
+<col width="7%"></col>
+<col width="3%"></col>
+<col width="5%"></col>
+<col width="5%"></col>
+<col width="5%"></col>
+<col width="9%"></col>
+<col width="9%"></col>
+<col width="9%"></col>
+<col width="9%"></col>
+<col width="9%"></col>
+<col width="9%"></col>
+<col width="5%"></col>
+<col width="4%"></col>
+<col width="4%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -1350,9 +1541,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="references" class="section level1">
 <h1>References</h1>
 <p>In building ‘Tplyr’, we needed some additional resources in addition to our personal experience to help guide design. PHUSE has done some great work to create guidance for standard outputs with collaboration between multiple pharmaceutical companies and the FDA. You can find some of the resource that we referenced below.</p>
-<p><a href="http://www.phusewiki.org/wiki/images/b/bf/Cs-whitepaper-adverseevents-v10-4442.pdf">Analysis and Displays Associated with Adverse Events</a></p>
-<p><a href="https://www.phuse.eu/documents//working-groups/deliverables/analyses-displays-associated-with-demographics-disposition-medications-in-phase-2-4-clinical-trials-version-20-02-mar-18-11808.pdf">Analyses and Displays Associated with Demographics, Disposition, and Medications</a></p>
-<p><a href="http://www.phusewiki.org/wiki/images/4/48/CSS_WhitePaper_CentralTendency_v1.0.pdf">Analyses and Displays Associated with Measures of Central Tendency</a></p>
+<p><a href="https://phuse.s3.eu-central-1.amazonaws.com/Deliverables/Standard+Analyses+and+Code+Sharing/Analyses+and+Displays+Associated+with+Adverse+Events+Focus+on+Adverse+Events+in+Phase+2-4+Clinical+Trials+and+Integrated+Summary.pdf">Analysis and Displays Associated with Adverse Events</a></p>
+<p><a href="https://phuse.s3.eu-central-1.amazonaws.com/Deliverables/Standard+Analyses+and+Code+Sharing/Analyses+%26+Displays+Associated+with+Demographics,+Disposition+and+Medication+in+Phase+2-4+Clinical+Trials+and+Integrated+Summary+Documents.pdf">Analyses and Displays Associated with Demographics, Disposition, and Medications</a></p>
+<p><a href="https://phuse.s3.eu-central-1.amazonaws.com/Deliverables/Standard+Analyses+and+Code+Sharing/Analyses+%26+Displays+Associated+with+Measures+of+Central+Tendency-+Focus+on+Vital+Sign,+Electrocardiogram+%26+Laboratory+Analyte+Measurements+in+Phase+2-4+Clinical+Trials+and+Integrated+Submissions.pdf">Analyses and Displays Associated with Measures of Central Tendency</a></p>
 </div>
 
 
