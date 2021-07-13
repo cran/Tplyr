@@ -26,7 +26,14 @@
     </style>
 
 
-<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
@@ -1581,33 +1588,33 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tbody>
 <tr class="odd">
 <td align="left">MILD</td>
-<td align="left">21 (53.85%)</td>
-<td align="left">68 (77.27%)</td>
-<td align="left">48 (48.48%)</td>
+<td align="left">25 (62.50%)</td>
+<td align="left">74 (74.75%)</td>
+<td align="left">41 (47.13%)</td>
 <td align="right">1</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="left">MODERATE</td>
-<td align="left">18 (46.15%)</td>
-<td align="left">19 (21.59%)</td>
-<td align="left">47 (47.47%)</td>
+<td align="left">15 (37.50%)</td>
+<td align="left">24 (24.24%)</td>
+<td align="left">42 (48.28%)</td>
 <td align="right">1</td>
 <td align="right">2</td>
 </tr>
 <tr class="odd">
 <td align="left">SEVERE</td>
 <td align="left">0 ( 0.00%)</td>
-<td align="left">1 ( 1.14%)</td>
-<td align="left">4 ( 4.04%)</td>
+<td align="left">1 ( 1.01%)</td>
+<td align="left">4 ( 4.60%)</td>
 <td align="right">1</td>
 <td align="right">3</td>
 </tr>
 <tr class="even">
 <td align="left">Missing</td>
-<td align="left">8</td>
-<td align="left">23</td>
-<td align="left">19</td>
+<td align="left">7</td>
+<td align="left">12</td>
+<td align="left">31</td>
 <td align="right">1</td>
 <td align="right">Inf</td>
 </tr>
@@ -1676,9 +1683,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="even">
 <td align="left">F</td>
 <td align="left">65-80</td>
-<td align="left">15 ( 28.3%)</td>
-<td align="left">21 ( 52.5%)</td>
-<td align="left">21 ( 42.0%)</td>
+<td align="left">19 ( 35.8%)</td>
+<td align="left">19 ( 47.5%)</td>
+<td align="left">25 ( 50.0%)</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">1</td>
@@ -1686,9 +1693,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="odd">
 <td align="left">F</td>
 <td align="left">&lt;65</td>
-<td align="left">8 ( 15.1%)</td>
+<td align="left">7 ( 13.2%)</td>
 <td align="left">3 ( 7.5%)</td>
-<td align="left">2 ( 4.0%)</td>
+<td align="left">4 ( 8.0%)</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">2</td>
@@ -1696,9 +1703,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="even">
 <td align="left">F</td>
 <td align="left">&gt;80</td>
-<td align="left">21 ( 39.6%)</td>
+<td align="left">18 ( 34.0%)</td>
 <td align="left">6 ( 15.0%)</td>
-<td align="left">13 ( 26.0%)</td>
+<td align="left">15 ( 30.0%)</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">3</td>
@@ -1707,8 +1714,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <td align="left">F</td>
 <td align="left">Missing</td>
 <td align="left">9 (17.0%)</td>
-<td align="left">10 (25.0%)</td>
-<td align="left">14 (28.0%)</td>
+<td align="left">12 (30.0%)</td>
+<td align="left">6 (12.0%)</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">Inf</td>
@@ -1726,9 +1733,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="odd">
 <td align="left">M</td>
 <td align="left">65-80</td>
-<td align="left">18 ( 54.5%)</td>
-<td align="left">21 ( 47.7%)</td>
-<td align="left">17 ( 50.0%)</td>
+<td align="left">13 ( 39.4%)</td>
+<td align="left">23 ( 52.3%)</td>
+<td align="left">13 ( 38.2%)</td>
 <td align="right">1</td>
 <td align="right">2</td>
 <td align="right">1</td>
@@ -1736,8 +1743,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="even">
 <td align="left">M</td>
 <td align="left">&lt;65</td>
-<td align="left">4 ( 12.1%)</td>
-<td align="left">6 ( 13.6%)</td>
+<td align="left">5 ( 15.2%)</td>
+<td align="left">5 ( 11.4%)</td>
 <td align="left">2 ( 5.9%)</td>
 <td align="right">1</td>
 <td align="right">2</td>
@@ -1748,7 +1755,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <td align="left">&gt;80</td>
 <td align="left">7 ( 21.2%)</td>
 <td align="left">10 ( 22.7%)</td>
-<td align="left">9 ( 26.5%)</td>
+<td align="left">10 ( 29.4%)</td>
 <td align="right">1</td>
 <td align="right">2</td>
 <td align="right">3</td>
@@ -1756,9 +1763,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="even">
 <td align="left">M</td>
 <td align="left">Missing</td>
-<td align="left">4 (12.1%)</td>
-<td align="left">7 (15.9%)</td>
-<td align="left">6 (17.6%)</td>
+<td align="left">8 (24.2%)</td>
+<td align="left">6 (13.6%)</td>
+<td align="left">9 (26.5%)</td>
 <td align="right">1</td>
 <td align="right">2</td>
 <td align="right">Inf</td>
@@ -1806,8 +1813,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <td align="left">F</td>
 <td align="left">All Age Groups</td>
 <td align="left">44</td>
-<td align="left">30</td>
-<td align="left">36</td>
+<td align="left">28</td>
+<td align="left">44</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">-Inf</td>
@@ -1815,9 +1822,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="even">
 <td align="left">F</td>
 <td align="left">65-80</td>
-<td align="left">15 ( 34.1%)</td>
-<td align="left">21 ( 70.0%)</td>
-<td align="left">21 ( 58.3%)</td>
+<td align="left">19 ( 43.2%)</td>
+<td align="left">19 ( 67.9%)</td>
+<td align="left">25 ( 56.8%)</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">1</td>
@@ -1825,9 +1832,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="odd">
 <td align="left">F</td>
 <td align="left">&lt;65</td>
-<td align="left">8 ( 18.2%)</td>
-<td align="left">3 ( 10.0%)</td>
-<td align="left">2 ( 5.6%)</td>
+<td align="left">7 ( 15.9%)</td>
+<td align="left">3 ( 10.7%)</td>
+<td align="left">4 ( 9.1%)</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">2</td>
@@ -1835,9 +1842,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="even">
 <td align="left">F</td>
 <td align="left">&gt;80</td>
-<td align="left">21 ( 47.7%)</td>
-<td align="left">6 ( 20.0%)</td>
-<td align="left">13 ( 36.1%)</td>
+<td align="left">18 ( 40.9%)</td>
+<td align="left">6 ( 21.4%)</td>
+<td align="left">15 ( 34.1%)</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">3</td>
@@ -1846,8 +1853,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <td align="left">F</td>
 <td align="left">Missing</td>
 <td align="left">9</td>
-<td align="left">10</td>
-<td align="left">14</td>
+<td align="left">12</td>
+<td align="left">6</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">Inf</td>
@@ -1855,9 +1862,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="even">
 <td align="left">M</td>
 <td align="left">All Age Groups</td>
-<td align="left">29</td>
-<td align="left">37</td>
-<td align="left">28</td>
+<td align="left">25</td>
+<td align="left">38</td>
+<td align="left">25</td>
 <td align="right">1</td>
 <td align="right">2</td>
 <td align="right">-Inf</td>
@@ -1865,9 +1872,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="odd">
 <td align="left">M</td>
 <td align="left">65-80</td>
-<td align="left">18 ( 62.1%)</td>
-<td align="left">21 ( 56.8%)</td>
-<td align="left">17 ( 60.7%)</td>
+<td align="left">13 ( 52.0%)</td>
+<td align="left">23 ( 60.5%)</td>
+<td align="left">13 ( 52.0%)</td>
 <td align="right">1</td>
 <td align="right">2</td>
 <td align="right">1</td>
@@ -1875,9 +1882,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="even">
 <td align="left">M</td>
 <td align="left">&lt;65</td>
-<td align="left">4 ( 13.8%)</td>
-<td align="left">6 ( 16.2%)</td>
-<td align="left">2 ( 7.1%)</td>
+<td align="left">5 ( 20.0%)</td>
+<td align="left">5 ( 13.2%)</td>
+<td align="left">2 ( 8.0%)</td>
 <td align="right">1</td>
 <td align="right">2</td>
 <td align="right">2</td>
@@ -1885,9 +1892,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="odd">
 <td align="left">M</td>
 <td align="left">&gt;80</td>
-<td align="left">7 ( 24.1%)</td>
-<td align="left">10 ( 27.0%)</td>
-<td align="left">9 ( 32.1%)</td>
+<td align="left">7 ( 28.0%)</td>
+<td align="left">10 ( 26.3%)</td>
+<td align="left">10 ( 40.0%)</td>
 <td align="right">1</td>
 <td align="right">2</td>
 <td align="right">3</td>
@@ -1895,9 +1902,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="even">
 <td align="left">M</td>
 <td align="left">Missing</td>
-<td align="left">4</td>
-<td align="left">7</td>
+<td align="left">8</td>
 <td align="left">6</td>
+<td align="left">9</td>
 <td align="right">1</td>
 <td align="right">2</td>
 <td align="right">Inf</td>
