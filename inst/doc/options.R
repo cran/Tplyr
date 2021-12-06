@@ -156,3 +156,24 @@ tplyr_table(adsl, TRT01P) %>%
     select(-starts_with("ord")) %>% 
   kable()
 
+## ----rounding_1---------------------------------------------------------------
+tplyr_table(mtcars, gear) %>%
+  add_layer(
+    group_desc(qsec) %>%
+      set_format_strings(mean = f_str("xx.xx", mean))
+  ) %>%
+  build()
+
+## ----rounding_2---------------------------------------------------------------
+withr::with_options(
+  list(tplyr.IBMRounding = TRUE),
+  {
+    tplyr_table(mtcars, gear) %>%
+      add_layer(
+        group_desc(qsec) %>%
+          set_format_strings(mean = f_str("xx.xx", mean))
+      ) %>%
+      build()
+  }
+)
+

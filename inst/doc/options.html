@@ -147,6 +147,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#custom-summaries">Custom Summaries</a></li>
 <li><a href="#scientific-notation">Scientific Notation</a></li>
 <li><a href="#quantile-algorithms">Quantile Algorithms</a></li>
+<li><a href="#ibm-rounding">IBM Rounding</a></li>
 </ul>
 </div>
 
@@ -764,6 +765,40 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 </tr>
 </tbody>
 </table>
+</div>
+<div id="ibm-rounding" class="section level2">
+<h2>IBM Rounding</h2>
+<p>In certain cases users may want to match tables produced by other languages that IBM rounding. Tplyr offers the option ‘tplyr.IBMRounding’ to change the default rounding behavior of Tplyr tables. Review var1_4 in the tables below.</p>
+<p>Using the default R behavior</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(mtcars, gear) <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(qsec) <span class="sc">%&gt;%</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="at">mean =</span> <span class="fu">f_str</span>(<span class="st">&quot;xx.xx&quot;</span>, mean))</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>()</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 6</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   row_label1 var1_3 var1_4 var1_5 ord_layer_index ord_layer_1</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;            &lt;int&gt;       &lt;int&gt;</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 mean       17.47  18.75  15.50                1           1</span></span></code></pre></div>
+<p>Using IBM rounding</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>withr<span class="sc">::</span><span class="fu">with_options</span>(</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">tplyr.IBMRounding =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  {</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tplyr_table</span>(mtcars, gear) <span class="sc">%&gt;%</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">add_layer</span>(</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">group_desc</span>(qsec) <span class="sc">%&gt;%</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>          <span class="fu">set_format_strings</span>(<span class="at">mean =</span> <span class="fu">f_str</span>(<span class="st">&quot;xx.xx&quot;</span>, mean))</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">%&gt;%</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">build</span>()</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: You have enabled IBM Rounding. This is an experimental feature.</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; *  If you have feedback please get in touch with the maintainers!</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; This warning is displayed once every 8 hours.</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 6</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   row_label1 var1_3 var1_4 var1_5 ord_layer_index ord_layer_1</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;            &lt;int&gt;       &lt;int&gt;</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 mean       17.47  18.75  15.50                1           1</span></span></code></pre></div>
 </div>
 
 
