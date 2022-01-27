@@ -245,7 +245,7 @@ filter_nested_inner_layer <- function(.group, target, outer_name, inner_name, in
 
   if(text_outer) {
     target_inner_values <- target %>%
-      select(inner_name) %>%
+      select(any_of(inner_name)) %>%
       unlist() %>%
       paste0(indentation, .)
   } else {
@@ -253,7 +253,7 @@ filter_nested_inner_layer <- function(.group, target, outer_name, inner_name, in
 
     target_inner_values <- target %>%
       filter(!!sym(outer_name) == current_outer_value) %>%
-      select(inner_name) %>%
+      select(any_of(inner_name)) %>%
       unlist() %>%
       paste0(indentation, .)
   }
@@ -323,6 +323,12 @@ process_count_distinct_n <- function(x) {
     distinct_stat <- built_target %>%
       # Filter out based on where
       filter(!!where) %>%
+      mutate(
+        across(
+          .cols = any_of(map_chr(c(denoms_by, target_var, by), ~as_name(.))),
+          .fns = function(x) if(is.factor(x)) x else as.factor(x)
+          )
+      ) %>%
       # Distinct based on the current distinct_by, target_var, and treat_var
       # treat_var is added because duplicates would be created when there are
       # treatment group totals
@@ -347,11 +353,10 @@ process_count_distinct_n <- function(x) {
     # complete all combinations of factors to include combinations that don't exist.
     # add 0 for combinations that don't exist
     distinct_stat <- distinct_stat %>%
-      complete(!!treat_var, !!!by, !!!target_var, !!!cols, fill = list(distinct_n = 0, distinct_total = 0)) %>%
+      complete(!!treat_var, !!!by, !!!cols, !!!target_var, fill = list(distinct_n = 0, distinct_total = 0)) %>%
       # Change the treat_var and first target_var to characters to resolve any
       # issues if there are total rows and the original column is numeric
       mutate(!!treat_var := as.character(!!treat_var)) %>%
-      mutate(!!as_label(target_var[[1]]) := as_name(target_var[[1]])) %>%
       group_by(!!!denoms_by) %>%
       do(get_denom_total(., denoms_by, denoms_df, denoms_distinct_df, "distinct_n")) %>%
       ungroup() %>%

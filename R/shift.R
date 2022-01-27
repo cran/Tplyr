@@ -101,6 +101,7 @@ prepare_format_metadata.shift_layer <- function(x) {
 }
 
 #' @export
+#' @keywords internal
 process_formatting.shift_layer <- function(x, ...) {
 
   evalq({
@@ -168,6 +169,7 @@ process_shift_denoms <- function(x) {
       filter(!!denom_where) %>%
       group_by(!!!unname(target_var), !!treat_var, !!!by, !!!cols) %>%
       summarize(n = n()) %>%
+      ungroup() %>%
       complete(!!!unname(target_var), !!treat_var, !!!by, !!!cols) %>%
       # The rows will duplicate for some reason so this removes that
       distinct() %>%

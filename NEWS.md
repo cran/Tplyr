@@ -1,3 +1,8 @@
+# Tplyr 0.4.4
+
+- Added new functionality per issue #10. Adds 'Both' an option for sorting outer layers of nested count.
+
+
 # Tplyr 0.4.3
 
 - Fixes bug #12 where posix class columns would cause the `all.equal` check between
