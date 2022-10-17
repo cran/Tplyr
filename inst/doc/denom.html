@@ -14,7 +14,19 @@
 
 <title>Totals, Missings, and Denominators</title>
 
-<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -24,6 +36,7 @@
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
   ul.task-list{list-style: none;}
     </style>
+
 
 
 <style type="text/css">
@@ -107,13 +120,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -125,7 +145,187 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
 
 
 
@@ -142,25 +342,48 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <div id="TOC">
 <ul>
-<li><a href="#population-data-in-the-denominator">Population Data in the Denominator</a></li>
-<li><a href="#denominator-grouping">Denominator Grouping</a>
+<li><a href="#population-data-in-the-denominator" id="toc-population-data-in-the-denominator">Population Data in the
+Denominator</a></li>
+<li><a href="#denominator-grouping" id="toc-denominator-grouping">Denominator Grouping</a>
 <ul>
-<li><a href="#count-layers">Count layers</a></li>
-<li><a href="#shift-layers">Shift layers</a></li>
+<li><a href="#count-layers" id="toc-count-layers">Count layers</a></li>
+<li><a href="#shift-layers" id="toc-shift-layers">Shift layers</a></li>
 </ul></li>
-<li><a href="#controlling-the-denominator-filter">Controlling the Denominator Filter</a></li>
-<li><a href="#missing-counts">Missing Counts</a></li>
-<li><a href="#adding-a-total-row">Adding a ‘Total’ Row</a></li>
+<li><a href="#controlling-the-denominator-filter" id="toc-controlling-the-denominator-filter">Controlling the Denominator
+Filter</a></li>
+<li><a href="#missing-counts" id="toc-missing-counts">Missing
+Counts</a></li>
+<li><a href="#adding-a-total-row" id="toc-adding-a-total-row">Adding a
+‘Total’ Row</a></li>
 </ul>
 </div>
 
-<p>Counting is pretty easy, right? There’s not all that much to it. With a few considerations we can cover most of the scenarios that users will encounter while using Tplyr. Denominators, on the other hand, get <em><em>a lot</em></em> more complicated. Why? Because there are a lot of ways to do it. What values do we exclude from the denominator? What variables establish denominator grouping? Does the denominator use a different filter than the values being counted? If you’ve programmed enough of these tables, you know that it’s all very situational.</p>
-<p>Given the complexity, we’ve spent a lot of time trying to make this easy for you, the user. In doing this it became very clear that denominators needed their own vignette. Additionally, a few other things go hand in hand with denominators.</p>
-<p>Make sure you have a good understand of count and shift layers before you review this content. If you’ve done your due diligence, then - here we go.</p>
+<p>Counting is pretty easy, right? There’s not all that much to it. With
+a few considerations we can cover most of the scenarios that users will
+encounter while using Tplyr. Denominators, on the other hand, get
+<em><em>a lot</em></em> more complicated. Why? Because there are a lot
+of ways to do it. What values do we exclude from the denominator? What
+variables establish denominator grouping? Does the denominator use a
+different filter than the values being counted? If you’ve programmed
+enough of these tables, you know that it’s all very situational.</p>
+<p>Given the complexity, we’ve spent a lot of time trying to make this
+easy for you, the user. In doing this it became very clear that
+denominators needed their own vignette. Additionally, a few other things
+go hand in hand with denominators.</p>
+<p>Make sure you have a good understand of count and shift layers before
+you review this content. If you’ve done your due diligence, then - here
+we go.</p>
 <div id="population-data-in-the-denominator" class="section level2">
 <h2>Population Data in the Denominator</h2>
-<p>What do you do when your target dataset doesn’t <em>have</em> the information necessary to create your denominator? For example - when you create an adverse event table, the adverse event dataset likely only contains records for subjects who experienced an adverse event. But subjects who did <em>not</em> have an adverse event are still part of the study population and must be considered in the denominator.</p>
-<p>For this reason, Tplyr allows lets you set a separate population dataset - but there are a couple things you need to do to trigger Tplyr to use the population data as your denominator.</p>
+<p>What do you do when your target dataset doesn’t <em>have</em> the
+information necessary to create your denominator? For example - when you
+create an adverse event table, the adverse event dataset likely only
+contains records for subjects who experienced an adverse event. But
+subjects who did <em>not</em> have an adverse event are still part of
+the study population and must be considered in the denominator.</p>
+<p>For this reason, Tplyr allows lets you set a separate population
+dataset - but there are a couple things you need to do to trigger Tplyr
+to use the population data as your denominator.</p>
 <p>Consider these two examples.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adae, TRTA) <span class="sc">%&gt;%</span> </span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
@@ -324,19 +547,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </table>
 <p>There are three things done above that use the population data:</p>
 <ul>
-<li>Population data must be set in the first place using <code>set_pop_where()</code> and the population treatment variable must be specified using <code>set_pop_treat_var()</code></li>
-<li><code>set_distinct_by()</code> must be used. Why? Because when you need to use a separate population dataset, the target dataset is likely more than one record per subject. So <code>set_distinct_by()</code> in this scenario would be used to get distinct counts per subject. In this example, we’re looking at the number of unique subjects who experienced a specific adverse event.</li>
-<li>The population denominator is then used when calculating <code>distinct_pct</code>. It is also worth noting that the default count layer formats use distinct values.</li>
+<li>Population data must be set in the first place using
+<code>set_pop_where()</code> and the population treatment variable must
+be specified using <code>set_pop_treat_var()</code></li>
+<li><code>set_distinct_by()</code> must be used. Why? Because when you
+need to use a separate population dataset, the target dataset is likely
+more than one record per subject. So <code>set_distinct_by()</code> in
+this scenario would be used to get distinct counts per subject. In this
+example, we’re looking at the number of unique subjects who experienced
+a specific adverse event.</li>
+<li>The population denominator is then used when calculating
+<code>distinct_pct</code>. It is also worth noting that the default
+count layer formats use distinct values.</li>
 </ul>
-<p>Note that if you need more control over the values used in the denominator from the population data, you can set a separate filter on the population data used <code>set_pop_where()</code>.</p>
-<p>Fortunately, denominators are much simpler when they’re kept within a single dataset. Just kidding! Let’s get weird.</p>
+<p>Note that if you need more control over the values used in the
+denominator from the population data, you can set a separate filter on
+the population data used <code>set_pop_where()</code>.</p>
+<p>Fortunately, denominators are much simpler when they’re kept within a
+single dataset. Just kidding! Let’s get weird.</p>
 </div>
 <div id="denominator-grouping" class="section level2">
 <h2>Denominator Grouping</h2>
-<p>When you’re looking within a single dataset, there are a couple factors that you need to consider for a denominator. The first is which grouping variables create those denominators. Let’s look at this from two perspectives - count layers and shift layers.</p>
+<p>When you’re looking within a single dataset, there are a couple
+factors that you need to consider for a denominator. The first is which
+grouping variables create those denominators. Let’s look at this from
+two perspectives - count layers and shift layers.</p>
 <div id="count-layers" class="section level3">
 <h3>Count layers</h3>
-<p>Most of the complexity of denominators comes from nuanced situations. A solid 80% of the time, defaults will work. For example, in a frequency table, you will typically want data within a column to sum to 100%. For example:</p>
+<p>Most of the complexity of denominators comes from nuanced situations.
+A solid 80% of the time, defaults will work. For example, in a frequency
+table, you will typically want data within a column to sum to 100%. For
+example:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>adsl <span class="ot">&lt;-</span> adsl <span class="sc">%&gt;%</span> </span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">DCSREAS =</span> <span class="fu">ifelse</span>(DCSREAS <span class="sc">==</span> <span class="st">&#39;&#39;</span>, <span class="st">&#39;Completed&#39;</span>, DCSREAS))</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>         </span>
@@ -448,7 +689,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<p>By default, when not using the population data strategy shown above, a count layer assumes that you want columns to sum to 100%. But that’s not always the case. Perhaps you’d like to break this summary down by sex presented row-wise.</p>
+<p>By default, when not using the population data strategy shown above,
+a count layer assumes that you want columns to sum to 100%. But that’s
+not always the case. Perhaps you’d like to break this summary down by
+sex presented row-wise.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(DCSREAS, <span class="at">by=</span>SEX)</span>
@@ -681,7 +925,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<p>Ok - so, now this is a little bit off. By breaking sex down as a row group, the denominators are still the total treatment group. Does that make sense? 34 female Placebo group subjects completed, but that calculated 39.5% also includes male subjects in the denominator. Let’s fix this using <code>set_denoms_by()</code>.</p>
+<p>Ok - so, now this is a little bit off. By breaking sex down as a row
+group, the denominators are still the total treatment group. Does that
+make sense? 34 female Placebo group subjects completed, but that
+calculated 39.5% also includes male subjects in the denominator. Let’s
+fix this using <code>set_denoms_by()</code>.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(DCSREAS, <span class="at">by=</span>SEX) <span class="sc">%&gt;%</span> </span>
@@ -915,17 +1163,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<p>Ok - much better. <code>set_denoms_by()</code> now changed the denominator grouping for us, so the denominator used for those 34 female Placebo subjects are now the total number of female Placebo subjects. Makes sense, right? <code>set_denoms_by()</code> allows you to specify:</p>
+<p>Ok - much better. <code>set_denoms_by()</code> now changed the
+denominator grouping for us, so the denominator used for those 34 female
+Placebo subjects are now the total number of female Placebo subjects.
+Makes sense, right? <code>set_denoms_by()</code> allows you to
+specify:</p>
 <ul>
 <li>The treatment variable</li>
 <li>any <code>cols</code> variables specified at the table level</li>
 <li>any <code>by</code> variables specified at the layer level</li>
 </ul>
-<p>Depending on your presentation, what you require may change - but the flexibility is there to choose what you need.</p>
+<p>Depending on your presentation, what you require may change - but the
+flexibility is there to choose what you need.</p>
 </div>
 <div id="shift-layers" class="section level3">
 <h3>Shift layers</h3>
-<p>A major part of the shift API is the control of the denominators used in the calculation of the percentages. In shift tables, most percentages are relative to the “box” that is formed from the “from” and “to” groups of the shift for each treatment group. Just like the count layers, the <code>set_denoms_by()</code> functions any variable name from the treatment variable, <code>cols</code> argument, <code>by</code> variables. The difference with shift layers is that now you can also include your target variables used for the row or column.</p>
+<p>A major part of the shift API is the control of the denominators used
+in the calculation of the percentages. In shift tables, most percentages
+are relative to the “box” that is formed from the “from” and “to” groups
+of the shift for each treatment group. Just like the count layers, the
+<code>set_denoms_by()</code> functions any variable name from the
+treatment variable, <code>cols</code> argument, <code>by</code>
+variables. The difference with shift layers is that now you can also
+include your target variables used for the row or column.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adlb, TRTA, <span class="at">where=</span>PARAMCD <span class="sc">==</span> <span class="st">&quot;CK&quot;</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_shift</span>(<span class="fu">vars</span>(<span class="at">row =</span> BNRIND, <span class="at">column =</span> ANRIND), <span class="at">by =</span> <span class="fu">vars</span>(PARAM, AVISIT)) <span class="sc">%&gt;%</span></span>
@@ -1061,8 +1321,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<p>In the example above, the denominators were based on the by and treatment variables, <code>TRTA</code>, <code>PARAM</code> and <code>VISIT</code>. This creates a 3 X 3 box, where the denominator is the total of all record within the <strong>FROM</strong> and <strong>TO</strong> shift variables, within each parameter, visit, and treatment. This is the default, and this is how ‘Tplyr’ will create the denominators if <code>set_denoms_by()</code> isn’t specified.</p>
-<p>In the next example, the percentage denominators are calculated row-wise, each row percentage sums to 100%.</p>
+<p>In the example above, the denominators were based on the by and
+treatment variables, <code>TRTA</code>, <code>PARAM</code> and
+<code>VISIT</code>. This creates a 3 X 3 box, where the denominator is
+the total of all record within the <strong>FROM</strong> and
+<strong>TO</strong> shift variables, within each parameter, visit, and
+treatment. This is the default, and this is how ‘Tplyr’ will create the
+denominators if <code>set_denoms_by()</code> isn’t specified.</p>
+<p>In the next example, the percentage denominators are calculated
+row-wise, each row percentage sums to 100%.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adlb, TRTA, <span class="at">where=</span>PARAMCD <span class="sc">==</span> <span class="st">&quot;CK&quot;</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_shift</span>(<span class="fu">vars</span>(<span class="at">row =</span> BNRIND, <span class="at">column =</span> ANRIND), <span class="at">by =</span> <span class="fu">vars</span>(PARAM, AVISIT)) <span class="sc">%&gt;%</span></span>
@@ -1199,7 +1466,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<p>While not practical, in this last example the denominators are changed to be based on the entire column instead of the 3 x 3 box. By passing the column variables, <code>TRTA</code> and <code>ANRIND</code> the layer will use those denominators when determining the percentages.</p>
+<p>While not practical, in this last example the denominators are
+changed to be based on the entire column instead of the 3 x 3 box. By
+passing the column variables, <code>TRTA</code> and <code>ANRIND</code>
+the layer will use those denominators when determining the
+percentages.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adlb, TRTA, <span class="at">where =</span> PARAMCD <span class="sc">==</span> <span class="st">&quot;CK&quot;</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_shift</span>(<span class="fu">vars</span>(<span class="at">row =</span> BNRIND, <span class="at">column =</span> ANRIND), <span class="at">by =</span> <span class="fu">vars</span>(PARAM, AVISIT)) <span class="sc">%&gt;%</span></span>
@@ -1336,16 +1607,45 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<p>Our hope is that this gives you the flexibility you need to structure your denominator however required.</p>
+<p>Our hope is that this gives you the flexibility you need to structure
+your denominator however required.</p>
 </div>
 </div>
 <div id="controlling-the-denominator-filter" class="section level2">
 <h2>Controlling the Denominator Filter</h2>
-<p>There are some circumstances that you’ll encounter where the filter used for a denominator needs to be different than the filter used to count. Disposition tables are an example of this, and we’ll use that example to paint this picture.</p>
-<p>‘Tplyr’ offers you the ability to specifically control the filter used within the denominator. This is provided through the function <code>set_denom_where()</code>. The default for <code>set_denom_where()</code> is the layer level <code>where</code> parameter, if one was supplied. <code>set_denom_where()</code> allows you to replace this layer level filter with a custom filter of your choosing. This is done on top of any filtering specified in the <code>tplyr_table()</code> where parameter - which means that the <code>set_denom_where()</code> filter is applied <em>in addition to</em> any table level filtering.</p>
-<p>Yeah we know - there are a lot of different places that filtering can happen…</p>
-<p>So let’s take the example shown below. The first layer has no layer level filtering applied, so the table level <code>where</code> is the only filter applied. The second layer has a layer level filter applied, so the denominators will be based on that layer level filter. Notice how in this case, the percentages in the second layer add up to 100%. This is because the denominator only includes values used in that layer.</p>
-<p>The third layer has a layer level filter applied, but additionally uses <code>set_denom_where()</code>. The <code>set_denom_where()</code> in this example is actually <em>removing</em> the layer level filter for the denominators. This is because in R, when you filter using <code>TRUE</code>, the filter returns all records. So by using <code>TRUE</code> in <code>set_denom_where()</code>, the layer level filter is effectively removed. This causes the denominator to include all values available from the table and not just those selected for that layer - so for this layer, the percentages will <em>not add up to 100%</em>. This is important - this allows the percentages from Layer 3 to sum to the total percentage of “DISCONTINUED” from Layer 1.</p>
+<p>There are some circumstances that you’ll encounter where the filter
+used for a denominator needs to be different than the filter used to
+count. Disposition tables are an example of this, and we’ll use that
+example to paint this picture.</p>
+<p>‘Tplyr’ offers you the ability to specifically control the filter
+used within the denominator. This is provided through the function
+<code>set_denom_where()</code>. The default for
+<code>set_denom_where()</code> is the layer level <code>where</code>
+parameter, if one was supplied. <code>set_denom_where()</code> allows
+you to replace this layer level filter with a custom filter of your
+choosing. This is done on top of any filtering specified in the
+<code>tplyr_table()</code> where parameter - which means that the
+<code>set_denom_where()</code> filter is applied <em>in addition to</em>
+any table level filtering.</p>
+<p>Yeah we know - there are a lot of different places that filtering can
+happen…</p>
+<p>So let’s take the example shown below. The first layer has no layer
+level filtering applied, so the table level <code>where</code> is the
+only filter applied. The second layer has a layer level filter applied,
+so the denominators will be based on that layer level filter. Notice how
+in this case, the percentages in the second layer add up to 100%. This
+is because the denominator only includes values used in that layer.</p>
+<p>The third layer has a layer level filter applied, but additionally
+uses <code>set_denom_where()</code>. The <code>set_denom_where()</code>
+in this example is actually <em>removing</em> the layer level filter for
+the denominators. This is because in R, when you filter using
+<code>TRUE</code>, the filter returns all records. So by using
+<code>TRUE</code> in <code>set_denom_where()</code>, the layer level
+filter is effectively removed. This causes the denominator to include
+all values available from the table and not just those selected for that
+layer - so for this layer, the percentages will <em>not add up to
+100%</em>. This is important - this allows the percentages from Layer 3
+to sum to the total percentage of “DISCONTINUED” from Layer 1.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>adsl2 <span class="ot">&lt;-</span> adsl <span class="sc">%&gt;%</span> </span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">DISCONTEXT =</span> <span class="fu">if_else</span>(DISCONFL <span class="sc">==</span> <span class="st">&#39;Y&#39;</span>, <span class="st">&#39;DISCONTINUED&#39;</span>, <span class="st">&#39;COMPLETED&#39;</span>))</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1550,9 +1850,30 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="missing-counts" class="section level2">
 <h2>Missing Counts</h2>
-<p>Missing counts are a tricky area for frequency tables, and they play directly in with denominators as well. These values raise a number of questions. For example, do you want to format the missing counts the same way as the event counts? Do you want to present missing counts with percentages? Do missing counts belong in the denominator?</p>
-<p>The <code>set_missing_count()</code> function can take a new <code>f_str()</code> object to set the display of missing values. If not specified, the associated count layer’s format will be used. Using the <code>...</code> parameter, you are able to specify the row label desired for missing values and values that you determine to be considered ‘missing’. For example, you may have NA values in the target variable, and then values like “Not Collected” that you also wish to consider “missing”. <code>set_missing_count()</code> allows you to group those together. Actually - you’re able to establish as many different “missing” groups as you want - even though that scenario is fairly unlikely.</p>
-<p>In the example below 50 random values are removed and NA is specified as the missing string. This leads us to another parameter - <code>denom_ignore</code>. By default, if you specify missing values they will still be considered within the denominator, but when you have missing counts, you may wish to exclude them from the totals being summarized. By setting <code>denom_ignore</code> to TRUE, your denominators will ignore any groups of missing values that you’ve specified.</p>
+<p>Missing counts are a tricky area for frequency tables, and they play
+directly in with denominators as well. These values raise a number of
+questions. For example, do you want to format the missing counts the
+same way as the event counts? Do you want to present missing counts with
+percentages? Do missing counts belong in the denominator?</p>
+<p>The <code>set_missing_count()</code> function can take a new
+<code>f_str()</code> object to set the display of missing values. If not
+specified, the associated count layer’s format will be used. Using the
+<code>...</code> parameter, you are able to specify the row label
+desired for missing values and values that you determine to be
+considered ‘missing’. For example, you may have NA values in the target
+variable, and then values like “Not Collected” that you also wish to
+consider “missing”. <code>set_missing_count()</code> allows you to group
+those together. Actually - you’re able to establish as many different
+“missing” groups as you want - even though that scenario is fairly
+unlikely.</p>
+<p>In the example below 50 random values are removed and NA is specified
+as the missing string. This leads us to another parameter -
+<code>denom_ignore</code>. By default, if you specify missing values
+they will still be considered within the denominator, but when you have
+missing counts, you may wish to exclude them from the totals being
+summarized. By setting <code>denom_ignore</code> to TRUE, your
+denominators will ignore any groups of missing values that you’ve
+specified.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>adae2 <span class="ot">&lt;-</span> adae</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>adae2[<span class="fu">sample</span>(<span class="fu">nrow</span>(adae2), <span class="dv">50</span>), <span class="st">&quot;AESEV&quot;</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1590,16 +1911,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="odd">
 <td align="left">MILD</td>
 <td align="left">22 (55.00%)</td>
-<td align="left">66 (76.74%)</td>
-<td align="left">46 (46.00%)</td>
+<td align="left">68 (78.16%)</td>
+<td align="left">46 (46.46%)</td>
 <td align="right">1</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="left">MODERATE</td>
 <td align="left">18 (45.00%)</td>
-<td align="left">20 (23.26%)</td>
-<td align="left">51 (51.00%)</td>
+<td align="left">19 (21.84%)</td>
+<td align="left">48 (48.48%)</td>
 <td align="right">1</td>
 <td align="right">2</td>
 </tr>
@@ -1607,32 +1928,69 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <td align="left">SEVERE</td>
 <td align="left">0 ( 0.00%)</td>
 <td align="left">0 ( 0.00%)</td>
-<td align="left">3 ( 3.00%)</td>
+<td align="left">5 ( 5.05%)</td>
 <td align="right">1</td>
 <td align="right">3</td>
 </tr>
 <tr class="even">
 <td align="left">Missing</td>
 <td align="left">7</td>
-<td align="left">25</td>
-<td align="left">18</td>
+<td align="left">24</td>
+<td align="left">19</td>
 <td align="right">1</td>
 <td align="right">Inf</td>
 </tr>
 </tbody>
 </table>
-<p>We did one more other thing worth explaining in the example above - gave the missing count its own sort value. If you leave this field null, it will simply be the maximum value in the order layer plus 1, to put the Missing counts at the bottom during an ascending sort. But tables can be sorted a lot of different ways, as you’ll see in the sort vignette. So instead of trying to come up with novel ways for you to control where the missing row goes - we decided to just let you specify your own value.</p>
+<p>We did one more other thing worth explaining in the example above -
+gave the missing count its own sort value. If you leave this field null,
+it will simply be the maximum value in the order layer plus 1, to put
+the Missing counts at the bottom during an ascending sort. But tables
+can be sorted a lot of different ways, as you’ll see in the sort
+vignette. So instead of trying to come up with novel ways for you to
+control where the missing row goes - we decided to just let you specify
+your own value.</p>
 </div>
 <div id="adding-a-total-row" class="section level2">
 <h2>Adding a ‘Total’ Row</h2>
-<p>In addition to missing counts, some summaries require the addition of a ‘Total’ row. ‘Tplyr’ has the helper function <code>add_total_row()</code> to ease this process for you. Like most other things within ‘Tplyr’ - particularly in this vignette - this too has a significant bit of nuance to it.</p>
-<p>Much of this functionality is similar to <code>set_missing_count()</code>. You’re able to specify a different format for the total, but if not specified, the associated count layer’s format will be used. You’re able to set your own sort value to specify where you want the total row to sit.</p>
+<p>In addition to missing counts, some summaries require the addition of
+a ‘Total’ row. ‘Tplyr’ has the helper function
+<code>add_total_row()</code> to ease this process for you. Like most
+other things within ‘Tplyr’ - particularly in this vignette - this too
+has a significant bit of nuance to it.</p>
+<p>Much of this functionality is similar to
+<code>set_missing_count()</code>. You’re able to specify a different
+format for the total, but if not specified, the associated count layer’s
+format will be used. You’re able to set your own sort value to specify
+where you want the total row to sit.</p>
 <p>More nuance comes in two places:</p>
 <ul>
-<li>By default, <code>add_total_row()</code> <em>will count missing values</em>, but you can exclude those values using the <code>count_missings</code> parameter. ‘Tplyr’ will warn you when <code>set_count_missing()</code> has <code>denom_ignore</code> set to <code>TRUE</code>, <code>add_total_row()</code> has <code>count_missings</code> set to <code>TRUE</code> and the format contains a percentage. Why? Because if the denominator is ignoring missing values but you’re still counting them in your total, the percentage shown can exceed 100%.</li>
-<li><code>add_total_row()</code> will throw a warning when a <code>by</code> variable is used, because it becomes ambiguous what total should be calculated. You can rectify this by using <code>set_denoms_by()</code>, which allows the user to control exactly which groups are used to form the denominator. This way the totals presented by <code>add_total_row()</code> will align with denominators specified in <code>set_denom_by()</code> and generate total rows that match the grouping of your denominator values.</li>
+<li>By default, <code>add_total_row()</code> <em>will count missing
+values</em>, but you can exclude those values using the
+<code>count_missings</code> parameter. ‘Tplyr’ will warn you when
+<code>set_count_missing()</code> has <code>denom_ignore</code> set to
+<code>TRUE</code>, <code>add_total_row()</code> has
+<code>count_missings</code> set to <code>TRUE</code> and the format
+contains a percentage. Why? Because if the denominator is ignoring
+missing values but you’re still counting them in your total, the
+percentage shown can exceed 100%.</li>
+<li><code>add_total_row()</code> will throw a warning when a
+<code>by</code> variable is used, because it becomes ambiguous what
+total should be calculated. You can rectify this by using
+<code>set_denoms_by()</code>, which allows the user to control exactly
+which groups are used to form the denominator. This way the totals
+presented by <code>add_total_row()</code> will align with denominators
+specified in <code>set_denom_by()</code> and generate total rows that
+match the grouping of your denominator values.</li>
 </ul>
-<p>In the example below, we summarize age groups by sex. The denominators are determined by treatment group and sex, and since we are not excluding any values from the denominator, the total row ends up matching the denominator that was used. The ‘Missing’ row tells us the number of missing values, but because <code>count_missings</code> is set to <code>TRUE</code>, the missing counts are included in the total row. This probably isn’t how you would choose to display things, but here we’re trying to show the flexibility built into ‘Tplyr’.</p>
+<p>In the example below, we summarize age groups by sex. The
+denominators are determined by treatment group and sex, and since we are
+not excluding any values from the denominator, the total row ends up
+matching the denominator that was used. The ‘Missing’ row tells us the
+number of missing values, but because <code>count_missings</code> is set
+to <code>TRUE</code>, the missing counts are included in the total row.
+This probably isn’t how you would choose to display things, but here
+we’re trying to show the flexibility built into ‘Tplyr’.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>adsl2 <span class="ot">&lt;-</span> adsl</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>adsl2[<span class="fu">sample</span>(<span class="fu">nrow</span>(adsl2), <span class="dv">50</span>), <span class="st">&quot;AGEGR1&quot;</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1684,9 +2042,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="even">
 <td align="left">F</td>
 <td align="left">65-80</td>
-<td align="left">14 ( 26.4%)</td>
-<td align="left">24 ( 60.0%)</td>
-<td align="left">25 ( 50.0%)</td>
+<td align="left">20 ( 37.7%)</td>
+<td align="left">19 ( 47.5%)</td>
+<td align="left">24 ( 48.0%)</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">1</td>
@@ -1695,8 +2053,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <td align="left">F</td>
 <td align="left">&lt;65</td>
 <td align="left">7 ( 13.2%)</td>
-<td align="left">5 ( 12.5%)</td>
-<td align="left">4 ( 8.0%)</td>
+<td align="left">4 ( 10.0%)</td>
+<td align="left">3 ( 6.0%)</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">2</td>
@@ -1704,9 +2062,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="even">
 <td align="left">F</td>
 <td align="left">&gt;80</td>
-<td align="left">19 ( 35.8%)</td>
-<td align="left">5 ( 12.5%)</td>
-<td align="left">15 ( 30.0%)</td>
+<td align="left">17 ( 32.1%)</td>
+<td align="left">7 ( 17.5%)</td>
+<td align="left">13 ( 26.0%)</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">3</td>
@@ -1714,9 +2072,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="odd">
 <td align="left">F</td>
 <td align="left">Missing</td>
-<td align="left">13 (24.5%)</td>
-<td align="left">6 (15.0%)</td>
-<td align="left">6 (12.0%)</td>
+<td align="left">9 (17.0%)</td>
+<td align="left">10 (25.0%)</td>
+<td align="left">10 (20.0%)</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">Inf</td>
@@ -1735,8 +2093,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <td align="left">M</td>
 <td align="left">65-80</td>
 <td align="left">14 ( 42.4%)</td>
-<td align="left">20 ( 45.5%)</td>
-<td align="left">16 ( 47.1%)</td>
+<td align="left">24 ( 54.5%)</td>
+<td align="left">17 ( 50.0%)</td>
 <td align="right">1</td>
 <td align="right">2</td>
 <td align="right">1</td>
@@ -1744,7 +2102,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="even">
 <td align="left">M</td>
 <td align="left">&lt;65</td>
-<td align="left">5 ( 15.2%)</td>
+<td align="left">4 ( 12.1%)</td>
 <td align="left">5 ( 11.4%)</td>
 <td align="left">2 ( 5.9%)</td>
 <td align="right">1</td>
@@ -1754,9 +2112,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="odd">
 <td align="left">M</td>
 <td align="left">&gt;80</td>
-<td align="left">5 ( 15.2%)</td>
-<td align="left">8 ( 18.2%)</td>
-<td align="left">11 ( 32.4%)</td>
+<td align="left">7 ( 21.2%)</td>
+<td align="left">7 ( 15.9%)</td>
+<td align="left">10 ( 29.4%)</td>
 <td align="right">1</td>
 <td align="right">2</td>
 <td align="right">3</td>
@@ -1764,8 +2122,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="even">
 <td align="left">M</td>
 <td align="left">Missing</td>
-<td align="left">9 (27.3%)</td>
-<td align="left">11 (25.0%)</td>
+<td align="left">8 (24.2%)</td>
+<td align="left">8 (18.2%)</td>
 <td align="left">5 (14.7%)</td>
 <td align="right">1</td>
 <td align="right">2</td>
@@ -1773,8 +2131,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<p>The default text for the Total row is “Total”, but we provide <code>set_total_row_label()</code> to allow you to customize the text used in your display.</p>
-<p>Let’s look at a more practical version of the table above. If you display missings, you probably want to exclude them from the total. Here we do that using <code>set_missing_count()</code>. So more commonly, you’ll see this:</p>
+<p>The default text for the Total row is “Total”, but we provide
+<code>set_total_row_label()</code> to allow you to customize the text
+used in your display.</p>
+<p>Let’s look at a more practical version of the table above. If you
+display missings, you probably want to exclude them from the total. Here
+we do that using <code>set_missing_count()</code>. So more commonly,
+you’ll see this:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl2, TRT01P) <span class="sc">%&gt;%</span> </span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(AGEGR1, <span class="at">by=</span>SEX) <span class="sc">%&gt;%</span> </span>
@@ -1813,9 +2176,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="odd">
 <td align="left">F</td>
 <td align="left">All Age Groups</td>
-<td align="left">40</td>
-<td align="left">34</td>
 <td align="left">44</td>
+<td align="left">30</td>
+<td align="left">40</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">-Inf</td>
@@ -1823,9 +2186,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="even">
 <td align="left">F</td>
 <td align="left">65-80</td>
-<td align="left">14 ( 35.0%)</td>
-<td align="left">24 ( 70.6%)</td>
-<td align="left">25 ( 56.8%)</td>
+<td align="left">20 ( 45.5%)</td>
+<td align="left">19 ( 63.3%)</td>
+<td align="left">24 ( 60.0%)</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">1</td>
@@ -1833,9 +2196,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="odd">
 <td align="left">F</td>
 <td align="left">&lt;65</td>
-<td align="left">7 ( 17.5%)</td>
-<td align="left">5 ( 14.7%)</td>
-<td align="left">4 ( 9.1%)</td>
+<td align="left">7 ( 15.9%)</td>
+<td align="left">4 ( 13.3%)</td>
+<td align="left">3 ( 7.5%)</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">2</td>
@@ -1843,9 +2206,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="even">
 <td align="left">F</td>
 <td align="left">&gt;80</td>
-<td align="left">19 ( 47.5%)</td>
-<td align="left">5 ( 14.7%)</td>
-<td align="left">15 ( 34.1%)</td>
+<td align="left">17 ( 38.6%)</td>
+<td align="left">7 ( 23.3%)</td>
+<td align="left">13 ( 32.5%)</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">3</td>
@@ -1853,9 +2216,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="odd">
 <td align="left">F</td>
 <td align="left">Missing</td>
-<td align="left">13</td>
-<td align="left">6</td>
-<td align="left">6</td>
+<td align="left">9</td>
+<td align="left">10</td>
+<td align="left">10</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">Inf</td>
@@ -1863,8 +2226,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="even">
 <td align="left">M</td>
 <td align="left">All Age Groups</td>
-<td align="left">24</td>
-<td align="left">33</td>
+<td align="left">25</td>
+<td align="left">36</td>
 <td align="left">29</td>
 <td align="right">1</td>
 <td align="right">2</td>
@@ -1873,9 +2236,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="odd">
 <td align="left">M</td>
 <td align="left">65-80</td>
-<td align="left">14 ( 58.3%)</td>
-<td align="left">20 ( 60.6%)</td>
-<td align="left">16 ( 55.2%)</td>
+<td align="left">14 ( 56.0%)</td>
+<td align="left">24 ( 66.7%)</td>
+<td align="left">17 ( 58.6%)</td>
 <td align="right">1</td>
 <td align="right">2</td>
 <td align="right">1</td>
@@ -1883,8 +2246,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="even">
 <td align="left">M</td>
 <td align="left">&lt;65</td>
-<td align="left">5 ( 20.8%)</td>
-<td align="left">5 ( 15.2%)</td>
+<td align="left">4 ( 16.0%)</td>
+<td align="left">5 ( 13.9%)</td>
 <td align="left">2 ( 6.9%)</td>
 <td align="right">1</td>
 <td align="right">2</td>
@@ -1893,9 +2256,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="odd">
 <td align="left">M</td>
 <td align="left">&gt;80</td>
-<td align="left">5 ( 20.8%)</td>
-<td align="left">8 ( 24.2%)</td>
-<td align="left">11 ( 37.9%)</td>
+<td align="left">7 ( 28.0%)</td>
+<td align="left">7 ( 19.4%)</td>
+<td align="left">10 ( 34.5%)</td>
 <td align="right">1</td>
 <td align="right">2</td>
 <td align="right">3</td>
@@ -1903,8 +2266,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="even">
 <td align="left">M</td>
 <td align="left">Missing</td>
-<td align="left">9</td>
-<td align="left">11</td>
+<td align="left">8</td>
+<td align="left">8</td>
 <td align="left">5</td>
 <td align="right">1</td>
 <td align="right">2</td>
@@ -1912,7 +2275,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<p>Now the table is more intuitive. We used <code>set_missing_count()</code> to update our denominators, so missing have been excluded. Now, the total row intuitively matches the denominators used within each group, and we can see how many missing records were excluded.</p>
+<p>Now the table is more intuitive. We used
+<code>set_missing_count()</code> to update our denominators, so missing
+have been excluded. Now, the total row intuitively matches the
+denominators used within each group, and we can see how many missing
+records were excluded.</p>
+<p><em>You may have stumbled upon this portion of the vignette while
+searching for how to create a total column. Tplyr allows you to do this
+as well with the function <code>add_total_group()</code> and read more
+in <code>vignette(&quot;table&quot;)</code>.</em></p>
 <p>And that’s it for denominators! Happy counting!</p>
 </div>
 

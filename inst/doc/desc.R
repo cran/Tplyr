@@ -28,7 +28,6 @@ tplyr_table(adsl, TRT01P) %>%
   build() %>% 
   kable()
 
-
 ## ----varnames, echo=FALSE-----------------------------------------------------
 x <- data.frame(
   Statistic = c('N', 'Mean', "Standard Deviation", "Median", "Variance", "Minimum",
@@ -85,7 +84,6 @@ tplyr_table(adsl, TRT01P) %>%
   select(-starts_with("ord")) %>% 
   kable()
 
-
 ## ----custom_options-----------------------------------------------------------
 tplyr_table(adsl, TRT01P) %>% 
   add_layer(
@@ -111,6 +109,9 @@ tplyr_table(adsl, TRT01P) %>%
   kable()
 
 ## ----missing------------------------------------------------------------------
+adsl$TRT01P <- as.factor(adsl$TRT01P)
+adlb$TRTA <- as.factor(adlb$TRTA)
+
 adlb_2 <- adlb %>% 
   filter(TRTA != "Placebo")
 
@@ -126,11 +127,7 @@ tplyr_table(adlb_2, TRTA) %>%
   select(-starts_with("ord")) %>% 
   kable()
 
-
 ## ----missing1-----------------------------------------------------------------
-adlb_2 <- adlb %>% 
-  filter(TRTA != "Placebo")
-
 tplyr_table(adlb_2, TRTA) %>% 
   set_pop_data(adsl) %>% 
   set_pop_treat_var(TRT01P) %>% 
@@ -144,9 +141,6 @@ tplyr_table(adlb_2, TRTA) %>%
   kable()
 
 ## ----missing2-----------------------------------------------------------------
-adlb_2 <- adlb %>% 
-  filter(TRTA != "Placebo")
-
 tplyr_table(adlb_2, TRTA) %>% 
   set_pop_data(adsl) %>% 
   set_pop_treat_var(TRT01P) %>% 
@@ -160,7 +154,6 @@ tplyr_table(adlb_2, TRTA) %>%
   kable()
 
 ## ----autoprecision1-----------------------------------------------------------
-
 tplyr_table(adlb, TRTA) %>% 
   add_layer(
     group_desc(AVAL, by = PARAMCD) %>% 
@@ -170,8 +163,8 @@ tplyr_table(adlb, TRTA) %>%
   ) %>% 
   build() %>% 
   head(20) %>% 
+  select(-starts_with("ord")) %>% 
   kable()
-
 
 ## ----autoprecision2-----------------------------------------------------------
 tplyr_table(adlb, TRTA) %>% 
@@ -184,8 +177,8 @@ tplyr_table(adlb, TRTA) %>%
   ) %>% 
   build() %>% 
   head(20) %>% 
+  select(-starts_with("ord")) %>%
   kable()
-
 
 ## ----precision3---------------------------------------------------------------
 tplyr_table(adlb, TRTA) %>% 
@@ -200,6 +193,56 @@ tplyr_table(adlb, TRTA) %>%
   ) %>%
   build() %>% 
   head() %>% 
+  select(-starts_with("ord")) %>%
   kable()
 
+## ----external-precision-------------------------------------------------------
+prec_data <- tibble::tribble(
+  ~PARAMCD, ~max_int, ~max_dec,
+  "BUN",   1, 0,
+  "CA",    2, 4,
+  "CK",    3, 1,
+  "GGT",   3, 0,
+  "URATE", 3, 1,
+)
+  
+tplyr_table(adlb, TRTA) %>% 
+  add_layer(
+    group_desc(AVAL, by = PARAMCD) %>% 
+      set_format_strings(
+        'Mean (SD)' = f_str('a.a+1 (a.a+2)', mean, sd, empty="NA")
+      ) %>% 
+      set_precision_on(AVAL) %>% 
+      set_precision_by(PARAMCD) %>%
+      set_precision_data(prec_data)
+  ) %>%
+  build() %>% 
+  head() %>% 
+  select(-starts_with("ord")) %>%
+  kable()
+
+
+## ----external-precision2------------------------------------------------------
+prec_data <- tibble::tribble(
+  ~PARAMCD, ~max_int, ~max_dec,
+  "BUN", 1, 0,
+  "CA",  2, 4,
+  "CK",  3, 1,
+  "GGT", 3, 0,
+)
+  
+tplyr_table(adlb, TRTA) %>% 
+  add_layer(
+    group_desc(AVAL, by = PARAMCD) %>% 
+      set_format_strings(
+        'Mean (SD)' = f_str('a.a+1 (a.a+2)', mean, sd, empty="NA")
+      ) %>% 
+      set_precision_on(AVAL) %>% 
+      set_precision_by(PARAMCD) %>%
+      set_precision_data(prec_data, default="auto")
+  ) %>%
+  build() %>% 
+  head() %>% 
+  select(-starts_with("ord")) %>%
+  kable()
 

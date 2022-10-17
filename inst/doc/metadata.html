@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Tplyr Metadata</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Tplyr Metadata</h1>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#generating-the-metadata" id="toc-generating-the-metadata">Generating the Metadata</a></li>
+<li><a href="#extracting-the-input-source" id="toc-extracting-the-input-source">Extracting The Input
+Source</a></li>
+<li><a href="#extracting-a-result-cells-metadata" id="toc-extracting-a-result-cells-metadata">Extracting a Result Cell’s
+Metadata</a></li>
+<li><a href="#so-what-does-this-get-me" id="toc-so-what-does-this-get-me">So, What Does This Get Me?</a></li>
+</ul>
+</div>
+
+<p>Tplyr has a bit of a unique design, which might feel a bit weird as
+you get used to the package. The process flow of building a
+<code>tplyr_table()</code> object first, and then using
+<code>build()</code> to construct the data frame is different than
+programming in the tidyverse, or creating a ggplot. Why create the
+<code>tplyr_table()</code> object first? Why is the
+<code>tplyr_table()</code> object different than the resulting data
+frame?</p>
+<p>The purpose of the <code>tplyr_table()</code> object is to let Tplyr
+do more than just summarize data. As you build the table, all of the
+metadata around the table being built is maintained - the target
+variables being summarized, the grouped variables by row and column, the
+filter conditions necessary applied to the table and each layer. As a
+user, you provide this information to create the summary. But what about
+after the results are produced? Summarizing data inevitably leads to new
+questions. Within clinical summaries, you may want to know which
+subjects experienced an adverse event, or why the lab summaries of a
+particular visit’s descriptive statistics are abnormal. Normally, you’d
+write a query to recreate the data that lead to that particular summary.
+Tplyr now allows you to immediately extract the input data or metadata
+that created an output result, thus providing traceability from the
+result back to the source.</p>
+<div id="generating-the-metadata" class="section level2">
+<h2>Generating the Metadata</h2>
+<p>Consider the following example:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">tplyr_table</span>(adsl, TRT01P, <span class="at">where =</span> SAFFL <span class="sc">==</span> <span class="st">&quot;Y&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(RACE)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AGE, <span class="at">where =</span> EFFFL <span class="sc">==</span> <span class="st">&quot;Y&quot;</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> t <span class="sc">%&gt;%</span> <span class="fu">build</span>(<span class="at">metadata=</span><span class="cn">TRUE</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(dat)</span></code></pre></div>
+<table>
+<colgroup>
+<col width="5%" />
+<col width="25%" />
+<col width="9%" />
+<col width="19%" />
+<col width="18%" />
+<col width="12%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">row_id</th>
+<th align="left">row_label1</th>
+<th align="left">var1_Placebo</th>
+<th align="left">var1_Xanomeline High Dose</th>
+<th align="left">var1_Xanomeline Low Dose</th>
+<th align="right">ord_layer_index</th>
+<th align="right">ord_layer_1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">c1_1</td>
+<td align="left">AMERICAN INDIAN OR ALASKA NATIVE</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">c2_1</td>
+<td align="left">BLACK OR AFRICAN AMERICAN</td>
+<td align="left">8 ( 9.3%)</td>
+<td align="left">9 ( 10.7%)</td>
+<td align="left">6 ( 7.1%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">c3_1</td>
+<td align="left">WHITE</td>
+<td align="left">78 ( 90.7%)</td>
+<td align="left">74 ( 88.1%)</td>
+<td align="left">78 ( 92.9%)</td>
+<td align="right">1</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">d1_2</td>
+<td align="left">n</td>
+<td align="left">79</td>
+<td align="left">74</td>
+<td align="left">81</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">d2_2</td>
+<td align="left">Mean (SD)</td>
+<td align="left">75.9 ( 8.43)</td>
+<td align="left">75.4 ( 7.87)</td>
+<td align="left">77.8 ( 8.02)</td>
+<td align="right">2</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">d3_2</td>
+<td align="left">Median</td>
+<td align="left">76.0</td>
+<td align="left">75.5</td>
+<td align="left">78.0</td>
+<td align="right">2</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">d4_2</td>
+<td align="left">Q1, Q3</td>
+<td align="left">69.5, 81.0</td>
+<td align="left">70.2, 79.0</td>
+<td align="left">71.0, 82.0</td>
+<td align="right">2</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">d5_2</td>
+<td align="left">Min, Max</td>
+<td align="left">52, 88</td>
+<td align="left">56, 88</td>
+<td align="left">51, 88</td>
+<td align="right">2</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">d6_2</td>
+<td align="left">Missing</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="right">2</td>
+<td align="right">6</td>
+</tr>
+</tbody>
+</table>
+<p>To trigger the creation of metadata, the <code>build()</code>
+function has a new argument <code>metadata</code>. By specifying
+<code>TRUE</code>, the underlying metadata within Tplyr are prepared in
+an extractable format. This is the only action a user needs to specify
+for this action to take place.</p>
+<p>When the <code>metadata</code> argument is used, a new column will be
+produced in the output dataframe called <code>row_id</code>. The
+<code>row_id</code> variable provides a persistent reference to a row of
+interest, even if the output dataframe is sorted. If you review
+<code>vignette(&quot;styled-table&quot;)</code>, note that we expect a certain
+amount of post processing and styling of the built data frame from
+Tplyr, to let you use whatever other packages you prefer. As such, this
+reference ID is necessary.</p>
+</div>
+<div id="extracting-the-input-source" class="section level2">
+<h2>Extracting The Input Source</h2>
+<p>So, let’s cut to the chase. The most likely way you would use this
+metadata is to pull out the source data that created a cell. For this,
+we’ve provided the function <code>get_meta_subset()</code>. The only
+information that you need is the <code>row_id</code> and column name of
+the result cell of interest. For example, looking at the result above,
+what if we want to know who the 8 subjects in the Placebo group who
+where Black or African American:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_meta_subset</span>(t, <span class="st">&#39;c2_1&#39;</span>, <span class="st">&#39;var1_Placebo&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">USUBJID</th>
+<th align="left">TRT01P</th>
+<th align="left">SAFFL</th>
+<th align="left">RACE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">01-701-1203</td>
+<td align="left">Placebo</td>
+<td align="left">Y</td>
+<td align="left">BLACK OR AFRICAN AMERICAN</td>
+</tr>
+<tr class="even">
+<td align="left">01-701-1363</td>
+<td align="left">Placebo</td>
+<td align="left">Y</td>
+<td align="left">BLACK OR AFRICAN AMERICAN</td>
+</tr>
+<tr class="odd">
+<td align="left">01-705-1282</td>
+<td align="left">Placebo</td>
+<td align="left">Y</td>
+<td align="left">BLACK OR AFRICAN AMERICAN</td>
+</tr>
+<tr class="even">
+<td align="left">01-706-1041</td>
+<td align="left">Placebo</td>
+<td align="left">Y</td>
+<td align="left">BLACK OR AFRICAN AMERICAN</td>
+</tr>
+<tr class="odd">
+<td align="left">01-708-1286</td>
+<td align="left">Placebo</td>
+<td align="left">Y</td>
+<td align="left">BLACK OR AFRICAN AMERICAN</td>
+</tr>
+<tr class="even">
+<td align="left">01-708-1296</td>
+<td align="left">Placebo</td>
+<td align="left">Y</td>
+<td align="left">BLACK OR AFRICAN AMERICAN</td>
+</tr>
+<tr class="odd">
+<td align="left">01-708-1378</td>
+<td align="left">Placebo</td>
+<td align="left">Y</td>
+<td align="left">BLACK OR AFRICAN AMERICAN</td>
+</tr>
+<tr class="even">
+<td align="left">01-711-1036</td>
+<td align="left">Placebo</td>
+<td align="left">Y</td>
+<td align="left">BLACK OR AFRICAN AMERICAN</td>
+</tr>
+</tbody>
+</table>
+<p>By using the <code>row_id</code> and column, the dataframe is pulled
+right out for us. Notice that <code>USUBJID</code> was included by
+default, even though Tplyr there’s no reference anywhere in the
+<code>tplyr_table()</code> to the variable <code>USUBJID</code>. This is
+because <code>get_meta_subset()</code> has an additional argument
+<code>add_cols</code> that allows you to specify additional columns you
+want included in the resulting dataframe, and has a default of USUBJID.
+So let’s say we want additionally include the variable
+<code>SEX</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_meta_subset</span>(t, <span class="st">&#39;c2_1&#39;</span>, <span class="st">&#39;var1_Placebo&#39;</span>, <span class="at">add_cols =</span> <span class="fu">vars</span>(USUBJID, SEX)) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">USUBJID</th>
+<th align="left">SEX</th>
+<th align="left">TRT01P</th>
+<th align="left">SAFFL</th>
+<th align="left">RACE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">01-701-1203</td>
+<td align="left">F</td>
+<td align="left">Placebo</td>
+<td align="left">Y</td>
+<td align="left">BLACK OR AFRICAN AMERICAN</td>
+</tr>
+<tr class="even">
+<td align="left">01-701-1363</td>
+<td align="left">F</td>
+<td align="left">Placebo</td>
+<td align="left">Y</td>
+<td align="left">BLACK OR AFRICAN AMERICAN</td>
+</tr>
+<tr class="odd">
+<td align="left">01-705-1282</td>
+<td align="left">F</td>
+<td align="left">Placebo</td>
+<td align="left">Y</td>
+<td align="left">BLACK OR AFRICAN AMERICAN</td>
+</tr>
+<tr class="even">
+<td align="left">01-706-1041</td>
+<td align="left">F</td>
+<td align="left">Placebo</td>
+<td align="left">Y</td>
+<td align="left">BLACK OR AFRICAN AMERICAN</td>
+</tr>
+<tr class="odd">
+<td align="left">01-708-1286</td>
+<td align="left">F</td>
+<td align="left">Placebo</td>
+<td align="left">Y</td>
+<td align="left">BLACK OR AFRICAN AMERICAN</td>
+</tr>
+<tr class="even">
+<td align="left">01-708-1296</td>
+<td align="left">M</td>
+<td align="left">Placebo</td>
+<td align="left">Y</td>
+<td align="left">BLACK OR AFRICAN AMERICAN</td>
+</tr>
+<tr class="odd">
+<td align="left">01-708-1378</td>
+<td align="left">M</td>
+<td align="left">Placebo</td>
+<td align="left">Y</td>
+<td align="left">BLACK OR AFRICAN AMERICAN</td>
+</tr>
+<tr class="even">
+<td align="left">01-711-1036</td>
+<td align="left">M</td>
+<td align="left">Placebo</td>
+<td align="left">Y</td>
+<td align="left">BLACK OR AFRICAN AMERICAN</td>
+</tr>
+</tbody>
+</table>
+<p>Variables should be provided using <code>dplyr::vars()</code>, just
+like the <code>cols</code> argument on <code>tplyr_table()</code> and
+the <code>by</code> arguments in each layer type.</p>
+<p>As mentioned, the input source data can be extracted for any result
+cell created by Tplyr. So let’s say we want to know the subjects
+relevant for the descriptive statistics around age in the Xanomeline
+High Dose group:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_meta_subset</span>(t, <span class="st">&#39;d1_2&#39;</span>, <span class="st">&#39;var1_Xanomeline High Dose&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">USUBJID</th>
+<th align="left">TRT01P</th>
+<th align="left">EFFFL</th>
+<th align="left">SAFFL</th>
+<th align="right">AGE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">01-701-1028</td>
+<td align="left">Xanomeline High Dose</td>
+<td align="left">Y</td>
+<td align="left">Y</td>
+<td align="right">71</td>
+</tr>
+<tr class="even">
+<td align="left">01-701-1034</td>
+<td align="left">Xanomeline High Dose</td>
+<td align="left">Y</td>
+<td align="left">Y</td>
+<td align="right">77</td>
+</tr>
+<tr class="odd">
+<td align="left">01-701-1133</td>
+<td align="left">Xanomeline High Dose</td>
+<td align="left">Y</td>
+<td align="left">Y</td>
+<td align="right">81</td>
+</tr>
+<tr class="even">
+<td align="left">01-701-1146</td>
+<td align="left">Xanomeline High Dose</td>
+<td align="left">Y</td>
+<td align="left">Y</td>
+<td align="right">75</td>
+</tr>
+<tr class="odd">
+<td align="left">01-701-1148</td>
+<td align="left">Xanomeline High Dose</td>
+<td align="left">Y</td>
+<td align="left">Y</td>
+<td align="right">57</td>
+</tr>
+<tr class="even">
+<td align="left">01-701-1180</td>
+<td align="left">Xanomeline High Dose</td>
+<td align="left">Y</td>
+<td align="left">Y</td>
+<td align="right">56</td>
+</tr>
+<tr class="odd">
+<td align="left">01-701-1181</td>
+<td align="left">Xanomeline High Dose</td>
+<td align="left">Y</td>
+<td align="left">Y</td>
+<td align="right">79</td>
+</tr>
+<tr class="even">
+<td align="left">01-701-1239</td>
+<td align="left">Xanomeline High Dose</td>
+<td align="left">Y</td>
+<td align="left">Y</td>
+<td align="right">56</td>
+</tr>
+<tr class="odd">
+<td align="left">01-701-1275</td>
+<td align="left">Xanomeline High Dose</td>
+<td align="left">Y</td>
+<td align="left">Y</td>
+<td align="right">61</td>
+</tr>
+<tr class="even">
+<td align="left">01-701-1287</td>
+<td align="left">Xanomeline High Dose</td>
+<td align="left">Y</td>
+<td align="left">Y</td>
+<td align="right">56</td>
+</tr>
+</tbody>
+</table>
+<p><em>Note: Trimmed for space</em></p>
+<p>Notice how the columns returned are different. First off, within the
+summary above, we pulled results from the descriptive statistics layer.
+The target variable for this layer was <code>AGE</code>, and as such
+<code>AGE</code> is returned in the resulting output. Additionally, a
+layer level <code>where</code> argument was used to subset to
+<code>EFFFL == &quot;Y&quot;</code>, which leads to <code>EFFFL</code> being
+included in the output as well.</p>
+</div>
+<div id="extracting-a-result-cells-metadata" class="section level2">
+<h2>Extracting a Result Cell’s Metadata</h2>
+<p>To extract the dataframe in <code>get_meta_subset()</code>, the
+metadata of the result cell needs to first be extracted. This metadata
+can be directly accessed using the function
+<code>get_meta_result()</code>. Using the last example of
+<code>get_meta_subset()</code> above:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_meta_result</span>(t, <span class="st">&#39;d1_2&#39;</span>, <span class="st">&#39;var1_Xanomeline High Dose&#39;</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; tplyr_meta: 4 names, 3 filters</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Names:</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     TRT01P, EFFFL, SAFFL, AGE </span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Filters:</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     TRT01P == c(&quot;Xanomeline High Dose&quot;), EFFFL == &quot;Y&quot;, SAFFL == &quot;Y&quot;</span></span></code></pre></div>
+<p>The resulting output is a new object Tplyr called
+<code>tplyr_meta()</code>. This is a container of a relevent metadata
+for a specific result. The object itself is a list with two elements:
+<code>names</code> and <code>filters</code>.</p>
+<p>The <code>names</code> element contains quosures for each variable
+relevant to a specific result. This will include the target variable,
+the <code>by</code> variables used on the layer, the <code>cols</code>
+variables used on the table, and all variables included in any filter
+condition relevant to create the result.</p>
+<p>The <code>filters</code> element contains each filter condition
+(provided as calls) necessary to create a particular cell. This will
+include the table level <code>where</code> argument, the layer level
+<code>where</code> argument, the filter condition for the specific value
+of any <code>by</code> variable or <code>cols</code> variable necessary
+to create the cell, and similarly the filter for the treatment group of
+interest.</p>
+<p>The results are provided this was so that they can be unpacked
+directly into <code>dplyr</code> syntax when necessary, which is exactly
+what happens in <code>get_meta_subset()</code>. For example:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">get_meta_result</span>(t, <span class="st">&#39;d1_2&#39;</span>, <span class="st">&#39;var1_Xanomeline High Dose&#39;</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>adsl <span class="sc">%&gt;%</span> </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!!!</span>m<span class="sc">$</span>filters) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">!!!</span>m<span class="sc">$</span>names) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">TRT01P</th>
+<th align="left">EFFFL</th>
+<th align="left">SAFFL</th>
+<th align="right">AGE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Xanomeline High Dose</td>
+<td align="left">Y</td>
+<td align="left">Y</td>
+<td align="right">71</td>
+</tr>
+<tr class="even">
+<td align="left">Xanomeline High Dose</td>
+<td align="left">Y</td>
+<td align="left">Y</td>
+<td align="right">77</td>
+</tr>
+<tr class="odd">
+<td align="left">Xanomeline High Dose</td>
+<td align="left">Y</td>
+<td align="left">Y</td>
+<td align="right">81</td>
+</tr>
+<tr class="even">
+<td align="left">Xanomeline High Dose</td>
+<td align="left">Y</td>
+<td align="left">Y</td>
+<td align="right">75</td>
+</tr>
+<tr class="odd">
+<td align="left">Xanomeline High Dose</td>
+<td align="left">Y</td>
+<td align="left">Y</td>
+<td align="right">57</td>
+</tr>
+<tr class="even">
+<td align="left">Xanomeline High Dose</td>
+<td align="left">Y</td>
+<td align="left">Y</td>
+<td align="right">56</td>
+</tr>
+<tr class="odd">
+<td align="left">Xanomeline High Dose</td>
+<td align="left">Y</td>
+<td align="left">Y</td>
+<td align="right">79</td>
+</tr>
+<tr class="even">
+<td align="left">Xanomeline High Dose</td>
+<td align="left">Y</td>
+<td align="left">Y</td>
+<td align="right">56</td>
+</tr>
+<tr class="odd">
+<td align="left">Xanomeline High Dose</td>
+<td align="left">Y</td>
+<td align="left">Y</td>
+<td align="right">61</td>
+</tr>
+<tr class="even">
+<td align="left">Xanomeline High Dose</td>
+<td align="left">Y</td>
+<td align="left">Y</td>
+<td align="right">56</td>
+</tr>
+</tbody>
+</table>
+<p><em>Note: Trimmed for space</em></p>
+<p>But - who says you can’t let your imagination run wild?</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">c</span>(<span class="st">&quot;adsl %&gt;%</span><span class="sc">\n</span><span class="st">&quot;</span>,</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;   filter(</span><span class="sc">\n</span><span class="st">      &quot;</span>,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(purrr<span class="sc">::</span><span class="fu">map_chr</span>(m<span class="sc">$</span>filters, <span class="sc">~</span> rlang<span class="sc">::</span><span class="fu">as_label</span>(.)), <span class="at">collpase=</span><span class="st">&quot;,</span><span class="sc">\n</span><span class="st">      &quot;</span>),</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;) %&gt;%</span><span class="sc">\n</span><span class="st">&quot;</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="st">&quot;   select(&quot;</span>, <span class="fu">paste</span>(purrr<span class="sc">::</span><span class="fu">map_chr</span>(m<span class="sc">$</span>names, rlang<span class="sc">::</span>as_label), <span class="at">collapse=</span><span class="st">&quot;, &quot;</span>), <span class="st">&quot;)&quot;</span>, <span class="at">sep=</span><span class="st">&quot;&quot;</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div>
+<pre><code>adsl %&gt;%
+    filter(
+       TRT01P == c(&quot;Xanomeline High Dose&quot;) ,
+       EFFFL == &quot;Y&quot; ,
+       SAFFL == &quot;Y&quot; ,
+       ) %&gt;%
+    select(TRT01P, EFFFL, SAFFL, AGE)</code></pre>
+</div>
+<div id="so-what-does-this-get-me" class="section level2">
+<h2>So, What Does This Get Me?</h2>
+<p>So we get get metadata around a result cell, and we can get the exact
+results from a result cell. You just need a row ID and a column name.
+But - what does that get you? You can query your tables - and that’s
+great. But how do you <em>use</em> that.</p>
+<p>The idea behind this is really to support <a href="https://shiny.rstudio.com/">Shiny</a>. Consider this minimal
+application. Click any of the result cells within the table and see what
+happens.</p>
+<iframe src="https://michael-stackhouse.shinyapps.io/Tplyr-shiny-demo/?showcase=0" width="850" height="900px" data-external="1" style="border: 1px solid #464646;" allowfullscreen allow="autoplay">
+</iframe>
+<p><em>Source code available <a href="https://github.com/atorus-research/Tplyr-shiny-demo">here</a></em></p>
+<p><em>That’s</em> what this is all about. The persistent row_id and
+column selection enables you to use something like Shiny to
+automatically query a cell based on its position in a table. Using click
+events and a package like <a href="https://glin.github.io/reactable/">reactable</a>, you can pick up
+the row and column selected and pass that information into
+<code>get_meta_result()</code>. Once you get the resulting data frame,
+it’s up to you what you do with it, and you have the world of Shiny at
+the tip of your fingers.</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

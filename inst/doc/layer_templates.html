@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Layer Templates</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Layer Templates</h1>
+
+
+
+<p>There are several scenarios where a layer template may be useful.
+Some tables, like demographics tables, may have many layers that will
+all essentially look the same. Categorical variables will have the same
+count layer settings, and continuous variables will have the same desc
+layer settings. A template allows a user to build those settings once
+per layer, then reference the template when the Tplyr table is actually
+built. Another scenario might be building a set of company layer
+templates that are built for standard tables to reduce the footprint of
+code across analyses. In either of these cases, the idea is the reduce
+the amount of redundant code necessary to create a table.</p>
+<p>Tplyr has already has a couple of mechanisms to reduce redundant
+application of formats. For example,
+<code>vignettes(&#39;tplyr_options&#39;)</code> shows how the options
+<code>tplyr.count_layer_default_formats</code>,
+<code>tplyr.desc_layer_default_formats</code>, and
+<code>tplyr.shift_layer_default_formats</code> can be used to create
+default format string settings. Additionally, you can set formats table
+wide using <code>set_count_layer_formats()</code>,
+<code>set_desc_layer_formats()</code>, or
+<code>set_shift_layer_formats()</code>. But what these functions and
+options <em>don’t</em> allow you to do is pre-set and reuse the settings
+for an entire layer, so all of the additional potential layer modifying
+functions are ignored. This is where layer templates come in.</p>
+<div id="basic-templates" class="section level1">
+<h1>Basic Templates</h1>
+<p>The functions <code>new_layer_template()</code> and
+<code>use_template()</code> allow a user to create and use layer
+templates. Layer templates allow a user to pre-build and reuse an entire
+layer configuration, from the layer constructor down to all modifying
+functions. Furthermore, users can specify parameters they may want to be
+interchangeable. Additionally, layer templates are extensible, so a
+template can be use and then further extended with additional layer
+modifying functions.</p>
+<p>Consider the following example:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">new_layer_template</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;example_template&quot;</span>, </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_count</span>(...) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set_format_strings</span>(<span class="fu">f_str</span>(<span class="st">&quot;xx (xx%)&quot;</span>, n, pct))</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>In this example, we’ve created a basic layer template. The template
+is named “example_template”, and this is the name we’ll use to reference
+the template when we want to use it. When the template is created, we
+start with the function <code>group_count(...)</code>. Note the use of
+the ellipsis (i.e. <code>...</code>). This is a required part of a layer
+template. Templates must start with a Tplyr layer constructor, which is
+one of the function <code>group_count()</code>,
+<code>group_desc()</code>, or <code>group_shift()</code>. The ellipsis
+is necessary because when the template is used, we are able to pass
+arguments directly into the layer constructor. For example:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">use_template</span>(<span class="st">&quot;example_template&quot;</span>, RACE, <span class="at">by=</span>ETHNIC)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<table style="width:100%;">
+<colgroup>
+<col width="14%" />
+<col width="20%" />
+<col width="8%" />
+<col width="16%" />
+<col width="15%" />
+<col width="10%" />
+<col width="7%" />
+<col width="7%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">row_label2</th>
+<th align="left">var1_Placebo</th>
+<th align="left">var1_Xanomeline High Dose</th>
+<th align="left">var1_Xanomeline Low Dose</th>
+<th align="right">ord_layer_index</th>
+<th align="right">ord_layer_1</th>
+<th align="right">ord_layer_2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">HISPANIC OR LATINO</td>
+<td align="left">AMERICAN INDIAN OR ALASKA NATIVE</td>
+<td align="left">0 ( 0%)</td>
+<td align="left">0 ( 0%)</td>
+<td align="left">0 ( 0%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">HISPANIC OR LATINO</td>
+<td align="left">BLACK OR AFRICAN AMERICAN</td>
+<td align="left">0 ( 0%)</td>
+<td align="left">0 ( 0%)</td>
+<td align="left">0 ( 0%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">HISPANIC OR LATINO</td>
+<td align="left">WHITE</td>
+<td align="left">3 ( 3%)</td>
+<td align="left">3 ( 4%)</td>
+<td align="left">6 ( 7%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">NOT HISPANIC OR LATINO</td>
+<td align="left">AMERICAN INDIAN OR ALASKA NATIVE</td>
+<td align="left">0 ( 0%)</td>
+<td align="left">1 ( 1%)</td>
+<td align="left">0 ( 0%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">NOT HISPANIC OR LATINO</td>
+<td align="left">BLACK OR AFRICAN AMERICAN</td>
+<td align="left">8 ( 9%)</td>
+<td align="left">9 (11%)</td>
+<td align="left">6 ( 7%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">NOT HISPANIC OR LATINO</td>
+<td align="left">WHITE</td>
+<td align="left">75 (87%)</td>
+<td align="left">71 (85%)</td>
+<td align="left">72 (86%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">3</td>
+</tr>
+</tbody>
+</table>
+<p>Within <code>use_template()</code>, the first parameter is the
+template name. After that, we supply arguments as we normally would into
+<code>group_count()</code>, <code>group_desc()</code>, or
+<code>group_shift()</code>. Additionally, note that our formats have
+been applied just as they would be if we used
+<code>set_format_strings()</code> as specified in the template. Our
+template was applied, the table built with all of the settings
+appropriately.</p>
+<p>An additional feature of layer templates is that they act just as any
+other function would in a Tplyr layer. This means that they’re also
+extensible and can be expanded on directly within a Tplyr table. For
+example:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">use_template</span>(<span class="st">&quot;example_template&quot;</span>, RACE) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">add_total_row</span>()</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<colgroup>
+<col width="26%" />
+<col width="10%" />
+<col width="20%" />
+<col width="20%" />
+<col width="12%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">var1_Placebo</th>
+<th align="left">var1_Xanomeline High Dose</th>
+<th align="left">var1_Xanomeline Low Dose</th>
+<th align="right">ord_layer_index</th>
+<th align="right">ord_layer_1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">AMERICAN INDIAN OR ALASKA NATIVE</td>
+<td align="left">0 ( 0%)</td>
+<td align="left">1 ( 1%)</td>
+<td align="left">0 ( 0%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">BLACK OR AFRICAN AMERICAN</td>
+<td align="left">8 ( 9%)</td>
+<td align="left">9 (11%)</td>
+<td align="left">6 ( 7%)</td>
+<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">WHITE</td>
+<td align="left">78 (91%)</td>
+<td align="left">74 (88%)</td>
+<td align="left">78 (93%)</td>
+<td align="right">1</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Total</td>
+<td align="left">86 (100%)</td>
+<td align="left">84 (100%)</td>
+<td align="left">84 (100%)</td>
+<td align="right">1</td>
+<td align="right">4</td>
+</tr>
+</tbody>
+</table>
+<p>Here we show two things - first, that the we called the template
+without the by variable argument from the previous example. This allows
+a template to have some flexibility depending on the context of its
+usage. Furthermore, we added the additional modifier function
+<code>add_total_row()</code>. In this example, we took the layer as
+constructed by the template and then modified that layer further. This
+may be useful if most but not all of a layer is reusable. The reusable
+portions can be put in a template, and the rest added using normal Tplyr
+syntax.</p>
+<div id="templates-with-parameters" class="section level2">
+<h2>Templates With Parameters</h2>
+<p>It’s also possible to add interchangeable parameters into a layer
+template beyond the group constructor arguments. But this requires some
+special syntax. Consider the following template:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">new_layer_template</span>(<span class="st">&quot;example_params&quot;</span>,</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_count</span>(...) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set_format_strings</span>(<span class="fu">f_str</span>(<span class="st">&quot;xx (xx.x%)&quot;</span>, n, pct)) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set_order_count_method</span>({sort_meth}) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set_ordering_cols</span>({sort_col})</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a> )</span></code></pre></div>
+<p>In this example, we create a template similar to the first example.
+But now we add two more modifying functions,
+<code>set_order_count_method()</code> and
+<code>set_ordering_cols()</code>. Within these functions, we’ve supplied
+interchangeable parameters to the template function, which are
+<code>sort_meth</code> and <code>sort_col</code>. In a Tplyr layer
+template, these parameters are supplied using curly brackets
+(i.e. {}).</p>
+<p>To specify these arguments when using the templater, we use the
+<code>use_template()</code> argument <code>add_params</code>. For
+example:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">use_template</span>(<span class="st">&#39;example_params&#39;</span>, RACE, <span class="at">add_params =</span> </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">list</span>(</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">sort_meth =</span> <span class="st">&quot;bycount&quot;</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">sort_col =</span> Placebo</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                   ))</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<colgroup>
+<col width="26%" />
+<col width="10%" />
+<col width="20%" />
+<col width="20%" />
+<col width="12%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">var1_Placebo</th>
+<th align="left">var1_Xanomeline High Dose</th>
+<th align="left">var1_Xanomeline Low Dose</th>
+<th align="right">ord_layer_index</th>
+<th align="right">ord_layer_1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">AMERICAN INDIAN OR ALASKA NATIVE</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">BLACK OR AFRICAN AMERICAN</td>
+<td align="left">8 ( 9.3%)</td>
+<td align="left">9 (10.7%)</td>
+<td align="left">6 ( 7.1%)</td>
+<td align="right">1</td>
+<td align="right">8</td>
+</tr>
+<tr class="odd">
+<td align="left">WHITE</td>
+<td align="left">78 (90.7%)</td>
+<td align="left">74 (88.1%)</td>
+<td align="left">78 (92.9%)</td>
+<td align="right">1</td>
+<td align="right">78</td>
+</tr>
+</tbody>
+</table>
+<p>In the <code>add_params</code> parameter, you must supply a list.
+That list must also be named, where the element names (in this example,
+<code>sort_meth</code> and <code>sort_col</code>) match the parameter
+names in the template itself. If there’s any mismatch between a
+template’s parameters and the parameters provided to
+<code>add_params</code>, you will encounter an error. The values
+supplied to <code>add_param</code> are then exactly the arguments that
+you would supply to the matching field within the template (i.e. there’s
+no extra quoting using <code>quo()</code> necessary to pass a
+symbol).</p>
+</div>
+</div>
+<div id="viewing-and-removing-templates" class="section level1">
+<h1>Viewing and Removing Templates</h1>
+<p>If you want to view any available templates in your session, use the
+function <code>get_layer_templates()</code>.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_layer_templates</span>()</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $example_template</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Template name: example_template</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Template parameters: None</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Template code:</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; {</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; group_count(...) %&gt;% set_format_strings(f_str(&quot;xx (xx%)&quot;, n, pct))</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; } </span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $example_params</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Template name: example_params</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Template parameters: sort_meth, sort_col</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Template code:</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; {</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; group_count(...) %&gt;% set_format_strings(f_str(&quot;xx (xx.x%)&quot;, n, pct)) %&gt;% set_order_count_method({</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     sort_meth</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; }) %&gt;% set_ordering_cols({</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     sort_col</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; })</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; }</span></span></code></pre></div>
+<p>You can view a specific template using
+<code>get_layer_template()</code>.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_layer_template</span>(<span class="st">&quot;example_params&quot;</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Template name: example_params</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Template parameters: sort_meth, sort_col</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Template code:</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; {</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; group_count(...) %&gt;% set_format_strings(f_str(&quot;xx (xx.x%)&quot;, n, pct)) %&gt;% set_order_count_method({</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     sort_meth</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; }) %&gt;% set_ordering_cols({</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     sort_col</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; })</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; }</span></span></code></pre></div>
+<p>Note that layer templates are of class
+<code>tplyr_layer_template</code>. They additionally carry the attribute
+<code>params</code> that specifies which parameters are available in the
+template, which can be seen in the output above.</p>
+<p>Finally, if you want to remove a layer from your session, use the
+function <code>remove_layer_template()</code></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">remove_layer_template</span>(<span class="st">&quot;example_params&quot;</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_layer_templates</span>()</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $example_template</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Template name: example_template</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Template parameters: None</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Template code:</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; {</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; group_count(...) %&gt;% set_format_strings(f_str(&quot;xx (xx%)&quot;, n, pct))</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; }</span></span></code></pre></div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

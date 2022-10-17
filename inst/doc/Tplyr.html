@@ -14,7 +14,19 @@
 
 <title>Getting Started</title>
 
-<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -24,6 +36,7 @@
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
   ul.task-list{list-style: none;}
     </style>
+
 
 
 <style type="text/css">
@@ -107,13 +120,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -125,7 +145,187 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
 
 
 
@@ -142,54 +342,90 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <div id="TOC">
 <ul>
-<li><a href="#how-tplyr-works">How ‘Tplyr’ Works</a>
+<li><a href="#how-tplyr-works" id="toc-how-tplyr-works">How ‘Tplyr’
+Works</a>
 <ul>
-<li><a href="#the-tplyr_table-object">The <code>tplyr_table()</code> Object</a></li>
-<li><a href="#the-tplyr_layer-object">The <code>tplyr_layer</code> Object</a></li>
-<li><a href="#adding-layers-to-a-table">Adding Layers to a Table</a>
+<li><a href="#the-tplyr_table-object" id="toc-the-tplyr_table-object">The <code>tplyr_table()</code>
+Object</a></li>
+<li><a href="#the-tplyr_layer-object" id="toc-the-tplyr_layer-object">The <code>tplyr_layer</code>
+Object</a></li>
+<li><a href="#adding-layers-to-a-table" id="toc-adding-layers-to-a-table">Adding Layers to a Table</a>
 <ul>
-<li><a href="#a-note-before-we-go-deeper">A Note Before We Go Deeper</a></li>
+<li><a href="#a-note-before-we-go-deeper" id="toc-a-note-before-we-go-deeper">A Note Before We Go Deeper</a></li>
 </ul></li>
-<li><a href="#constructing-layers">Constructing Layers</a>
+<li><a href="#constructing-layers" id="toc-constructing-layers">Constructing Layers</a>
 <ul>
-<li><a href="#string-formatting-in-tplyr">String Formatting in ‘Tplyr’</a></li>
+<li><a href="#string-formatting-in-tplyr" id="toc-string-formatting-in-tplyr">String Formatting in
+‘Tplyr’</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#layer-types">Layer Types</a>
+<li><a href="#layer-types" id="toc-layer-types">Layer Types</a>
 <ul>
-<li><a href="#descriptive-statistic-layers">Descriptive Statistic Layers</a></li>
-<li><a href="#count-layers">Count Layers</a></li>
-<li><a href="#shift-layers">Shift Layers</a></li>
+<li><a href="#descriptive-statistic-layers" id="toc-descriptive-statistic-layers">Descriptive Statistic
+Layers</a></li>
+<li><a href="#count-layers" id="toc-count-layers">Count Layers</a></li>
+<li><a href="#shift-layers" id="toc-shift-layers">Shift Layers</a></li>
 </ul></li>
-<li><a href="#where-to-go-from-here">Where to go from here?</a></li>
-<li><a href="#references">References</a></li>
+<li><a href="#where-to-go-from-here" id="toc-where-to-go-from-here">Where to go from here?</a></li>
+<li><a href="#references" id="toc-references">References</a></li>
 </ul>
 </div>
 
 <div id="how-tplyr-works" class="section level1">
 <h1>How ‘Tplyr’ Works</h1>
-<p>When you look at a summary table within a clinical report, you can often break it down into some basic pieces. Consider this output.</p>
+<p>When you look at a summary table within a clinical report, you can
+often break it down into some basic pieces. Consider this output.</p>
 <p><img src="data:image/png;base64,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" /></p>
-<p>Different variables are being summarized in chunks of the table, which we refer to as “layers”. Additionally, this table really only contains a few different types of summaries, which makes many of the calculations rather redundant. This drives the motivation behind ‘Tplyr’. The containing table is encapsulated within the <code>tplyr_table()</code> object, and each section, or “layer”, within the summary table can be broken down into a <code>tplyr_layer()</code> object.</p>
+<p>Different variables are being summarized in chunks of the table,
+which we refer to as “layers”. Additionally, this table really only
+contains a few different types of summaries, which makes many of the
+calculations rather redundant. This drives the motivation behind
+‘Tplyr’. The containing table is encapsulated within the
+<code>tplyr_table()</code> object, and each section, or “layer”, within
+the summary table can be broken down into a <code>tplyr_layer()</code>
+object.</p>
 <div id="the-tplyr_table-object" class="section level2">
 <h2>The <code>tplyr_table()</code> Object</h2>
-<p>The <code>tplyr_table()</code> object is the conceptual “table” that contains all of the logic necessary to construct and display the data. ‘Tplyr’ tables are made up of one or more layers. Each layer contains an instruction for a summary to be performed. The <code>tplyr_table()</code> object contains those layers, and the general data, metadata, and logic necessary to prepare the data before any layers are constructed.</p>
-<p>When a <code>tplyr_table()</code> is created, it will contain the following bindings:</p>
+<p>The <code>tplyr_table()</code> object is the conceptual “table” that
+contains all of the logic necessary to construct and display the data.
+‘Tplyr’ tables are made up of one or more layers. Each layer contains an
+instruction for a summary to be performed. The
+<code>tplyr_table()</code> object contains those layers, and the general
+data, metadata, and logic necessary to prepare the data before any
+layers are constructed.</p>
+<p>When a <code>tplyr_table()</code> is created, it will contain the
+following bindings:</p>
 <ul>
-<li><code>target</code> - The dataset upon which summaries will be performed</li>
-<li><code>count_layer_formats</code> - Default formats to be used on count layers in the table</li>
-<li><code>shift_layer_formats</code> - Default formats to be used on shift layers in the table</li>
-<li><code>desc_layer_formats</code> - Default formats to be used on descriptive statistics layers in the table</li>
-<li><code>pop_data</code> - The dataset containing population information. This defaults to the <code>target</code> dataset</li>
-<li><code>cols</code> - A categorical variable in the <code>target</code> dataset to present summaries grouped by column (in addition to the <code>treat_var</code> variable)</li>
-<li><code>table_where</code> - The <code>where</code> clause provided, used to subset the <code>target</code> dataset</li>
-<li><code>treat_var</code> - Variable used to distinguish treatment groups in the <code>target</code> dataset.</li>
-<li><code>header_n</code> - Default header N values based on <code>treat_var</code> and any <code>cols</code> variables</li>
-<li><code>pop_treat_var</code> - Variable used to distinguish treatment groups in <code>pop_data</code> dataset (if different than the <code>treat_var</code> variable in the <code>target</code> dataset)</li>
-<li><code>layers</code> - The container for individual layers of a <code>tplyr_table()</code></li>
-<li><code>treat_grps</code> - Additional treatment groups to be added to the summary (i.e. Total)</li>
+<li><code>target</code> - The dataset upon which summaries will be
+performed</li>
+<li><code>count_layer_formats</code> - Default formats to be used on
+count layers in the table</li>
+<li><code>shift_layer_formats</code> - Default formats to be used on
+shift layers in the table</li>
+<li><code>desc_layer_formats</code> - Default formats to be used on
+descriptive statistics layers in the table</li>
+<li><code>pop_data</code> - The dataset containing population
+information. This defaults to the <code>target</code> dataset</li>
+<li><code>cols</code> - A categorical variable in the
+<code>target</code> dataset to present summaries grouped by column (in
+addition to the <code>treat_var</code> variable)</li>
+<li><code>table_where</code> - The <code>where</code> clause provided,
+used to subset the <code>target</code> dataset</li>
+<li><code>treat_var</code> - Variable used to distinguish treatment
+groups in the <code>target</code> dataset.</li>
+<li><code>header_n</code> - Default header N values based on
+<code>treat_var</code> and any <code>cols</code> variables</li>
+<li><code>pop_treat_var</code> - Variable used to distinguish treatment
+groups in <code>pop_data</code> dataset (if different than the
+<code>treat_var</code> variable in the <code>target</code> dataset)</li>
+<li><code>layers</code> - The container for individual layers of a
+<code>tplyr_table()</code></li>
+<li><code>treat_grps</code> - Additional treatment groups to be added to
+the summary (i.e. Total)</li>
 </ul>
-<p>The function <code>tplyr_table()</code> allows you a basic interface to instantiate the object. Modifier functions are available to change individual parameters catered to your analysis.</p>
+<p>The function <code>tplyr_table()</code> allows you a basic interface
+to instantiate the object. Modifier functions are available to change
+individual parameters catered to your analysis.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">tplyr_table</span>(adsl, TRT01P, <span class="at">where =</span> SAFFL <span class="sc">==</span> <span class="st">&quot;Y&quot;</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>t</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; *** tplyr_table ***</span></span>
@@ -208,26 +444,66 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="the-tplyr_layer-object" class="section level2">
 <h2>The <code>tplyr_layer</code> Object</h2>
-<p>Users of ‘Tplyr’ interface with <code>tplyr_layer()</code> objects using the <code>group_&lt;type&gt;</code> family of functions. This family specifies the type of summary that is to be performed within a layer. <code>count</code> layers are used to create summary counts of some discrete variable. <code>shift</code> layers summarize the counts for different changes in states. Lastly, <code>desc</code> layers create descriptive statistics.</p>
+<p>Users of ‘Tplyr’ interface with <code>tplyr_layer()</code> objects
+using the <code>group_&lt;type&gt;</code> family of functions. This
+family specifies the type of summary that is to be performed within a
+layer. <code>count</code> layers are used to create summary counts of
+some discrete variable. <code>shift</code> layers summarize the counts
+for different changes in states. Lastly, <code>desc</code> layers create
+descriptive statistics.</p>
 <ul>
 <li><strong>Count Layers</strong>
 <ul>
-<li>Count layers allow you to easily create summaries based on counting distinct or non-distinct occurrences of values within a variable. Additionally, this layer allows you to create n (%) summaries where you’re also summarizing the proportion of instances a value occurs compared to some denominator. Count layers are also capable of producing counts of nested relationships. For example, if you want to produce counts of an overall outside group, and then the subgroup counts within that group, you can simply specify the target variable as <code>vars(OutsideVariable, InsideVariable)</code>. This allows you to do tables like Adverse Events where you want to see the Preferred Terms within Body Systems, all in one layer. Count layers can also distinguish between distinct and non-distinct counts. Using some specified by variable, you can count the unique occurrences of some variable within the specified by grouping, including the target. This allows you to do a summary like unique subjects and their proportion experiencing some adverse event, and the number of total occurrences of that adverse event.</li>
+<li>Count layers allow you to easily create summaries based on counting
+distinct or non-distinct occurrences of values within a variable.
+Additionally, this layer allows you to create n (%) summaries where
+you’re also summarizing the proportion of instances a value occurs
+compared to some denominator. Count layers are also capable of producing
+counts of nested relationships. For example, if you want to produce
+counts of an overall outside group, and then the subgroup counts within
+that group, you can simply specify the target variable as
+<code>vars(OutsideVariable, InsideVariable)</code>. This allows you to
+do tables like Adverse Events where you want to see the Preferred Terms
+within Body Systems, all in one layer. Count layers can also distinguish
+between distinct and non-distinct counts. Using some specified by
+variable, you can count the unique occurrences of some variable within
+the specified by grouping, including the target. This allows you to do a
+summary like unique subjects and their proportion experiencing some
+adverse event, and the number of total occurrences of that adverse
+event.</li>
 </ul></li>
 <li><strong>Descriptive Statistics Layers</strong>
 <ul>
-<li>Descriptive statistics layers perform summaries on continuous variables. There are a number of summaries built into ‘Tplyr’ already that you can perform, including n, mean, median, standard deviation, variance, min, max, interquartile range, Q1, Q3, and missing value counts. From these available summaries, the default presentation of a descriptive statistics layer will output ‘n’, ‘Mean (SD)’, ‘Median’, ‘Q1, Q3’, ‘Min, Max’, and ‘Missing’. You can change these summaries using <code>set_format_strings()</code>, and you can also add your own summaries using <code>set_custom_summaries()</code>. This allows you to easily implement any additional summary statistics you want presented.</li>
+<li>Descriptive statistics layers perform summaries on continuous
+variables. There are a number of summaries built into ‘Tplyr’ already
+that you can perform, including n, mean, median, standard deviation,
+variance, min, max, interquartile range, Q1, Q3, and missing value
+counts. From these available summaries, the default presentation of a
+descriptive statistics layer will output ‘n’, ‘Mean (SD)’, ‘Median’,
+‘Q1, Q3’, ‘Min, Max’, and ‘Missing’. You can change these summaries
+using <code>set_format_strings()</code>, and you can also add your own
+summaries using <code>set_custom_summaries()</code>. This allows you to
+easily implement any additional summary statistics you want
+presented.</li>
 </ul></li>
 <li><strong>Shift Layers</strong>
 <ul>
-<li>Shift layers are largely an abstraction of the count layer - and in fact, we re-use a lot of the same code to process these layers. In many shift tables, the “from” state is presented as rows in the table, and the “to” state is presented as columns. This clearly lays out how many subjects changed state between a baseline and some point in time. Shift layers give you an intuitive API to break these out, using a very similar interface as the other layers. There are also a number of modifier functions available to control nuanced aspects, such as how denominators should be applied.</li>
+<li>Shift layers are largely an abstraction of the count layer - and in
+fact, we re-use a lot of the same code to process these layers. In many
+shift tables, the “from” state is presented as rows in the table, and
+the “to” state is presented as columns. This clearly lays out how many
+subjects changed state between a baseline and some point in time. Shift
+layers give you an intuitive API to break these out, using a very
+similar interface as the other layers. There are also a number of
+modifier functions available to control nuanced aspects, such as how
+denominators should be applied.</li>
 </ul></li>
 </ul>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>cnt <span class="ot">&lt;-</span> <span class="fu">group_count</span>(t, AGEGR1)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>cnt</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; *** count_layer ***</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Self:  count_layer &lt; 0x555c2e469590 &gt;</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Parent:  tplyr_table &lt; 0x555c2e000830 &gt;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Self:  count_layer &lt; 0x56498aee46e8 &gt;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Parent:  tplyr_table &lt; 0x564984318248 &gt;</span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; target_var: </span></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  AGEGR1</span></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; by: </span></span>
@@ -237,8 +513,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>dsc <span class="ot">&lt;-</span> <span class="fu">group_desc</span>(t, AGE)</span>
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>dsc</span>
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; *** desc_layer ***</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Self:  desc_layer &lt; 0x555c2e5be520 &gt;</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Parent:  tplyr_table &lt; 0x555c2e000830 &gt;</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Self:  desc_layer &lt; 0x56498b029220 &gt;</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Parent:  tplyr_table &lt; 0x564984318248 &gt;</span></span>
 <span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; target_var: </span></span>
 <span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  AGE</span></span>
 <span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; by: </span></span>
@@ -248,8 +524,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>shf <span class="ot">&lt;-</span> <span class="fu">group_shift</span>(t, <span class="fu">vars</span>(<span class="at">row=</span>COMP8FL, <span class="at">column=</span>COMP24FL))</span>
 <span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>shf</span>
 <span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; *** shift_layer ***</span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Self:  shift_layer &lt; 0x555c2e6dcee8 &gt;</span></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Parent:  tplyr_table &lt; 0x555c2e000830 &gt;</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Self:  shift_layer &lt; 0x56498b13dd70 &gt;</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Parent:  tplyr_table &lt; 0x564984318248 &gt;</span></span>
 <span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; target_var: </span></span>
 <span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  COMP8FL</span></span>
 <span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  COMP24FL</span></span>
@@ -259,31 +535,62 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="adding-layers-to-a-table" class="section level2">
 <h2>Adding Layers to a Table</h2>
-<p>Everyone has their own style of coding - so we’ve tried to be flexible to an extent. Overall, ‘Tplyr’ is built around tidy syntax, so all of our object construction supports piping with <a href="https://magrittr.tidyverse.org/articles/magrittr.html"><code>magrittr</code></a> (i.e. <code>%&gt;%</code>).</p>
-<p>There are two ways to add layers to a <code>tplyr_table()</code>: <code>add_layer()</code> and <code>add_layers()</code>. The difference is that <code>add_layer()</code> allows you to construct the layer within the call to <code>add_layer()</code>, whereas with <code>add_layers()</code> you can attach multiple layers that have already been constructed upfront:</p>
+<p>Everyone has their own style of coding - so we’ve tried to be
+flexible to an extent. Overall, ‘Tplyr’ is built around tidy syntax, so
+all of our object construction supports piping with <a href="https://magrittr.tidyverse.org/articles/magrittr.html"><code>magrittr</code></a>
+(i.e. <code>%&gt;%</code>).</p>
+<p>There are two ways to add layers to a <code>tplyr_table()</code>:
+<code>add_layer()</code> and <code>add_layers()</code>. The difference
+is that <code>add_layer()</code> allows you to construct the layer
+within the call to <code>add_layer()</code>, whereas with
+<code>add_layers()</code> you can attach multiple layers that have
+already been constructed upfront:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(AGEGR1, <span class="at">by =</span> <span class="st">&quot;Age categories n (%)&quot;</span>)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
-<p>Within <code>add_layer()</code>, the syntax to constructing the count layer for Age Categories was written on the fly. <code>add_layer()</code> is special in that it also allows you to use piping to use modifier functions on the layer being constructed</p>
+<p>Within <code>add_layer()</code>, the syntax to constructing the count
+layer for Age Categories was written on the fly.
+<code>add_layer()</code> is special in that it also allows you to use
+piping to use modifier functions on the layer being constructed</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(AGEGR1, <span class="at">by =</span> <span class="st">&quot;Age categories n (%)&quot;</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="fu">f_str</span>(<span class="st">&quot;xx (xx.x%)&quot;</span>, n, pct)) <span class="sc">%&gt;%</span> </span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">add_total_row</span>()</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
-<p><code>add_layers()</code>, on the other hand, lets you isolate the code to construct a particular layer if you wanted to separate things out more. Some might find this cleaner to work with if you have a large number of layers being constructed.</p>
+<p><code>add_layers()</code>, on the other hand, lets you isolate the
+code to construct a particular layer if you wanted to separate things
+out more. Some might find this cleaner to work with if you have a large
+number of layers being constructed.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">tplyr_table</span>(adsl, TRT01P) </span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>l1 <span class="ot">&lt;-</span> <span class="fu">group_count</span>(t, AGEGR1, <span class="at">by =</span> <span class="st">&quot;Age categories n (%)&quot;</span>)</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>l2 <span class="ot">&lt;-</span> <span class="fu">group_desc</span>(t, AGE, <span class="at">by =</span> <span class="st">&quot;Age (years)&quot;</span>)</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">add_layers</span>(t, l1, l2)</span></code></pre></div>
-<p>Notice that when you construct the layers separately, you need to specify the table to which they belong. <code>add_layer()</code> does this automatically. <code>tplyr_table()</code> and <code>tplyr_layer()</code> objects are built on environments, and the parent/child relationships are very important. This is why, even though the layer knows who its table parent is, the layers still need to be attached to the table (as the table doesn’t know who its children are). <a href="https://adv-r.hadley.nz/environments.html">Advanced R</a> does a very good job at explaining what environments in R are, their benefits, and how to use them.</p>
+<p>Notice that when you construct the layers separately, you need to
+specify the table to which they belong. <code>add_layer()</code> does
+this automatically. <code>tplyr_table()</code> and
+<code>tplyr_layer()</code> objects are built on environments, and the
+parent/child relationships are very important. This is why, even though
+the layer knows who its table parent is, the layers still need to be
+attached to the table (as the table doesn’t know who its children are).
+<a href="https://adv-r.hadley.nz/environments.html">Advanced R</a> does
+a very good job at explaining what environments in R are, their
+benefits, and how to use them.</p>
 <div id="a-note-before-we-go-deeper" class="section level3">
 <h3>A Note Before We Go Deeper</h3>
-<p>Notice that when you construct a <code>tplyr_table()</code> or a <code>tplyr_layer()</code> that what displays is a summary of information about the table or layer? That’s because when you create these objects - it constructs the metadata, but does not process the actual data. This allows you to construct and make sure the pieces of your table fit together before you do the data processing - and it gives you a container to hold all of this metadata, and use it later if necessary.</p>
-<p>To generate the data from a <code>tplyr_table()</code> object, you use the function <code>build()</code>:</p>
+<p>Notice that when you construct a <code>tplyr_table()</code> or a
+<code>tplyr_layer()</code> that what displays is a summary of
+information about the table or layer? That’s because when you create
+these objects - it constructs the metadata, but does not process the
+actual data. This allows you to construct and make sure the pieces of
+your table fit together before you do the data processing - and it gives
+you a container to hold all of this metadata, and use it later if
+necessary.</p>
+<p>To generate the data from a <code>tplyr_table()</code> object, you
+use the function <code>build()</code>:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(AGEGR1, <span class="at">by =</span> <span class="st">&quot;Age categories n (%)&quot;</span>)</span>
@@ -348,7 +655,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<p>But there’s more you can get from ‘Tplyr’. It’s great to have the formatted numbers, but what about the numeric data behind the scenes? Maybe a number looks suspicious and you need to investigate <em>how</em> you got that number. What if you want to calculate your own statistics based off of the counts? You can get that information as well using <code>get_numeric_data()</code>. This returns the numeric data from each layer as a list of data frames:</p>
+<p>But there’s more you can get from ‘Tplyr’. It’s great to have the
+formatted numbers, but what about the numeric data behind the scenes?
+Maybe a number looks suspicious and you need to investigate <em>how</em>
+you got that number. What if you want to calculate your own statistics
+based off of the counts? You can get that information as well using
+<code>get_numeric_data()</code>. This returns the numeric data from each
+layer as a list of data frames:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_numeric_data</span>(t) <span class="sc">%&gt;%</span> </span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span> </span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
@@ -357,13 +670,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr>
 <td>
 <table>
+<colgroup>
+<col width="23%" />
+<col width="25%" />
+<col width="13%" />
+<col width="3%" />
+<col width="12%" />
+<col width="6%" />
+<col width="16%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">TRT01P</th>
 <th align="left">“Age categories n (%)”</th>
 <th align="left">summary_var</th>
 <th align="right">n</th>
+<th align="right">distinct_n</th>
 <th align="right">total</th>
+<th align="right">distinct_total</th>
 </tr>
 </thead>
 <tbody>
@@ -372,63 +696,81 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <td align="left">Age categories n (%)</td>
 <td align="left">65-80</td>
 <td align="right">42</td>
+<td align="right">1</td>
 <td align="right">86</td>
+<td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="left">Placebo</td>
 <td align="left">Age categories n (%)</td>
 <td align="left">&lt;65</td>
 <td align="right">14</td>
+<td align="right">1</td>
 <td align="right">86</td>
+<td align="right">1</td>
 </tr>
 <tr class="odd">
 <td align="left">Placebo</td>
 <td align="left">Age categories n (%)</td>
 <td align="left">&gt;80</td>
 <td align="right">30</td>
+<td align="right">1</td>
 <td align="right">86</td>
+<td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="left">Xanomeline High Dose</td>
 <td align="left">Age categories n (%)</td>
 <td align="left">65-80</td>
 <td align="right">55</td>
+<td align="right">1</td>
 <td align="right">84</td>
+<td align="right">1</td>
 </tr>
 <tr class="odd">
 <td align="left">Xanomeline High Dose</td>
 <td align="left">Age categories n (%)</td>
 <td align="left">&lt;65</td>
 <td align="right">11</td>
+<td align="right">1</td>
 <td align="right">84</td>
+<td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="left">Xanomeline High Dose</td>
 <td align="left">Age categories n (%)</td>
 <td align="left">&gt;80</td>
 <td align="right">18</td>
+<td align="right">1</td>
 <td align="right">84</td>
+<td align="right">1</td>
 </tr>
 <tr class="odd">
 <td align="left">Xanomeline Low Dose</td>
 <td align="left">Age categories n (%)</td>
 <td align="left">65-80</td>
 <td align="right">47</td>
+<td align="right">1</td>
 <td align="right">84</td>
+<td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="left">Xanomeline Low Dose</td>
 <td align="left">Age categories n (%)</td>
 <td align="left">&lt;65</td>
 <td align="right">8</td>
+<td align="right">1</td>
 <td align="right">84</td>
+<td align="right">1</td>
 </tr>
 <tr class="odd">
 <td align="left">Xanomeline Low Dose</td>
 <td align="left">Age categories n (%)</td>
 <td align="left">&gt;80</td>
 <td align="right">29</td>
+<td align="right">1</td>
 <td align="right">84</td>
+<td align="right">1</td>
 </tr>
 </tbody>
 </table>
@@ -436,15 +778,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<p>By storing pertinent information, you can get more out of a ‘Tplyr’ object than processed data for display. And by specifying when you want to get data out of ‘Tplyr’, we can save you from repeatedly processing data while your constructing your outputs - which is particularly useful when that computation starts taking time.</p>
+<p>By storing pertinent information, you can get more out of a ‘Tplyr’
+object than processed data for display. And by specifying when you want
+to get data out of ‘Tplyr’, we can save you from repeatedly processing
+data while your constructing your outputs - which is particularly useful
+when that computation starts taking time.</p>
 </div>
 </div>
 <div id="constructing-layers" class="section level2">
 <h2>Constructing Layers</h2>
-<p>The bulk of ‘Tplyr’ coding comes from constructing your layers and specifying the work you want to be done. Before we get into this, it’s important to discuss how ‘Tplyr’ handles string formatting.</p>
+<p>The bulk of ‘Tplyr’ coding comes from constructing your layers and
+specifying the work you want to be done. Before we get into this, it’s
+important to discuss how ‘Tplyr’ handles string formatting.</p>
 <div id="string-formatting-in-tplyr" class="section level3">
 <h3>String Formatting in ‘Tplyr’</h3>
-<p>String formatting in ‘Tplyr’ is controlled by an object called an <code>f_str()</code>, which is also the name of function you use to create these formats. To set these format strings into a <code>tplyr_layer()</code>, you use the function <code>set_format_strings()</code>, and this usage varies slightly between layer types (which is covered in other vignettes).</p>
+<p>String formatting in ‘Tplyr’ is controlled by an object called an
+<code>f_str()</code>, which is also the name of function you use to
+create these formats. To set these format strings into a
+<code>tplyr_layer()</code>, you use the function
+<code>set_format_strings()</code>, and this usage varies slightly
+between layer types (which is covered in other vignettes).</p>
 <p>So - why is this object necessary. Consider this example:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
@@ -505,11 +858,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<p>In a perfect world, the <code>f_str()</code> calls wouldn’t be necessary - but in reality they allow us to infer a great deal of information from very few user inputs. In the calls that you see above:</p>
+<p>In a perfect world, the <code>f_str()</code> calls wouldn’t be
+necessary - but in reality they allow us to infer a great deal of
+information from very few user inputs. In the calls that you see
+above:</p>
 <ul>
-<li>The row labels in the <code>row_label2</code> column are taken from the left side of each <code>=</code> in <code>set_format_strings()</code></li>
-<li>The string formats, including integer length and decimal precision, and exact presentation formatting are taken from the strings within the first parameter of each <code>f_str()</code> call</li>
-<li>The second and greater parameters within each <code>f_str()</code> call determine the descriptive statistic summaries that will be performed. This is connected to a number of default summaries available within ‘Tplyr’, but you can also create your own summaries (covered in other vignettes). The default summaries that are built in include:
+<li>The row labels in the <code>row_label2</code> column are taken from
+the left side of each <code>=</code> in
+<code>set_format_strings()</code></li>
+<li>The string formats, including integer length and decimal precision,
+and exact presentation formatting are taken from the strings within the
+first parameter of each <code>f_str()</code> call</li>
+<li>The second and greater parameters within each <code>f_str()</code>
+call determine the descriptive statistic summaries that will be
+performed. This is connected to a number of default summaries available
+within ‘Tplyr’, but you can also create your own summaries (covered in
+other vignettes). The default summaries that are built in include:
 <ul>
 <li><code>n</code> = Number of observations</li>
 <li><code>mean</code> = Mean</li>
@@ -522,10 +886,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><code>max</code> = Maximum value</li>
 <li><code>missing</code> = Count of NA values</li>
 </ul></li>
-<li>When two summaries are placed on the same <code>f_str()</code> call, then those two summaries are formatted into the same string. This allows you to do a “Mean (SD)” type format where both numbers appear.</li>
+<li>When two summaries are placed on the same <code>f_str()</code> call,
+then those two summaries are formatted into the same string. This allows
+you to do a “Mean (SD)” type format where both numbers appear.</li>
 </ul>
-<p>This simple user input controls a significant amount of work in the back end of the data processing, and the <code>f_str()</code> object allows that metadata to be collected.</p>
-<p><code>f_str()</code> objects are also used with count layers as well to control the data presentation. Instead of specifying the summaries performed, you use <code>n</code>, <code>pct</code>, <code>distinct_n</code>, and <code>distinct_pct</code> for your parameters and specify how you would like the values displayed. Using <code>distinct_n</code> and <code>distinct_pct</code> should be combined with specifying a <code>distinct_by()</code> variable using <code>set_distinct_by()</code>.</p>
+<p>This simple user input controls a significant amount of work in the
+back end of the data processing, and the <code>f_str()</code> object
+allows that metadata to be collected.</p>
+<p><code>f_str()</code> objects are also used with count layers as well
+to control the data presentation. Instead of specifying the summaries
+performed, you use <code>n</code>, <code>pct</code>,
+<code>distinct_n</code>, and <code>distinct_pct</code> for your
+parameters and specify how you would like the values displayed. Using
+<code>distinct_n</code> and <code>distinct_pct</code> should be combined
+with specifying a <code>distinct_by()</code> variable using
+<code>set_distinct_by()</code>.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(AGEGR1, <span class="at">by =</span> <span class="st">&quot;Age categories&quot;</span>) <span class="sc">%&gt;%</span> </span>
@@ -653,7 +1028,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<p>Really - format strings allow you to present your data however you like.</p>
+<p>Really - format strings allow you to present your data however you
+like.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(AGEGR1, <span class="at">by =</span> <span class="st">&quot;Age categories&quot;</span>) <span class="sc">%&gt;%</span> </span>
@@ -725,7 +1101,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1>Layer Types</h1>
 <div id="descriptive-statistic-layers" class="section level2">
 <h2>Descriptive Statistic Layers</h2>
-<p>As covered under string formatting, <code>set_format_strings()</code> controls a great deal of what happens within a descriptive statistics layer. Note that there are some built in defaults to what’s output:</p>
+<p>As covered under string formatting, <code>set_format_strings()</code>
+controls a great deal of what happens within a descriptive statistics
+layer. Note that there are some built in defaults to what’s output:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AGE, <span class="at">by =</span> <span class="st">&quot;Age (years)&quot;</span>)</span>
@@ -818,7 +1196,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<p>To override these defaults, just specify the summaries that you want to be performed using <code>set_format_strings()</code> as described above. But what if ‘Tplyr’ doesn’t have a built in function to do the summary statistic that you want to see? Well - you can make your own! This is where <code>set_custom_summaries()</code> comes into play. Let’s say you want to derive a geometric mean.</p>
+<p>To override these defaults, just specify the summaries that you want
+to be performed using <code>set_format_strings()</code> as described
+above. But what if ‘Tplyr’ doesn’t have a built in function to do the
+summary statistic that you want to see? Well - you can make your own!
+This is where <code>set_custom_summaries()</code> comes into play. Let’s
+say you want to derive a geometric mean.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AGE, <span class="at">by =</span> <span class="st">&quot;Sepal Length&quot;</span>) <span class="sc">%&gt;%</span></span>
@@ -867,8 +1250,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<p>In <code>set_custom_summaries()</code>, first you name the summary being performed. This is important - that name is what you use in the <code>f_str()</code> call to incorporate it into a format. Next, you program or call the function desired. What happens in the background is that this is used in a call to <code>dplyr::summarize()</code> - so use similar syntax. Use the variable name <code>.var</code> in your custom summary function. This is necessary because it allows a generic variable name to be used when multiple target variables are specified - and therefore the function can be applied to both target variables.</p>
-<p>Sometimes there’s a need to present multiple variables summarized side by side. ‘Tplyr’ allows you to do this as well.</p>
+<p>In <code>set_custom_summaries()</code>, first you name the summary
+being performed. This is important - that name is what you use in the
+<code>f_str()</code> call to incorporate it into a format. Next, you
+program or call the function desired. What happens in the background is
+that this is used in a call to <code>dplyr::summarize()</code> - so use
+similar syntax. Use the variable name <code>.var</code> in your custom
+summary function. This is necessary because it allows a generic variable
+name to be used when multiple target variables are specified - and
+therefore the function can be applied to both target variables.</p>
+<p>Sometimes there’s a need to present multiple variables summarized
+side by side. ‘Tplyr’ allows you to do this as well.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(<span class="fu">vars</span>(AGE, AVGDD), <span class="at">by =</span> <span class="st">&quot;Age and Avg. Daily Dose&quot;</span>)</span>
@@ -985,11 +1377,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<p>‘Tplyr’ summarizes both variables and merges them together. This makes creating tables where you need to compare BASE, AVAL, and CHG next to each other nice and simple. Note the use of <code>dplyr::vars()</code> - in any situation where you’d like to use multiple variable names in a parameter, use <code>dplyr::vars()</code> to specify the variables. You can use text strings in the calls to <code>dplyr::vars()</code> as well.</p>
+<p>‘Tplyr’ summarizes both variables and merges them together. This
+makes creating tables where you need to compare BASE, AVAL, and CHG next
+to each other nice and simple. Note the use of
+<code>dplyr::vars()</code> - in any situation where you’d like to use
+multiple variable names in a parameter, use <code>dplyr::vars()</code>
+to specify the variables. You can use text strings in the calls to
+<code>dplyr::vars()</code> as well.</p>
 </div>
 <div id="count-layers" class="section level2">
 <h2>Count Layers</h2>
-<p>Count layers generally allow you to create “n” and “n (%)” count type summaries. There are a few extra features here as well. Let’s say that you want a total row within your counts. This can be done with <code>add_total_row()</code>:</p>
+<p>Count layers generally allow you to create “n” and “n (%)” count type
+summaries. There are a few extra features here as well. Let’s say that
+you want a total row within your counts. This can be done with
+<code>add_total_row()</code>:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(AGEGR1, <span class="at">by =</span> <span class="st">&quot;Age categories&quot;</span>) <span class="sc">%&gt;%</span> </span>
@@ -1063,7 +1464,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<p>Sometimes it’s also necessary to count summaries based on distinct values. ‘Tplyr’ allows you to do this as well with <code>set_distinct_by()</code>:</p>
+<p>Sometimes it’s also necessary to count summaries based on distinct
+values. ‘Tplyr’ allows you to do this as well with
+<code>set_distinct_by()</code>:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adae, TRTA) <span class="sc">%&gt;%</span> </span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(<span class="st">&#39;Subjects with at least one adverse event&#39;</span>) <span class="sc">%&gt;%</span> </span>
@@ -1102,8 +1505,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<p>There’s another trick going on here - to create a summary with row label text like you see above, text strings can be used as the target variables. Here, we use this in combination with <code>set_distinct_by()</code> to count distinct subjects.</p>
-<p>Adverse event tables often call for counting AEs of something like a body system and counting actual events within that body system. ‘Tplyr’ has means of making this simple for the user as well.</p>
+<p>There’s another trick going on here - to create a summary with row
+label text like you see above, text strings can be used as the target
+variables. Here, we use this in combination with
+<code>set_distinct_by()</code> to count distinct subjects.</p>
+<p>Adverse event tables often call for counting AEs of something like a
+body system and counting actual events within that body system. ‘Tplyr’
+has means of making this simple for the user as well.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adae, TRTA) <span class="sc">%&gt;%</span> </span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(<span class="fu">vars</span>(AEBODSYS, AEDECOD))</span>
@@ -1197,11 +1605,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<p>Here we again use <code>dplyr::vars()</code> to specify multiple target variables. When used in a count layer, ‘Tplyr’ knows automatically that the first variable is a grouping variable for the second variable, and counts shall be produced for both then merged together.</p>
+<p>Here we again use <code>dplyr::vars()</code> to specify multiple
+target variables. When used in a count layer, ‘Tplyr’ knows
+automatically that the first variable is a grouping variable for the
+second variable, and counts shall be produced for both then merged
+together.</p>
 </div>
 <div id="shift-layers" class="section level2">
 <h2>Shift Layers</h2>
-<p>Lastly, let’s talk about shift layers. A common example of this would be looking at a subject’s lab levels at baseline versus some designated evaluation point. This would tell us, for example, how many subjects were high at baseline for a lab test vs. after an intervention has been introduced. The shift layer in ‘Tplyr’ is intended for creating shift tables that show these data as a matrix, where one state will be presented in rows and the other in columns. Let’s look at an example.</p>
+<p>Lastly, let’s talk about shift layers. A common example of this would
+be looking at a subject’s lab levels at baseline versus some designated
+evaluation point. This would tell us, for example, how many subjects
+were high at baseline for a lab test vs. after an intervention has been
+introduced. The shift layer in ‘Tplyr’ is intended for creating shift
+tables that show these data as a matrix, where one state will be
+presented in rows and the other in columns. Let’s look at an
+example.</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tplyr can use factor orders to dummy values and order presentation</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>adlb<span class="sc">$</span>ANRIND <span class="ot">&lt;-</span> <span class="fu">factor</span>(adlb<span class="sc">$</span>ANRIND, <span class="fu">c</span>(<span class="st">&quot;L&quot;</span>, <span class="st">&quot;N&quot;</span>, <span class="st">&quot;H&quot;</span>))</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>adlb<span class="sc">$</span>BNRIND <span class="ot">&lt;-</span> <span class="fu">factor</span>(adlb<span class="sc">$</span>BNRIND, <span class="fu">c</span>(<span class="st">&quot;L&quot;</span>, <span class="st">&quot;N&quot;</span>, <span class="st">&quot;H&quot;</span>))</span>
@@ -1299,29 +1718,51 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<p>The underlying process of shift tables is the same as count layers - we’re counting the number of occurrences of something by a set of grouping variables. This differs in that ‘Tplyr’ uses the <code>group_shift()</code> API to use the same basic interface as other tables, but translate your target variables into the row variable and the column variable. Furthermore, there is some enhanced control over how denominators should behave that is necessary for a shift layer.</p>
+<p>The underlying process of shift tables is the same as count layers -
+we’re counting the number of occurrences of something by a set of
+grouping variables. This differs in that ‘Tplyr’ uses the
+<code>group_shift()</code> API to use the same basic interface as other
+tables, but translate your target variables into the row variable and
+the column variable. Furthermore, there is some enhanced control over
+how denominators should behave that is necessary for a shift layer.</p>
 </div>
 </div>
 <div id="where-to-go-from-here" class="section level1">
 <h1>Where to go from here?</h1>
-<p>There’s quite a bit more to learn! And we’ve prepared a number of other vignettes to help you get what you need out of ‘Tplyr’.</p>
+<p>There’s quite a bit more to learn! And we’ve prepared a number of
+other vignettes to help you get what you need out of ‘Tplyr’.</p>
 <ul>
-<li>Learn more about table level settings in <code>vignette(&quot;table&quot;)</code></li>
-<li>Learn more about descriptive statistics layers in <code>vignette(&quot;desc&quot;)</code></li>
-<li>Learn more about count and shift layers in <code>vignette(&quot;count&quot;)</code></li>
+<li>Learn more about table level settings in
+<code>vignette(&quot;table&quot;)</code></li>
+<li>Learn more about descriptive statistics layers in
+<code>vignette(&quot;desc&quot;)</code></li>
+<li>Learn more about count and shift layers in
+<code>vignette(&quot;count&quot;)</code></li>
 <li>Learn more about shift layers in <code>vignette(&quot;shift&quot;)</code></li>
-<li>Learn more about calculating risk differences in <code>vignette(&quot;riskdiff&quot;)</code></li>
-<li>Learn more about sorting ‘Tplyr’ tables in <code>vignette(&quot;sort&quot;)</code></li>
-<li>Learn more about using ‘Tplyr’ options in <code>vignette(&quot;options&quot;)</code></li>
-<li>And finally, learn more about producing and outputting styled tables using ‘Tplyr’ in <code>vignette(&quot;styled-table&quot;)</code></li>
+<li>Learn more about calculating risk differences in
+<code>vignette(&quot;riskdiff&quot;)</code></li>
+<li>Learn more about sorting ‘Tplyr’ tables in
+<code>vignette(&quot;sort&quot;)</code></li>
+<li>Learn more about using ‘Tplyr’ options in
+<code>vignette(&quot;options&quot;)</code></li>
+<li>And finally, learn more about producing and outputting styled tables
+using ‘Tplyr’ in <code>vignette(&quot;styled-table&quot;)</code></li>
 </ul>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>
-<p>In building ‘Tplyr’, we needed some additional resources in addition to our personal experience to help guide design. PHUSE has done some great work to create guidance for standard outputs with collaboration between multiple pharmaceutical companies and the FDA. You can find some of the resource that we referenced below.</p>
-<p><a href="https://phuse.s3.eu-central-1.amazonaws.com/Deliverables/Standard+Analyses+and+Code+Sharing/Analyses+and+Displays+Associated+with+Adverse+Events+Focus+on+Adverse+Events+in+Phase+2-4+Clinical+Trials+and+Integrated+Summary.pdf">Analysis and Displays Associated with Adverse Events</a></p>
-<p><a href="https://phuse.s3.eu-central-1.amazonaws.com/Deliverables/Standard+Analyses+and+Code+Sharing/Analyses+%26+Displays+Associated+with+Demographics,+Disposition+and+Medication+in+Phase+2-4+Clinical+Trials+and+Integrated+Summary+Documents.pdf">Analyses and Displays Associated with Demographics, Disposition, and Medications</a></p>
-<p><a href="https://phuse.s3.eu-central-1.amazonaws.com/Deliverables/Standard+Analyses+and+Code+Sharing/Analyses+%26+Displays+Associated+with+Measures+of+Central+Tendency-+Focus+on+Vital+Sign,+Electrocardiogram+%26+Laboratory+Analyte+Measurements+in+Phase+2-4+Clinical+Trials+and+Integrated+Submissions.pdf">Analyses and Displays Associated with Measures of Central Tendency</a></p>
+<p>In building ‘Tplyr’, we needed some additional resources in addition
+to our personal experience to help guide design. PHUSE has done some
+great work to create guidance for standard outputs with collaboration
+between multiple pharmaceutical companies and the FDA. You can find some
+of the resource that we referenced below.</p>
+<p><a href="https://phuse.s3.eu-central-1.amazonaws.com/Deliverables/Standard+Analyses+and+Code+Sharing/Analyses+and+Displays+Associated+with+Adverse+Events+Focus+on+Adverse+Events+in+Phase+2-4+Clinical+Trials+and+Integrated+Summary.pdf">Analysis
+and Displays Associated with Adverse Events</a></p>
+<p><a href="https://phuse.s3.eu-central-1.amazonaws.com/Deliverables/Standard+Analyses+and+Code+Sharing/Analyses+%26+Displays+Associated+with+Demographics,+Disposition+and+Medication+in+Phase+2-4+Clinical+Trials+and+Integrated+Summary+Documents.pdf">Analyses
+and Displays Associated with Demographics, Disposition, and
+Medications</a></p>
+<p><a href="https://phuse.s3.eu-central-1.amazonaws.com/Deliverables/Standard+Analyses+and+Code+Sharing/Analyses+%26+Displays+Associated+with+Measures+of+Central+Tendency-+Focus+on+Vital+Sign,+Electrocardiogram+%26+Laboratory+Analyte+Measurements+in+Phase+2-4+Clinical+Trials+and+Integrated+Submissions.pdf">Analyses
+and Displays Associated with Measures of Central Tendency</a></p>
 </div>
 
 

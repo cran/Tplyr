@@ -14,7 +14,19 @@
 
 <title>Descriptive Statistic Layers</title>
 
-<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -24,6 +36,7 @@
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
   ul.task-list{list-style: none;}
     </style>
+
 
 
 <style type="text/css">
@@ -107,13 +120,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -125,7 +145,187 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
 
 
 
@@ -142,19 +342,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <div id="TOC">
 <ul>
-<li><a href="#built-in-summaries">Built-in Summaries</a>
+<li><a href="#built-in-summaries" id="toc-built-in-summaries">Built-in
+Summaries</a>
 <ul>
-<li><a href="#notes-about-built-ins">Notes About Built-in’s</a></li>
+<li><a href="#notes-about-built-ins" id="toc-notes-about-built-ins">Notes About Built-in’s</a></li>
 </ul></li>
-<li><a href="#custom-summaries">Custom Summaries</a></li>
-<li><a href="#formatting">Formatting</a>
+<li><a href="#custom-summaries" id="toc-custom-summaries">Custom
+Summaries</a></li>
+<li><a href="#formatting" id="toc-formatting">Formatting</a>
 <ul>
-<li><a href="#auto-precision">Auto Precision</a></li>
+<li><a href="#auto-precision" id="toc-auto-precision">Auto
+Precision</a></li>
+<li><a href="#external-precision" id="toc-external-precision">External
+Precision</a></li>
 </ul></li>
 </ul>
 </div>
 
-<p>Descriptive statistics in ‘Tplyr’ are created using <code>group_desc()</code> function when creating a layer. While <code>group_desc()</code> allows you to set your target, by variables, and filter criteria, a great deal of the control of the layer comes from <code>set_format_strings()</code> where the actual summaries are declared.</p>
+<p>Descriptive statistics in ‘Tplyr’ are created using
+<code>group_desc()</code> function when creating a layer. While
+<code>group_desc()</code> allows you to set your target, by variables,
+and filter criteria, a great deal of the control of the layer comes from
+<code>set_format_strings()</code> where the actual summaries are
+declared.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AGE, <span class="at">by =</span> <span class="st">&quot;Age (years)&quot;</span>, <span class="at">where=</span> SAFFL<span class="sc">==</span><span class="st">&quot;Y&quot;</span>) <span class="sc">%&gt;%</span> </span>
@@ -255,17 +465,43 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<p>Let’s walk through this call to <code>set_format_strings</code> to understand in detail what’s going on:</p>
+<p>Let’s walk through this call to <code>set_format_strings</code> to
+understand in detail what’s going on:</p>
 <ol style="list-style-type: decimal">
-<li>The quoted strings on the left of the ‘=’ within <code>set_format_strings()</code> become the row label in the output. This allows you to define some custom text in <code>set_format_strings()</code> to explain the summary that is presented on the associated row. This text is fully in your control.</li>
-<li>On the right side of each equals is a call to <code>f_str()</code>. As explained in the <code>vignette(&quot;Tplyr&quot;)</code>, this is an object that captures a lot of metadata to understand how the strings should be presented.</li>
-<li>Within the <code>f_str()</code> call, you see x’s in quotes. This defines how you’d like the numbers formatted from the resulting summaries. The number of x’s you use on the left side of a decimal control the space allotted for an integer, and the right side controls the decimal precision. Decimals are rounded prior to string formatting - so no need to worry about that. Note that this forcefully sets the decimal and integer precision - ‘Tplyr’ can automatically determine this for you as well, but more on that later.</li>
-<li>After the x’s there are unquoted variable names. This is where you specify the actual summaries that will be performed. Notice that some <code>f_str()</code> calls have two summaries specified. This allows you to put two summaries in the same string and present them on the same line.</li>
+<li>The quoted strings on the left of the ‘=’ within
+<code>set_format_strings()</code> become the row label in the output.
+This allows you to define some custom text in
+<code>set_format_strings()</code> to explain the summary that is
+presented on the associated row. This text is fully in your
+control.</li>
+<li>On the right side of each equals is a call to <code>f_str()</code>.
+As explained in the <code>vignette(&quot;Tplyr&quot;)</code>, this is an object
+that captures a lot of metadata to understand how the strings should be
+presented.</li>
+<li>Within the <code>f_str()</code> call, you see x’s in quotes. This
+defines how you’d like the numbers formatted from the resulting
+summaries. The number of x’s you use on the left side of a decimal
+control the space allotted for an integer, and the right side controls
+the decimal precision. Decimals are rounded prior to string formatting -
+so no need to worry about that. Note that this forcefully sets the
+decimal and integer precision - ‘Tplyr’ can automatically determine this
+for you as well, but more on that later.</li>
+<li>After the x’s there are unquoted variable names. This is where you
+specify the actual summaries that will be performed. Notice that some
+<code>f_str()</code> calls have two summaries specified. This allows you
+to put two summaries in the same string and present them on the same
+line.</li>
 </ol>
-<p>But where do these summary names come from? And which ones does ‘Tplyr’ have?</p>
+<p>But where do these summary names come from? And which ones does
+‘Tplyr’ have?</p>
 <div id="built-in-summaries" class="section level2">
 <h2>Built-in Summaries</h2>
-<p>We’ve built a number of default summaries into ‘Tplyr’, which allows you to perform these summaries without having to specify the functions to calculate them yourself. The summaries built in to ‘Tplyr’ are listed below. In the second column are the names that you would use within an <code>f_str()</code> call to use them. In the third column, we have the syntax used to make the function call.</p>
+<p>We’ve built a number of default summaries into ‘Tplyr’, which allows
+you to perform these summaries without having to specify the functions
+to calculate them yourself. The summaries built in to ‘Tplyr’ are listed
+below. In the second column are the names that you would use within an
+<code>f_str()</code> call to use them. In the third column, we have the
+syntax used to make the function call.</p>
 <table>
 <colgroup>
 <col width="19%" />
@@ -318,17 +554,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="even">
 <td align="center">Interquartile Range</td>
 <td align="center">iqr</td>
-<td align="left">IQR(.var, na.rm=TRUE, type=getOption(‘tplyr.quantile_type’)</td>
+<td align="left">IQR(.var, na.rm=TRUE,
+type=getOption(‘tplyr.quantile_type’)</td>
 </tr>
 <tr class="odd">
 <td align="center">Q1</td>
 <td align="center">q1</td>
-<td align="left">quantile(.var, na.rm=TRUE, type=getOption(‘tplyr.quantile_type’))[[2]]</td>
+<td align="left">quantile(.var, na.rm=TRUE,
+type=getOption(‘tplyr.quantile_type’))[[2]]</td>
 </tr>
 <tr class="even">
 <td align="center">Q3</td>
 <td align="center">q3</td>
-<td align="left">quantile(.var, na.rm=TRUE, type=getOption(‘tplyr.quantile_type’))[[4]]</td>
+<td align="left">quantile(.var, na.rm=TRUE,
+type=getOption(‘tplyr.quantile_type’))[[4]]</td>
 </tr>
 <tr class="odd">
 <td align="center">Missing</td>
@@ -339,11 +578,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </table>
 <div id="notes-about-built-ins" class="section level3">
 <h3>Notes About Built-in’s</h3>
-<p>Note that the only non-default option being used in any of the function calls above is <code>na.rm=TRUE</code>. For most of the functions, this is likely fine - but with IQR, Q1, and Q3 note that there are several different quantile algorithms available in R. The default we chose to use is the R default of Type 7:</p>
+<p>Note that the only non-default option being used in any of the
+function calls above is <code>na.rm=TRUE</code>. For most of the
+functions, this is likely fine - but with IQR, Q1, and Q3 note that
+there are several different quantile algorithms available in R. The
+default we chose to use is the R default of Type 7:</p>
 <p><span class="math display">\[
-m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])]. \textrm{This is used by S.}
-\]</span> That said, we still want to offer some flexibility here, so you can change the quantile algorithm by switching the <code>tplyr.quantile_type</code> option. If you’re intending to match the SAS definition, you can use Type 3. For more information, see the <code>stats::quantile()</code> documentation.</p>
-<p>The example below demonstrates using the default quantile algorithm in R.</p>
+m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] =
+mode[F(x[k])]. \textrm{This is used by S.}
+\]</span> That said, we still want to offer some flexibility here, so
+you can change the quantile algorithm by switching the
+<code>tplyr.quantile_type</code> option. If you’re intending to match
+the SAS definition, you can use Type 3. For more information, see the
+<code>stats::quantile()</code> documentation.</p>
+<p>The example below demonstrates using the default quantile algorithm
+in R.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(CUMDOSE) <span class="sc">%&gt;%</span> </span>
@@ -353,6 +602,12 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;ord&quot;</span>)) <span class="sc">%&gt;%</span> </span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="14%" />
+<col width="17%" />
+<col width="34%" />
+<col width="33%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -370,9 +625,11 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 </tr>
 </tbody>
 </table>
-<p>This next example demonstrates using quantile algorithm Type 3, which matches the SAS definition of:</p>
+<p>This next example demonstrates using quantile algorithm Type 3, which
+matches the SAS definition of:</p>
 <p><span class="math display">\[
-\textrm{Nearest even order statistic. γ = 0 if g = 0 and  j is even, and 1 otherwise.}
+\textrm{Nearest even order statistic. γ = 0 if g = 0 and  j is even, and
+1 otherwise.}
 \]</span></p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">tplyr.quantile_type =</span> <span class="dv">3</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
@@ -384,6 +641,12 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;ord&quot;</span>)) <span class="sc">%&gt;%</span> </span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="14%" />
+<col width="17%" />
+<col width="34%" />
+<col width="33%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
@@ -401,19 +664,32 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 </tr>
 </tbody>
 </table>
-<p>It’s up to you to determine which algorithm you should use - but we found it necessary to provide you with the flexibility to change this within the default summaries.</p>
-<p>But what if ‘Tplyr’ doesn’t offer you the summaries that you need?</p>
+<p>It’s up to you to determine which algorithm you should use - but we
+found it necessary to provide you with the flexibility to change this
+within the default summaries.</p>
+<p>But what if ‘Tplyr’ doesn’t offer you the summaries that you
+need?</p>
 </div>
 </div>
 <div id="custom-summaries" class="section level2">
 <h2>Custom Summaries</h2>
-<p>We understand that our defaults may not cover every descriptive statistic that you’d like to see. That’s why we’ve opened to door to creating custom summaries. Custom summaries allow you to provide any function you’d like into a desc layer. You can focus on the derivation and how to calculate the number you want to see. ‘Tplyr’ can consume this function, and use all the existing tools within ‘Tplyr’ to produce the string formatted result alongside any of the default summaries we provide as well.</p>
+<p>We understand that our defaults may not cover every descriptive
+statistic that you’d like to see. That’s why we’ve opened to door to
+creating custom summaries. Custom summaries allow you to provide any
+function you’d like into a desc layer. You can focus on the derivation
+and how to calculate the number you want to see. ‘Tplyr’ can consume
+this function, and use all the existing tools within ‘Tplyr’ to produce
+the string formatted result alongside any of the default summaries we
+provide as well.</p>
 <p>Custom summaries may be provided in two ways:</p>
 <ul>
-<li>Through the <code>tplyr.custom_summaries</code> option set at your session level</li>
-<li>Through the function <code>set_custom_summaries()</code> at the layer level</li>
+<li>Through the <code>tplyr.custom_summaries</code> option set at your
+session level</li>
+<li>Through the function <code>set_custom_summaries()</code> at the
+layer level</li>
 </ul>
-<p>As with any other setting in ‘Tplyr’, the layer setting will always take precedence over any other setting.</p>
+<p>As with any other setting in ‘Tplyr’, the layer setting will always
+take precedence over any other setting.</p>
 <p>Let’s look at an example.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
@@ -466,11 +742,28 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 </table>
 <p>Here, a few important things are demonstrated:</p>
 <ul>
-<li>This is a multi-variable descriptive statistics layer. Both <code>AGE</code> and <code>HEIGHTBL</code> are being summarized in the same layer. <code>AGE</code> results go to the <code>var1_</code> variables and <code>HEIGHTBL</code> results go to the <code>var2_</code> variables.</li>
-<li>The parameter names in <code>set_custom_summaries()</code>, or names on the left side of the equals, flow into <code>set_format_strings()</code> in the <code>f_str()</code> calls. Just like the default summaries, <code>geometric_mean</code> becomes the name that you refer to in order to use the geometric mean derivation in a summary.</li>
-<li>In geometric mean, the target variable that you’re summarizing is referred to as <code>.var</code>. This may not seem intuitive. The reason we have to use <code>.var</code> is so that, like in this example, the custom function can be applied to each of the separate target variables.</li>
+<li>This is a multi-variable descriptive statistics layer. Both
+<code>AGE</code> and <code>HEIGHTBL</code> are being summarized in the
+same layer. <code>AGE</code> results go to the <code>var1_</code>
+variables and <code>HEIGHTBL</code> results go to the <code>var2_</code>
+variables.</li>
+<li>The parameter names in <code>set_custom_summaries()</code>, or names
+on the left side of the equals, flow into
+<code>set_format_strings()</code> in the <code>f_str()</code> calls.
+Just like the default summaries, <code>geometric_mean</code> becomes the
+name that you refer to in order to use the geometric mean derivation in
+a summary.</li>
+<li>In geometric mean, the target variable that you’re summarizing is
+referred to as <code>.var</code>. This may not seem intuitive. The
+reason we have to use <code>.var</code> is so that, like in this
+example, the custom function can be applied to each of the separate
+target variables.</li>
 </ul>
-<p>Another note about custom summaries is that you’re able to overwrite the default summaries built into ‘Tplyr’ as well. Don’t like the default summary functions that we provide? Use the <code>tplyr.custom_summaries</code> option to overwrite them in your session, and add any new ones that you would like to include.</p>
+<p>Another note about custom summaries is that you’re able to overwrite
+the default summaries built into ‘Tplyr’ as well. Don’t like the default
+summary functions that we provide? Use the
+<code>tplyr.custom_summaries</code> option to overwrite them in your
+session, and add any new ones that you would like to include.</p>
 <p>For example, here we use the ‘Tplyr’ default mean.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
@@ -509,7 +802,9 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 </tr>
 </tbody>
 </table>
-<p>But now, let’s overwrite <code>mean</code> using a custom summary. Let’s use a trimmed mean instead, taking 20% of observations off of both ends.</p>
+<p>But now, let’s overwrite <code>mean</code> using a custom summary.
+Let’s use a trimmed mean instead, taking 20% of observations off of both
+ends.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">tplyr.custom_summaries =</span> </span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>          rlang<span class="sc">::</span><span class="fu">quos</span>(</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">mean =</span> <span class="fu">mean</span>(.var, <span class="at">na.rm=</span><span class="cn">TRUE</span>, <span class="at">trim=</span><span class="fl">0.4</span>)</span>
@@ -553,33 +848,62 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 </tr>
 </tbody>
 </table>
-<p>Note that the table code used to produce the output is the same. Now ‘Tplyr’ used the custom summary function for <code>mean</code> as specified in the <code>tplyr.custom_summaries</code> option. Also note the use of <code>rlang::quos()</code>. We’ve done our best to mask this from the user everywhere possible and make the interfaces clean and intuitive, but a great deal of ‘Tplyr’ is built using ‘rlang’ and non-standard evaluation. Within this option is one of the very few instances where a user needs to concern themselves with the use of quosures. If you’d like to learn more about non-standard evaluation and quosures, we recommend <a href="https://adv-r.hadley.nz/metaprogramming.html">Section IV</a> in Advanced R.</p>
+<p>Note that the table code used to produce the output is the same. Now
+‘Tplyr’ used the custom summary function for <code>mean</code> as
+specified in the <code>tplyr.custom_summaries</code> option. Also note
+the use of <code>rlang::quos()</code>. We’ve done our best to mask this
+from the user everywhere possible and make the interfaces clean and
+intuitive, but a great deal of ‘Tplyr’ is built using ‘rlang’ and
+non-standard evaluation. Within this option is one of the very few
+instances where a user needs to concern themselves with the use of
+quosures. If you’d like to learn more about non-standard evaluation and
+quosures, we recommend <a href="https://adv-r.hadley.nz/metaprogramming.html">Section IV</a> in
+Advanced R.</p>
 </div>
 <div id="formatting" class="section level2">
 <h2>Formatting</h2>
-<p>A lot of the nuance to formatting descriptive statistics layers has already been covered above, but there are a couple more tricks to getting the most out of ‘Tplyr’. One of these tricks is filling empty values.</p>
-<p>By default, if there is no available value for a summary in a particular observation, the result being presented will be blanked out.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>adlb_2 <span class="ot">&lt;-</span> adlb <span class="sc">%&gt;%</span> </span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(TRTA <span class="sc">!=</span> <span class="st">&quot;Placebo&quot;</span>)</span>
+<p>A lot of the nuance to formatting descriptive statistics layers has
+already been covered above, but there are a couple more tricks to
+getting the most out of ‘Tplyr’. One of these tricks is filling empty
+values.</p>
+<p>By default, if there is no available value for a summary in a
+particular observation, the result being presented will be blanked
+out.</p>
+<p><em>Note: Tplyr generally respects factor levels - so in instances of
+a missing row or column group, if the factor level is present, then the
+variable or row will still generate)</em></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>adsl<span class="sc">$</span>TRT01P <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(adsl<span class="sc">$</span>TRT01P)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>adlb<span class="sc">$</span>TRTA <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(adlb<span class="sc">$</span>TRTA)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adlb_2, TRTA) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_pop_data</span>(adsl) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_pop_treat_var</span>(TRT01P) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AVAL, <span class="at">by=</span>PARAMCD) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="st">&#39;Mean (SD)&#39;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&#39;xxx (xxx)&#39;</span>, mean, sd))</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;ord&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>adlb_2 <span class="ot">&lt;-</span> adlb <span class="sc">%&gt;%</span> </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(TRTA <span class="sc">!=</span> <span class="st">&quot;Placebo&quot;</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adlb_2, TRTA) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_pop_data</span>(adsl) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_pop_treat_var</span>(TRT01P) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AVAL, <span class="at">by=</span>PARAMCD) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="st">&#39;Mean (SD)&#39;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&#39;xxx (xxx)&#39;</span>, mean, sd))</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;ord&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="12%" />
+<col width="12%" />
+<col width="30%" />
+<col width="29%" />
+<col width="15%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
 <th align="left">row_label2</th>
 <th align="left">var1_Xanomeline High Dose</th>
 <th align="left">var1_Xanomeline Low Dose</th>
+<th align="left">var1_Placebo</th>
 </tr>
 </thead>
 <tbody>
@@ -588,55 +912,69 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <td align="left">Mean (SD)</td>
 <td align="left">5 ( 1)</td>
 <td align="left">6 ( 3)</td>
+<td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left">CA</td>
 <td align="left">Mean (SD)</td>
 <td align="left">2 ( 0)</td>
 <td align="left">2 ( 0)</td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left">CK</td>
 <td align="left">Mean (SD)</td>
 <td align="left">64 ( 94)</td>
 <td align="left">58 ( 78)</td>
+<td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left">GGT</td>
 <td align="left">Mean (SD)</td>
 <td align="left">17 ( 49)</td>
 <td align="left">21 ( 27)</td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left">URATE</td>
 <td align="left">Mean (SD)</td>
 <td align="left">271 ( 88)</td>
 <td align="left">231 ( 87)</td>
+<td align="left"></td>
 </tr>
 </tbody>
 </table>
-<p>Note how the entire example above has all records in <code>var1_Placebo</code> missing. ‘Tplyr’ gives you control over how you fill this space. Let’s say that we wanted instead to make that space say “Missing”. You can control this with the <code>f_str()</code> object using the <code>empty</code> parameter</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>adlb_2 <span class="ot">&lt;-</span> adlb <span class="sc">%&gt;%</span> </span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(TRTA <span class="sc">!=</span> <span class="st">&quot;Placebo&quot;</span>)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adlb_2, TRTA) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_pop_data</span>(adsl) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_pop_treat_var</span>(TRT01P) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AVAL, <span class="at">by=</span>PARAMCD) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="st">&#39;Mean (SD)&#39;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&#39;xxx.xx (xxx.xxx)&#39;</span>, mean, sd, <span class="at">empty=</span><span class="fu">c</span>(<span class="at">.overall=</span><span class="st">&quot;MISSING&quot;</span>)))</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;ord&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<p>Note how the entire example above has all records in
+<code>var1_Placebo</code> missing. ‘Tplyr’ gives you control over how
+you fill this space. Let’s say that we wanted instead to make that space
+say “Missing”. You can control this with the <code>f_str()</code> object
+using the <code>empty</code> parameter.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adlb_2, TRTA) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_pop_data</span>(adsl) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_pop_treat_var</span>(TRT01P) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AVAL, <span class="at">by=</span>PARAMCD) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="st">&#39;Mean (SD)&#39;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&#39;xxx.xx (xxx.xxx)&#39;</span>, mean, sd, <span class="at">empty=</span><span class="fu">c</span>(<span class="at">.overall=</span><span class="st">&quot;MISSING&quot;</span>)))</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;ord&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="12%" />
+<col width="12%" />
+<col width="30%" />
+<col width="29%" />
+<col width="15%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
 <th align="left">row_label2</th>
 <th align="left">var1_Xanomeline High Dose</th>
 <th align="left">var1_Xanomeline Low Dose</th>
+<th align="left">var1_Placebo</th>
 </tr>
 </thead>
 <tbody>
@@ -645,55 +983,70 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <td align="left">Mean (SD)</td>
 <td align="left">4.57 ( 1.301)</td>
 <td align="left">5.71 ( 2.940)</td>
+<td align="left">MISSING</td>
 </tr>
 <tr class="even">
 <td align="left">CA</td>
 <td align="left">Mean (SD)</td>
 <td align="left">2.19 ( 0.137)</td>
 <td align="left">2.15 ( 0.083)</td>
+<td align="left">MISSING</td>
 </tr>
 <tr class="odd">
 <td align="left">CK</td>
 <td align="left">Mean (SD)</td>
 <td align="left">64.25 ( 93.986)</td>
 <td align="left">58.33 ( 77.915)</td>
+<td align="left">MISSING</td>
 </tr>
 <tr class="even">
 <td align="left">GGT</td>
 <td align="left">Mean (SD)</td>
 <td align="left">16.75 ( 48.692)</td>
 <td align="left">21.33 ( 26.989)</td>
+<td align="left">MISSING</td>
 </tr>
 <tr class="odd">
 <td align="left">URATE</td>
 <td align="left">Mean (SD)</td>
 <td align="left">271.23 ( 88.161)</td>
 <td align="left">230.98 ( 87.006)</td>
+<td align="left">MISSING</td>
 </tr>
 </tbody>
 </table>
-<p>Look at the <code>empty</code> parameter above. Here, we use a named character vector, where the name is <code>.overall</code>. When this name is used, if all elements within the cell are missing, they will be filled with the specified text. Otherwise, the provided string will fill just the missing parameter. In some cases, this may not be what you’d like to see. Perhaps we want a string that fills each missing space.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>adlb_2 <span class="ot">&lt;-</span> adlb <span class="sc">%&gt;%</span> </span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(TRTA <span class="sc">!=</span> <span class="st">&quot;Placebo&quot;</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adlb_2, TRTA) <span class="sc">%&gt;%</span> </span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_pop_data</span>(adsl) <span class="sc">%&gt;%</span> </span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_pop_treat_var</span>(TRT01P) <span class="sc">%&gt;%</span> </span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AVAL, <span class="at">by=</span>PARAMCD) <span class="sc">%&gt;%</span> </span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="st">&#39;Mean (SD)&#39;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&#39;xxx.xx (xxx.xxx)&#39;</span>, mean, sd, <span class="at">empty=</span><span class="fu">c</span>(<span class="st">&quot;NA&quot;</span>)))</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;ord&quot;</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<p>Look at the <code>empty</code> parameter above. Here, we use a named
+character vector, where the name is <code>.overall</code>. When this
+name is used, if all elements within the cell are missing, they will be
+filled with the specified text. Otherwise, the provided string will fill
+just the missing parameter. In some cases, this may not be what you’d
+like to see. Perhaps we want a string that fills each missing space.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adlb_2, TRTA) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_pop_data</span>(adsl) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_pop_treat_var</span>(TRT01P) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AVAL, <span class="at">by=</span>PARAMCD) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="st">&#39;Mean (SD)&#39;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&#39;xxx.xx (xxx.xxx)&#39;</span>, mean, sd, <span class="at">empty=</span><span class="fu">c</span>(<span class="st">&quot;NA&quot;</span>)))</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;ord&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
+<colgroup>
+<col width="12%" />
+<col width="12%" />
+<col width="30%" />
+<col width="29%" />
+<col width="15%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
 <th align="left">row_label2</th>
 <th align="left">var1_Xanomeline High Dose</th>
 <th align="left">var1_Xanomeline Low Dose</th>
+<th align="left">var1_Placebo</th>
 </tr>
 </thead>
 <tbody>
@@ -702,59 +1055,79 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <td align="left">Mean (SD)</td>
 <td align="left">4.57 ( 1.301)</td>
 <td align="left">5.71 ( 2.940)</td>
+<td align="left">NA ( NA)</td>
 </tr>
 <tr class="even">
 <td align="left">CA</td>
 <td align="left">Mean (SD)</td>
 <td align="left">2.19 ( 0.137)</td>
 <td align="left">2.15 ( 0.083)</td>
+<td align="left">NA ( NA)</td>
 </tr>
 <tr class="odd">
 <td align="left">CK</td>
 <td align="left">Mean (SD)</td>
 <td align="left">64.25 ( 93.986)</td>
 <td align="left">58.33 ( 77.915)</td>
+<td align="left">NA ( NA)</td>
 </tr>
 <tr class="even">
 <td align="left">GGT</td>
 <td align="left">Mean (SD)</td>
 <td align="left">16.75 ( 48.692)</td>
 <td align="left">21.33 ( 26.989)</td>
+<td align="left">NA ( NA)</td>
 </tr>
 <tr class="odd">
 <td align="left">URATE</td>
 <td align="left">Mean (SD)</td>
 <td align="left">271.23 ( 88.161)</td>
 <td align="left">230.98 ( 87.006)</td>
+<td align="left">NA ( NA)</td>
 </tr>
 </tbody>
 </table>
-<p>In the example above, instead of filling the whole space, the <code>empty</code> text of “NA” replaces the empty value for each element. So for ‘Mean (SD)’, we now have ‘NA ( NA)’. Note that the proper padding was still used for ‘NA’ to make sure the parentheses still align with populated records.</p>
+<p>In the example above, instead of filling the whole space, the
+<code>empty</code> text of “NA” replaces the empty value for each
+element. So for ‘Mean (SD)’, we now have ‘NA ( NA)’. Note that the
+proper padding was still used for ‘NA’ to make sure the parentheses
+still align with populated records.</p>
 <div id="auto-precision" class="section level3">
 <h3>Auto Precision</h3>
-<p>You may have noticed that the approach to formatting covered so far leaves a lot to be desired. Consider analyzing lab results, where you may want precision to vary based on the collected precision of the tests. Furthermore, depending on the summary being presented, you may wish to increase the precision further. For example, you may want the mean to be at collected precision +1 decimal place, and for standard deviation +2.</p>
-<p>‘Tplyr’ has this covered using auto-precision. Auto-precision allows you to format your numeric summaries based on the precision of the data collected. This has all been built into the format strings, because a natural place to specify your desired format is where you specify how you want your data presented. If you wish to use auto-precision, use <code>a</code> instead of <code>x</code> when creating your summaries. Note that only one <code>a</code> is needed on each side of a decimal. To use increased precision, use <code>a+n</code> where <code>n</code> is the number of additional spaces you wish to add.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adlb, TRTA) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AVAL, <span class="at">by =</span> PARAMCD) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;Mean (SD)&#39;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&#39;a.a+1 (a.a+2)&#39;</span>, mean, sd)</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">20</span>) <span class="sc">%&gt;%</span> </span>
+<p>You may have noticed that the approach to formatting covered so far
+leaves a lot to be desired. Consider analyzing lab results, where you
+may want precision to vary based on the collected precision of the
+tests. Furthermore, depending on the summary being presented, you may
+wish to increase the precision further. For example, you may want the
+mean to be at collected precision +1 decimal place, and for standard
+deviation +2.</p>
+<p>‘Tplyr’ has this covered using auto-precision. Auto-precision allows
+you to format your numeric summaries based on the precision of the data
+collected. This has all been built into the format strings, because a
+natural place to specify your desired format is where you specify how
+you want your data presented. If you wish to use auto-precision, use
+<code>a</code> instead of <code>x</code> when creating your summaries.
+Note that only one <code>a</code> is needed on each side of a decimal.
+To use increased precision, use <code>a+n</code> where <code>n</code> is
+the number of additional spaces you wish to add.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adlb, TRTA) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AVAL, <span class="at">by =</span> PARAMCD) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;Mean (SD)&#39;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&#39;a.a+1 (a.a+2)&#39;</span>, mean, sd)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">20</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;ord&quot;</span>)) <span class="sc">%&gt;%</span> </span>
 <span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <colgroup>
-<col width="8%" />
-<col width="8%" />
-<col width="15%" />
-<col width="19%" />
-<col width="18%" />
 <col width="11%" />
-<col width="8%" />
-<col width="8%" />
+<col width="11%" />
+<col width="22%" />
+<col width="27%" />
+<col width="26%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -763,9 +1136,6 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <th align="left">var1_Placebo</th>
 <th align="left">var1_Xanomeline High Dose</th>
 <th align="left">var1_Xanomeline Low Dose</th>
-<th align="right">ord_layer_index</th>
-<th align="right">ord_layer_1</th>
-<th align="right">ord_layer_2</th>
 </tr>
 </thead>
 <tbody>
@@ -775,9 +1145,6 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <td align="left">4.7430 ( 2.05463)</td>
 <td align="left">4.5696 ( 1.30148)</td>
 <td align="left">5.7120 ( 2.94018)</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="left">CA</td>
@@ -785,9 +1152,6 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <td align="left">2.165660 (0.0692494)</td>
 <td align="left">2.189362 (0.1372011)</td>
 <td align="left">2.145700 (0.0830867)</td>
-<td align="right">1</td>
-<td align="right">2</td>
-<td align="right">1</td>
 </tr>
 <tr class="odd">
 <td align="left">CK</td>
@@ -795,9 +1159,6 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <td align="left">72.4 ( 288.41)</td>
 <td align="left">64.2 ( 93.99)</td>
 <td align="left">58.3 ( 77.91)</td>
-<td align="right">1</td>
-<td align="right">3</td>
-<td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="left">GGT</td>
@@ -805,9 +1166,6 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <td align="left">17.8 ( 34.77)</td>
 <td align="left">16.8 ( 48.69)</td>
 <td align="left">21.3 ( 26.99)</td>
-<td align="right">1</td>
-<td align="right">4</td>
-<td align="right">1</td>
 </tr>
 <tr class="odd">
 <td align="left">URATE</td>
@@ -815,14 +1173,21 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <td align="left">235.9373 ( 83.69662)</td>
 <td align="left">271.2288 ( 88.16093)</td>
 <td align="left">230.9807 ( 87.00646)</td>
-<td align="right">1</td>
-<td align="right">5</td>
-<td align="right">1</td>
 </tr>
 </tbody>
 </table>
-<p>As you can see, the decimal precision is now varying depending on the test being performed. Notice that both the integer and the decimal side of each number fluctuate as well. <code>Tpylr</code> collects both the integer and decimal precision, and you can specify both separately. For example, you could use <code>x</code>’s to specify a default number of spaces for your integers that are used consistently across by variables, but vary the decimal precision based on collected data. You can also increment the number of spaces for both integer and decimal separately.</p>
-<p>But - this is kind of ugly, isn’t it? Do we really need all 6 decimal places collected for CA? For this reason, you’re able to set a cap on the precision that’s displayed:</p>
+<p>As you can see, the decimal precision is now varying depending on the
+test being performed. Notice that both the integer and the decimal side
+of each number fluctuate as well. <code>Tpylr</code> collects both the
+integer and decimal precision, and you can specify both separately. For
+example, you could use <code>x</code>’s to specify a default number of
+spaces for your integers that are used consistently across by variables,
+but vary the decimal precision based on collected data. You can also
+increment the number of spaces for both integer and decimal
+separately.</p>
+<p>But - this is kind of ugly, isn’t it? Do we really need all 6 decimal
+places collected for CA? For this reason, you’re able to set a cap on
+the precision that’s displayed:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adlb, TRTA) <span class="sc">%&gt;%</span> </span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AVAL, <span class="at">by =</span> PARAMCD) <span class="sc">%&gt;%</span> </span>
@@ -833,17 +1198,15 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
 <span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">20</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
-<table>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;ord&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<table style="width:100%;">
 <colgroup>
-<col width="8%" />
-<col width="8%" />
-<col width="14%" />
-<col width="19%" />
-<col width="18%" />
-<col width="12%" />
-<col width="9%" />
-<col width="9%" />
+<col width="11%" />
+<col width="11%" />
+<col width="20%" />
+<col width="28%" />
+<col width="27%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -852,9 +1215,6 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <th align="left">var1_Placebo</th>
 <th align="left">var1_Xanomeline High Dose</th>
 <th align="left">var1_Xanomeline Low Dose</th>
-<th align="right">ord_layer_index</th>
-<th align="right">ord_layer_1</th>
-<th align="right">ord_layer_2</th>
 </tr>
 </thead>
 <tbody>
@@ -864,9 +1224,6 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <td align="left">4.743 ( 2.0546)</td>
 <td align="left">4.570 ( 1.3015)</td>
 <td align="left">5.712 ( 2.9402)</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="left">CA</td>
@@ -874,9 +1231,6 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <td align="left">2.166 (0.0692)</td>
 <td align="left">2.189 (0.1372)</td>
 <td align="left">2.146 (0.0831)</td>
-<td align="right">1</td>
-<td align="right">2</td>
-<td align="right">1</td>
 </tr>
 <tr class="odd">
 <td align="left">CK</td>
@@ -884,9 +1238,6 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <td align="left">72.4 (288.41)</td>
 <td align="left">64.2 ( 93.99)</td>
 <td align="left">58.3 ( 77.91)</td>
-<td align="right">1</td>
-<td align="right">3</td>
-<td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="left">GGT</td>
@@ -894,9 +1245,6 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <td align="left">17.8 ( 34.77)</td>
 <td align="left">16.8 ( 48.69)</td>
 <td align="left">21.3 ( 26.99)</td>
-<td align="right">1</td>
-<td align="right">4</td>
-<td align="right">1</td>
 </tr>
 <tr class="odd">
 <td align="left">URATE</td>
@@ -904,14 +1252,28 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <td align="left">235.937 ( 83.6966)</td>
 <td align="left">271.229 ( 88.1609)</td>
 <td align="left">230.981 ( 87.0065)</td>
-<td align="right">1</td>
-<td align="right">5</td>
-<td align="right">1</td>
 </tr>
 </tbody>
 </table>
-<p>Now that looks better. The <code>cap</code> argument is part of <code>set_format_strings()</code>. You need to specify the integer and decimal caps separately. Note that integer precision works slightly differently than decimal precision. Integer precision relates to the length allotted for the left side of a decimal, but integers will not truncate. When using ‘x’ formatting, if an integer exceeds the set length, it will push the number over. If the integer side of auto-precision is not capped, the necessary length for an integer in the associated by group will be as long as necessary. Decimals, on the other hand, round to the specified length. These caps apply to the length allotted for the “a” on either the integer or the decimal. So for example, if the decimal length is capped at 2 and the selected precision is “a+1”, then 3 decimal places will be allotted.</p>
-<p>This was a basic situation, but if you’re paying close attention, you may have some questions. What if you have more by variables, like by visit AND test. Do we then calculate precision by visit and test? What if collected precision is different per visit and we don’t want that? What about multiple summary variables? How do we determine precision then? We have modifier functions for this:</p>
+<p>Now that looks better. The <code>cap</code> argument is part of
+<code>set_format_strings()</code>. You need to specify the integer and
+decimal caps separately. Note that integer precision works slightly
+differently than decimal precision. Integer precision relates to the
+length allotted for the left side of a decimal, but integers will not
+truncate. When using ‘x’ formatting, if an integer exceeds the set
+length, it will push the number over. If the integer side of
+auto-precision is not capped, the necessary length for an integer in the
+associated by group will be as long as necessary. Decimals, on the other
+hand, round to the specified length. These caps apply to the length
+allotted for the “a” on either the integer or the decimal. So for
+example, if the decimal length is capped at 2 and the selected precision
+is “a+1”, then 3 decimal places will be allotted.</p>
+<p>This was a basic situation, but if you’re paying close attention, you
+may have some questions. What if you have more by variables, like by
+visit AND test. Do we then calculate precision by visit and test? What
+if collected precision is different per visit and we don’t want that?
+What about multiple summary variables? How do we determine precision
+then? We have modifier functions for this:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adlb, TRTA) <span class="sc">%&gt;%</span> </span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(<span class="fu">vars</span>(AVAL, CHG, BASE), <span class="at">by =</span> PARAMCD) <span class="sc">%&gt;%</span> </span>
@@ -924,23 +1286,21 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
 <span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
 <span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;ord&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table style="width:100%;">
 <colgroup>
 <col width="4%" />
 <col width="4%" />
-<col width="6%" />
-<col width="9%" />
-<col width="9%" />
-<col width="6%" />
-<col width="9%" />
-<col width="9%" />
-<col width="6%" />
-<col width="9%" />
-<col width="9%" />
-<col width="5%" />
-<col width="4%" />
-<col width="4%" />
+<col width="8%" />
+<col width="11%" />
+<col width="10%" />
+<col width="8%" />
+<col width="11%" />
+<col width="10%" />
+<col width="8%" />
+<col width="11%" />
+<col width="10%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -955,9 +1315,6 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <th align="left">var3_Placebo</th>
 <th align="left">var3_Xanomeline High Dose</th>
 <th align="left">var3_Xanomeline Low Dose</th>
-<th align="right">ord_layer_index</th>
-<th align="right">ord_layer_1</th>
-<th align="right">ord_layer_2</th>
 </tr>
 </thead>
 <tbody>
@@ -973,9 +1330,6 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <td align="left">5.457 ( 1.5661)</td>
 <td align="left">4.712 ( 1.6382)</td>
 <td align="left">6.497 ( 2.7940)</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="left">CA</td>
@@ -989,9 +1343,6 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <td align="left">2.290 (0.0923)</td>
 <td align="left">2.289 (0.0828)</td>
 <td align="left">2.304 (0.0719)</td>
-<td align="right">1</td>
-<td align="right">2</td>
-<td align="right">1</td>
 </tr>
 <tr class="odd">
 <td align="left">CK</td>
@@ -1005,9 +1356,6 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <td align="left">83.4 ( 38.13)</td>
 <td align="left">84.8 ( 64.27)</td>
 <td align="left">72.3 ( 35.71)</td>
-<td align="right">1</td>
-<td align="right">3</td>
-<td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="left">GGT</td>
@@ -1021,9 +1369,6 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <td align="left">24.2 ( 19.36)</td>
 <td align="left">18.8 ( 25.84)</td>
 <td align="left">22.7 ( 11.05)</td>
-<td align="right">1</td>
-<td align="right">4</td>
-<td align="right">1</td>
 </tr>
 <tr class="odd">
 <td align="left">URATE</td>
@@ -1037,13 +1382,194 @@ m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] = mode[F(x[k])].
 <td align="left">272.617 ( 65.7021)</td>
 <td align="left">310.486 ( 61.8285)</td>
 <td align="left">273.608 ( 86.9470)</td>
-<td align="right">1</td>
-<td align="right">5</td>
-<td align="right">1</td>
 </tr>
 </tbody>
 </table>
-<p>Three variables are being summarized here - AVAL, CHG, and BASE. So which should be used for precision? <code>set_precision_on()</code> allows you to specify this, where the <code>precision_on()</code> variable must be one of the variables within <code>target_var</code>. Similarly, <code>set_precision_by()</code> changes the <code>by</code> variables used to determine collected precision. If no <code>precision_on()</code> variable is specified, the first variable in <code>target_var</code> is used. If no <code>precision_by()</code> variables are specified, then the default <code>by</code> variables are used.</p>
+<p>Three variables are being summarized here - AVAL, CHG, and BASE. So
+which should be used for precision? <code>set_precision_on()</code>
+allows you to specify this, where the <code>precision_on()</code>
+variable must be one of the variables within <code>target_var</code>.
+Similarly, <code>set_precision_by()</code> changes the <code>by</code>
+variables used to determine collected precision. If no
+<code>precision_on()</code> variable is specified, the first variable in
+<code>target_var</code> is used. If no <code>precision_by</code>
+variables are specified, then the default <code>by</code> variables are
+used.</p>
+</div>
+<div id="external-precision" class="section level3">
+<h3>External Precision</h3>
+<p>Lastly, while dynamic precision might be what you’re looking for, you
+may not want precision driven by the data. Perhaps there’s a company
+standard that dictates what decimal precision should be used for each
+separate lab test. Maybe even deeper down to the lab test and category.
+New in Tplyr 1.0.0 we’ve added the ability to take decimal precision
+from an external source.</p>
+<p>The principal of external precision is exactly the same as
+auto-precision. The only difference is that you - the user - provide the
+precision table that Tplyr was automatically calculating in the
+background. This is done using the new function
+<code>set_precision_data()</code>. In the output below, Notice how the
+precision by PARAMCD varies depending on what was specified in the data
+frame <code>prec_data</code>.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>prec_data <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>PARAMCD, <span class="sc">~</span>max_int, <span class="sc">~</span>max_dec,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;BUN&quot;</span>,   <span class="dv">1</span>, <span class="dv">0</span>,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;CA&quot;</span>,    <span class="dv">2</span>, <span class="dv">4</span>,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;CK&quot;</span>,    <span class="dv">3</span>, <span class="dv">1</span>,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;GGT&quot;</span>,   <span class="dv">3</span>, <span class="dv">0</span>,</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;URATE&quot;</span>, <span class="dv">3</span>, <span class="dv">1</span>,</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adlb, TRTA) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AVAL, <span class="at">by =</span> PARAMCD) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;Mean (SD)&#39;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&#39;a.a+1 (a.a+2)&#39;</span>, mean, sd, <span class="at">empty=</span><span class="st">&quot;NA&quot;</span>)</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_precision_on</span>(AVAL) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_precision_by</span>(PARAMCD) <span class="sc">%&gt;%</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_precision_data</span>(prec_data)</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;ord&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<colgroup>
+<col width="11%" />
+<col width="11%" />
+<col width="21%" />
+<col width="27%" />
+<col width="26%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">row_label2</th>
+<th align="left">var1_Placebo</th>
+<th align="left">var1_Xanomeline High Dose</th>
+<th align="left">var1_Xanomeline Low Dose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">BUN</td>
+<td align="left">Mean (SD)</td>
+<td align="left">4.7 (2.05)</td>
+<td align="left">4.6 (1.30)</td>
+<td align="left">5.7 (2.94)</td>
+</tr>
+<tr class="even">
+<td align="left">CA</td>
+<td align="left">Mean (SD)</td>
+<td align="left">2.16566 ( 0.069249)</td>
+<td align="left">2.18936 ( 0.137201)</td>
+<td align="left">2.14570 ( 0.083087)</td>
+</tr>
+<tr class="odd">
+<td align="left">CK</td>
+<td align="left">Mean (SD)</td>
+<td align="left">72.43 (288.405)</td>
+<td align="left">64.25 ( 93.986)</td>
+<td align="left">58.33 ( 77.915)</td>
+</tr>
+<tr class="even">
+<td align="left">GGT</td>
+<td align="left">Mean (SD)</td>
+<td align="left">17.8 ( 34.77)</td>
+<td align="left">16.8 ( 48.69)</td>
+<td align="left">21.3 ( 26.99)</td>
+</tr>
+<tr class="odd">
+<td align="left">URATE</td>
+<td align="left">Mean (SD)</td>
+<td align="left">235.94 ( 83.697)</td>
+<td align="left">271.23 ( 88.161)</td>
+<td align="left">230.98 ( 87.006)</td>
+</tr>
+</tbody>
+</table>
+<p>If one of your by variable groups are missing in the precision data,
+Tplyr can default back to using auto-precision by using the option
+<code>default=auto</code>.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>prec_data <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>PARAMCD, <span class="sc">~</span>max_int, <span class="sc">~</span>max_dec,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;BUN&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;CA&quot;</span>,  <span class="dv">2</span>, <span class="dv">4</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;CK&quot;</span>,  <span class="dv">3</span>, <span class="dv">1</span>,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;GGT&quot;</span>, <span class="dv">3</span>, <span class="dv">0</span>,</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adlb, TRTA) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AVAL, <span class="at">by =</span> PARAMCD) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;Mean (SD)&#39;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&#39;a.a+1 (a.a+2)&#39;</span>, mean, sd, <span class="at">empty=</span><span class="st">&quot;NA&quot;</span>)</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_precision_on</span>(AVAL) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_precision_by</span>(PARAMCD) <span class="sc">%&gt;%</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_precision_data</span>(prec_data, <span class="at">default=</span><span class="st">&quot;auto&quot;</span>)</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;ord&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Unhandled precision cases were found - calculating precision based on source data</span></span></code></pre></div>
+<table>
+<colgroup>
+<col width="11%" />
+<col width="11%" />
+<col width="22%" />
+<col width="27%" />
+<col width="26%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">row_label2</th>
+<th align="left">var1_Placebo</th>
+<th align="left">var1_Xanomeline High Dose</th>
+<th align="left">var1_Xanomeline Low Dose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">BUN</td>
+<td align="left">Mean (SD)</td>
+<td align="left">4.7 (2.05)</td>
+<td align="left">4.6 (1.30)</td>
+<td align="left">5.7 (2.94)</td>
+</tr>
+<tr class="even">
+<td align="left">CA</td>
+<td align="left">Mean (SD)</td>
+<td align="left">2.16566 ( 0.069249)</td>
+<td align="left">2.18936 ( 0.137201)</td>
+<td align="left">2.14570 ( 0.083087)</td>
+</tr>
+<tr class="odd">
+<td align="left">CK</td>
+<td align="left">Mean (SD)</td>
+<td align="left">72.43 (288.405)</td>
+<td align="left">64.25 ( 93.986)</td>
+<td align="left">58.33 ( 77.915)</td>
+</tr>
+<tr class="even">
+<td align="left">GGT</td>
+<td align="left">Mean (SD)</td>
+<td align="left">17.8 ( 34.77)</td>
+<td align="left">16.8 ( 48.69)</td>
+<td align="left">21.3 ( 26.99)</td>
+</tr>
+<tr class="odd">
+<td align="left">URATE</td>
+<td align="left">Mean (SD)</td>
+<td align="left">235.9373 ( 83.69662)</td>
+<td align="left">271.2288 ( 88.16093)</td>
+<td align="left">230.9807 ( 87.00646)</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 
