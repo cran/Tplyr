@@ -351,13 +351,13 @@ Data</a></li>
 </ul>
 </div>
 
-<p>Most of the work in creating a ‘Tplyr’ table is at the layer level,
-but there are a few overarching properties that are worth spending some
-time discussing. One of the things that we wanted to make sure we did in
-‘Tplyr’ is allow you to eliminate redundant code wherever possible.
-Adding some processing to the <code>tplyr_table()</code> level allows us
-to do that. Furthermore, some settings simply need to be applied table
-wide.</p>
+<p>Most of the work in creating a <strong>Tplyr</strong> table is at the
+layer level, but there are a few overarching properties that are worth
+spending some time discussing. One of the things that we wanted to make
+sure we did in <strong>Tplyr</strong> is allow you to eliminate
+redundant code wherever possible. Adding some processing to the
+<code>tplyr_table()</code> level allows us to do that. Furthermore, some
+settings simply need to be applied table wide.</p>
 <div id="table-parameters" class="section level2">
 <h2>Table Parameters</h2>
 <p>The <code>tplyr_table()</code> function has 4 parameters:</p>
@@ -904,21 +904,21 @@ summaries for the individual cohorts are left unchanged.</p>
 </div>
 <div id="population-data" class="section level2">
 <h2>Population Data</h2>
-<p>A last and very important aspect of table level properties in ‘Tplyr’
-is the addition of a population dataset. In CDISC standards, datasets
-like <code>adae</code> only contain adverse events when they occur. This
-means that if a subject did not experience an adverse event, or did not
-experience an adverse event within the criteria that you’re subsetting
-for, they don’t appear in the dataset. When you’re looking at the
-proportion of subject who experienced an adverse event compared to the
-total number of subjects in that cohort, <code>adae</code> itself leaves
-you no way to calculate that total - as the subjects won’t exist in the
-data.</p>
-<p>‘Tplyr’ allows you to provide a separate population dataset to
-overcome this. Furthermore, you are also able to provide a separate
-population dataset <code>where</code> parameter and a population
-treatment variable named <code>pop_treat_var</code>, as variable names
-may differ between the datasets.</p>
+<p>A last and very important aspect of table level properties in
+<strong>Tplyr</strong> is the addition of a population dataset. In CDISC
+standards, datasets like <code>adae</code> only contain adverse events
+when they occur. This means that if a subject did not experience an
+adverse event, or did not experience an adverse event within the
+criteria that you’re subsetting for, they don’t appear in the dataset.
+When you’re looking at the proportion of subject who experienced an
+adverse event compared to the total number of subjects in that cohort,
+<code>adae</code> itself leaves you no way to calculate that total - as
+the subjects won’t exist in the data.</p>
+<p><strong>Tplyr</strong> allows you to provide a separate population
+dataset to overcome this. Furthermore, you are also able to provide a
+separate population dataset <code>where</code> parameter and a
+population treatment variable named <code>pop_treat_var</code>, as
+variable names may differ between the datasets.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">tplyr_table</span>(adae, TRTA, <span class="at">where =</span> AEREL <span class="sc">!=</span> <span class="st">&quot;NONE&quot;</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_pop_data</span>(adsl) <span class="sc">%&gt;%</span> </span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_pop_treat_var</span>(TRT01A) <span class="sc">%&gt;%</span> </span>
@@ -1109,10 +1109,11 @@ same logic applies to the population treatment variable.
 <code>set_pop_treat_var()</code> to change it to the appropriate
 variable in <code>adsl</code>.</p>
 <p>Note the percentage values in the summary above. By setting the
-population data, ‘Tplyr’ now knew to use those values when calculating
-the percentages for the distinct counts of subjects who experienced the
-summarized adverse events. Furthermore, with the population data
-provided, ‘Tplyr’ is able to calculate your header N’s properly:</p>
+population data, <strong>Tplyr</strong> now knew to use those values
+when calculating the percentages for the distinct counts of subjects who
+experienced the summarized adverse events. Furthermore, with the
+population data provided, <strong>Tplyr</strong> is able to calculate
+your header N’s properly:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">header_n</span>(t) <span class="sc">%&gt;%</span> </span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
@@ -1138,21 +1139,23 @@ provided, ‘Tplyr’ is able to calculate your header N’s properly:</p>
 </tbody>
 </table>
 <p>With the table level settings under control, now you’re ready to
-learn more about what ‘Tplyr’ has to offer in each layer.</p>
+learn more about what <strong>Tplyr</strong> has to offer in each
+layer.</p>
 <ul>
 <li>Learn more about descriptive statistics layers in
-<code>vignettes(&quot;desc&quot;)</code></li>
+<code>vignette(&quot;desc&quot;)</code></li>
 <li>Learn more about count and shift layers in
 <code>vignette(&quot;count&quot;)</code></li>
 <li>Learn more about shift layers in <code>vignette(&quot;shift&quot;)</code></li>
 <li>Learn more about calculating risk differences in
-<code>vignettes(&quot;riskdiff&quot;)</code></li>
-<li>Learn more about sorting ‘Tplyr’ tables in
-<code>vignettes(&quot;sort&quot;)</code></li>
-<li>Learn more about using ‘Tplyr’ options in
-<code>vignettes(&quot;options&quot;)</code></li>
+<code>vignette(&quot;riskdiff&quot;)</code></li>
+<li>Learn more about sorting <strong>Tplyr</strong> tables in
+<code>vignette(&quot;sort&quot;)</code></li>
+<li>Learn more about using <strong>Tplyr</strong> options in
+<code>vignette(&quot;options&quot;)</code></li>
 <li>And finally, learn more about producing and outputting styled tables
-using ‘Tplyr’ in <code>vignettes(&quot;styled-table&quot;)</code></li>
+using <strong>Tplyr</strong> in
+<code>vignette(&quot;styled-table&quot;)</code></li>
 </ul>
 </div>
 

@@ -346,11 +346,11 @@ Some tables, like demographics tables, may have many layers that will
 all essentially look the same. Categorical variables will have the same
 count layer settings, and continuous variables will have the same desc
 layer settings. A template allows a user to build those settings once
-per layer, then reference the template when the Tplyr table is actually
-built. Another scenario might be building a set of company layer
-templates that are built for standard tables to reduce the footprint of
-code across analyses. In either of these cases, the idea is the reduce
-the amount of redundant code necessary to create a table.</p>
+per layer, then reference the template when the <strong>Tplyr</strong>
+table is actually built. Another scenario might be building a set of
+company layer templates that are built for standard tables to reduce the
+footprint of code across analyses. In either of these cases, the idea is
+the reduce the amount of redundant code necessary to create a table.</p>
 <p>Tplyr has already has a couple of mechanisms to reduce redundant
 application of formats. For example,
 <code>vignettes(&#39;tplyr_options&#39;)</code> shows how the options
@@ -385,8 +385,8 @@ is named “example_template”, and this is the name we’ll use to reference
 the template when we want to use it. When the template is created, we
 start with the function <code>group_count(...)</code>. Note the use of
 the ellipsis (i.e. <code>...</code>). This is a required part of a layer
-template. Templates must start with a Tplyr layer constructor, which is
-one of the function <code>group_count()</code>,
+template. Templates must start with a <strong>Tplyr</strong> layer
+constructor, which is one of the function <code>group_count()</code>,
 <code>group_desc()</code>, or <code>group_shift()</code>. The ellipsis
 is necessary because when the template is used, we are able to pass
 arguments directly into the layer constructor. For example:</p>
@@ -491,9 +491,9 @@ been applied just as they would be if we used
 template was applied, the table built with all of the settings
 appropriately.</p>
 <p>An additional feature of layer templates is that they act just as any
-other function would in a Tplyr layer. This means that they’re also
-extensible and can be expanded on directly within a Tplyr table. For
-example:</p>
+other function would in a <strong>Tplyr</strong> layer. This means that
+they’re also extensible and can be expanded on directly within a
+<strong>Tplyr</strong> table. For example:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">use_template</span>(<span class="st">&quot;example_template&quot;</span>, RACE) <span class="sc">%&gt;%</span> </span>
@@ -562,8 +562,8 @@ usage. Furthermore, we added the additional modifier function
 <code>add_total_row()</code>. In this example, we took the layer as
 constructed by the template and then modified that layer further. This
 may be useful if most but not all of a layer is reusable. The reusable
-portions can be put in a template, and the rest added using normal Tplyr
-syntax.</p>
+portions can be put in a template, and the rest added using normal
+<strong>Tplyr</strong> syntax.</p>
 <div id="templates-with-parameters" class="section level2">
 <h2>Templates With Parameters</h2>
 <p>It’s also possible to add interchangeable parameters into a layer
@@ -580,9 +580,9 @@ But now we add two more modifying functions,
 <code>set_order_count_method()</code> and
 <code>set_ordering_cols()</code>. Within these functions, we’ve supplied
 interchangeable parameters to the template function, which are
-<code>sort_meth</code> and <code>sort_col</code>. In a Tplyr layer
-template, these parameters are supplied using curly brackets
-(i.e. {}).</p>
+<code>sort_meth</code> and <code>sort_col</code>. In a
+<strong>Tplyr</strong> layer template, these parameters are supplied
+using curly brackets (i.e. {}).</p>
 <p>To specify these arguments when using the templater, we use the
 <code>use_template()</code> argument <code>add_params</code>. For
 example:</p>
