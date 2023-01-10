@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Post-Processing</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Post-Processing</h1>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#string-wrapping" id="toc-string-wrapping">String
+wrapping</a></li>
+<li><a href="#row-masking" id="toc-row-masking">Row Masking</a></li>
+<li><a href="#conditional-formatting" id="toc-conditional-formatting">Conditional Formatting</a></li>
+<li><a href="#extracting-a-format-group" id="toc-extracting-a-format-group">Extracting a Format Group</a></li>
+<li><a href="#highly-customized-sort-variables" id="toc-highly-customized-sort-variables">Highly Customized Sort
+Variables</a></li>
+<li><a href="#external-data-formatting" id="toc-external-data-formatting">External Data Formatting</a></li>
+</ul>
+</div>
+
+<p>We’ve made a large effort to make <strong>Tplyr</strong> tables
+flexible, but not everything can (or, in some cases, we think should) be
+handled during table construction itself. To address this,
+<strong>Tplyr</strong> has several post-processing functions that help
+put finishing touches on your data to help with presentation.</p>
+<div id="string-wrapping" class="section level2">
+<h2>String wrapping</h2>
+<p>Certain types of output formats don’t elegantly handle string
+wrapping of text. For some formats, this could simply be the width of
+the text before a word wraps. Other formats, such as LaTex outputs to
+PDF (depending on the rendering engine) may wrap white space fine, but
+words whose character length is longer than the allotted width may print
+wider than the table cell.</p>
+<p>To address this, in <strong>Tplyr</strong> we’ve added the function
+<code>str_indent_wrap()</code>. This is largely built on top of the
+function <code>stringr::str_wrap()</code> to preserve as much efficiency
+as possible, but two issues common in clinical outputs have been
+addressed:</p>
+<ul>
+<li>Preceding indentation of a word is preserved. So for example, in a
+nested adverse event table, if the preferred term is indented, this
+function will wrap but preserve that words indentation with each new
+line.</li>
+<li>Words that exceed the specified width will be wrapped with
+hyphenation.</li>
+</ul>
+<p>As a post-processing function, note that this function works on a
+<strong>tibble or data.frame</strong> object, and not a
+<strong>Tplyr</strong> table.</p>
+<p>Let’s look at an example.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">row_label1 =</span> <span class="fu">c</span>(<span class="st">&quot;RENAL AND URINARY DISORDERS&quot;</span>, <span class="st">&quot;   NEPHROLITHIASIS&quot;</span>),</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">var1_Placebo =</span> <span class="fu">c</span>(<span class="st">&quot; 5 (50.0%)&quot;</span>, <span class="st">&quot; 3 (30.0%)&quot;</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">%&gt;%</span> </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">row_label1 =</span> <span class="fu">str_indent_wrap</span>(row_label1, <span class="at">width =</span> <span class="dv">10</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 × 2</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   row_label1                      var1_Placebo</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                           &lt;chr&gt;       </span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 &quot;RENAL AND\nURINARY\nDISORDERS&quot; &quot; 5 (50.0%)&quot;</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 &quot;   NEPHROLIT-\n   HIASIS&quot;      &quot; 3 (30.0%)&quot;</span></span></code></pre></div>
+<p><em>Note: We’re viewing the data frame output here because HTML based
+outputs eliminate duplicate white spaces, which makes it difficult to
+see things like padded indentation</em></p>
+</div>
+<div id="row-masking" class="section level2">
+<h2>Row Masking</h2>
+<p>Row masking is the process blanking of repeat row values within a
+data frame to give the appearance of grouping variables. Some table
+packages, such as <a href="https://gt.rstudio.com/"><strong>gt</strong></a>, will handle this
+for you. Other packages, like <a href="https://hughjonesd.github.io/huxtable/"><strong>huxtable</strong></a>,
+have options like merging cells, but this may be a more simplistic
+approach. Furthermore, this is a common approach in clinical tables when
+data validation is done on an output dataframe.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(RACE, <span class="at">by =</span> <span class="st">&quot;Race n (%)&quot;</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(dat)</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">row_label2</th>
+<th align="left">var1_Placebo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Race n (%)</td>
+<td align="left">AMERICAN INDIAN OR ALASKA NATIVE</td>
+<td align="left">0 ( 0.0%)</td>
+</tr>
+<tr class="even">
+<td align="left">Race n (%)</td>
+<td align="left">BLACK OR AFRICAN AMERICAN</td>
+<td align="left">8 ( 9.3%)</td>
+</tr>
+<tr class="odd">
+<td align="left">Race n (%)</td>
+<td align="left">WHITE</td>
+<td align="left">78 ( 90.7%)</td>
+</tr>
+</tbody>
+</table>
+<p>In this example, note that “Race n (%)” is duplicated for each row.
+We can blank this out using `apply_row_masks()</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">apply_row_masks</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">row_label2</th>
+<th align="left">var1_Placebo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Race n (%)</td>
+<td align="left">AMERICAN INDIAN OR ALASKA NATIVE</td>
+<td align="left">0 ( 0.0%)</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">BLACK OR AFRICAN AMERICAN</td>
+<td align="left">8 ( 9.3%)</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">WHITE</td>
+<td align="left">78 ( 90.7%)</td>
+</tr>
+</tbody>
+</table>
+<p>A second feature of <code>apply_row_masks()</code> is the ability to
+apply row breaks between different groups of data, for example,
+different layers of a table.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(RACE, <span class="at">by =</span> <span class="st">&quot;Race n (%)&quot;</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AGE, <span class="at">by =</span> <span class="st">&quot;Age (years)&quot;</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>()</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">%&gt;%</span> </span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">apply_row_masks</span>(<span class="at">row_breaks=</span><span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<table style="width:100%;">
+<colgroup>
+<col width="7%" />
+<col width="20%" />
+<col width="8%" />
+<col width="16%" />
+<col width="15%" />
+<col width="10%" />
+<col width="7%" />
+<col width="7%" />
+<col width="6%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">row_label2</th>
+<th align="left">var1_Placebo</th>
+<th align="left">var1_Xanomeline High Dose</th>
+<th align="left">var1_Xanomeline Low Dose</th>
+<th align="right">ord_layer_index</th>
+<th align="right">ord_layer_1</th>
+<th align="right">ord_layer_2</th>
+<th align="right">ord_break</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Race n (%)</td>
+<td align="left">AMERICAN INDIAN OR ALASKA NATIVE</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">BLACK OR AFRICAN AMERICAN</td>
+<td align="left">8 ( 9.3%)</td>
+<td align="left">9 ( 10.7%)</td>
+<td align="left">6 ( 7.1%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">WHITE</td>
+<td align="left">78 ( 90.7%)</td>
+<td align="left">74 ( 88.1%)</td>
+<td align="left">78 ( 92.9%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">1</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Age (years)</td>
+<td align="left">n</td>
+<td align="left">86</td>
+<td align="left">84</td>
+<td align="left">84</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Mean (SD)</td>
+<td align="left">76.3 ( 8.59)</td>
+<td align="left">75.9 ( 7.89)</td>
+<td align="left">77.4 ( 8.29)</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Median</td>
+<td align="left">76.0</td>
+<td align="left">76.0</td>
+<td align="left">77.5</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Q1, Q3</td>
+<td align="left">69.0, 81.0</td>
+<td align="left">70.0, 80.0</td>
+<td align="left">71.0, 82.0</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Min, Max</td>
+<td align="left">52, 89</td>
+<td align="left">56, 88</td>
+<td align="left">51, 88</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">5</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Missing</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">6</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">2</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">2</td>
+</tr>
+</tbody>
+</table>
+<p>The row breaks are inserted as blank rows. Additionally, when row
+breaks are inserted you’ll have the additional variable
+<code>ord_break</code> added to the dataframe, where the value is 1 for
+table data rows and 2 for the newly added break rows. Character
+variables will have blank values (i.e. <code>&quot;&quot;</code>) and the numeric
+sorting values will be <code>NA</code>.</p>
+<p>There are a few considerations when using
+<code>apply_row_masks()</code>:</p>
+<ul>
+<li>This function is order dependent, so make sure your data are sorted
+before submitting to <code>apply_row_masks()</code></li>
+<li>When inserting row breaks, by default the Tpylr variable
+<code>ord_layer_index</code> is used. You can submit other variables via
+the ellipsis parameter (<code>...</code>) if you’d like to use a
+different variable grouping to insert rows</li>
+</ul>
+</div>
+<div id="conditional-formatting" class="section level2">
+<h2>Conditional Formatting</h2>
+<p>In some circumstances, like <code>add_total_row()</code>,
+<strong>Tplyr</strong> lets you specify special formats separate from
+those in <code>set_format_strings()</code>. But within the table body
+there’s no other way to set specific, conditional formats based on the
+table data itself. To address this, we’ve added the post-processing
+function <code>apply_conditional_format()</code> to allow you to set
+conditional formats on result cells.</p>
+<p><code>apply_conditional_format()</code> operates on a character
+vector, so it can generally be used within the context of
+<code>dplyr::mutate()</code> like any other character modifying
+function. It will make a 1:1 replacement of values, so it will return a
+character vector of equal length. Let’s look at two examples.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>string <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot; 0  (0.0%)&quot;</span>, <span class="st">&quot; 8  (9.3%)&quot;</span>, <span class="st">&quot;78 (90.7%)&quot;</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">apply_conditional_format</span>(string, <span class="dv">2</span>, x <span class="sc">==</span> <span class="dv">0</span>, <span class="st">&quot; 0        &quot;</span>, <span class="at">full_string=</span><span class="cn">TRUE</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot; 0        &quot; &quot; 8  (9.3%)&quot; &quot;78 (90.7%)&quot;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">apply_conditional_format</span>(string, <span class="dv">2</span>, x <span class="sc">==</span> <span class="dv">0</span>, <span class="st">&quot;&quot;</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot; 0        &quot; &quot; 8  (9.3%)&quot; &quot;78 (90.7%)&quot;</span></span></code></pre></div>
+<p>The two examples above achieve the same result, but they work
+slightly differently. Let’s walk throug the syntax:</p>
+<ul>
+<li>The first parameter is the input character vector</li>
+<li>The second parameter refers to the format group. The format group is
+the index of the number within the result cell you’d like to target. So
+in the result <code>8 (9.3%)</code>, there are two format groups. The
+value of the first is 8. The value of the second is 9.3. This controls
+the number that we’ll use to establish our condition.</li>
+<li>The third parameter is the condition that will evaluate to establish
+if the conditional format is applied. Here, use the variable name
+<code>x</code>, which takes on the value of the from your chosen format
+group. This condition should be a filter condition, so it must return a
+boolean vector of TRUE/FALSE.</li>
+<li>The fourth parameter is the string value used as your
+replacement.</li>
+</ul>
+<p>Finally, the last parameter is <code>full_string</code>, and this is
+the difference between the first and second examples.
+<code>apply_conditional_format()</code> can do two types of
+replacements. The first example is a full string replacement. In this
+case, whatever value you provide as the replacement is used verbatim
+when the condition evaluates to <code>TRUE</code>. If this is set to
+false, the <strong>only the format group specified is replaced</strong>.
+For more context, let’s look at a third example.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apply_conditional_format</span>(string, <span class="dv">2</span>, x <span class="sc">&lt;</span> <span class="dv">1</span>, <span class="st">&quot;(&lt;1%)&quot;</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot; 0   (&lt;1%)&quot; &quot; 8  (9.3%)&quot; &quot;78 (90.7%)&quot;</span></span></code></pre></div>
+<p>In this example we target the percent field using format group 2, and
+now our replacement text is <code>(&lt;1%)</code>. If
+<code>full_string</code> uses its default value of <code>FALSE</code>,
+only the format group specified is replaced.
+<code>apply_conditional_format()</code> establishes the width of the
+format group targeted, and the replacement text will right align within
+that targetted portion of the string to ensure that the alignment of the
+string is preserved.</p>
+<p>For any example within a <strong>Tplyr</strong> result dataframe,
+let’s look at the example dataset from earlier. Let’s say that we have
+<code>n (%)</code> values within the first count layer to conditional
+format. Using some fancy <strong>dplyr</strong> code, and
+<code>apply_conditional_format()</code>, we can make it happen.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dat_new <span class="ot">&lt;-</span> dat <span class="sc">%&gt;%</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">&#39;var&#39;</span>),  <span class="co"># Apply to variables that start with `var`</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="sc">~</span> <span class="fu">if_else</span>(</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>      ord_layer_index <span class="sc">==</span> <span class="dv">1</span>,     <span class="co"># Target the count layer</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">apply_conditional_format</span>( </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">string =</span> .,             <span class="co"># This is dplyr::across syntax</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">format_group =</span> <span class="dv">2</span>,       <span class="co"># The percent field</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">condition =</span> x <span class="sc">==</span> <span class="dv">0</span>,     <span class="co"># Our condition</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">replacement =</span> <span class="st">&quot;&quot;</span>        <span class="co"># Replacement value</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>      .</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(dat_new)</span></code></pre></div>
+<table style="width:100%;">
+<colgroup>
+<col width="8%" />
+<col width="22%" />
+<col width="8%" />
+<col width="17%" />
+<col width="16%" />
+<col width="10%" />
+<col width="8%" />
+<col width="8%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">row_label2</th>
+<th align="left">var1_Placebo</th>
+<th align="left">var1_Xanomeline High Dose</th>
+<th align="left">var1_Xanomeline Low Dose</th>
+<th align="right">ord_layer_index</th>
+<th align="right">ord_layer_1</th>
+<th align="right">ord_layer_2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Race n (%)</td>
+<td align="left">AMERICAN INDIAN OR ALASKA NATIVE</td>
+<td align="left">0</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Race n (%)</td>
+<td align="left">BLACK OR AFRICAN AMERICAN</td>
+<td align="left">8 ( 9.3%)</td>
+<td align="left">9 ( 10.7%)</td>
+<td align="left">6 ( 7.1%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Race n (%)</td>
+<td align="left">WHITE</td>
+<td align="left">78 ( 90.7%)</td>
+<td align="left">74 ( 88.1%)</td>
+<td align="left">78 ( 92.9%)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Age (years)</td>
+<td align="left">n</td>
+<td align="left">86</td>
+<td align="left">84</td>
+<td align="left">84</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Age (years)</td>
+<td align="left">Mean (SD)</td>
+<td align="left">76.3 ( 8.59)</td>
+<td align="left">75.9 ( 7.89)</td>
+<td align="left">77.4 ( 8.29)</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Age (years)</td>
+<td align="left">Median</td>
+<td align="left">76.0</td>
+<td align="left">76.0</td>
+<td align="left">77.5</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Age (years)</td>
+<td align="left">Q1, Q3</td>
+<td align="left">69.0, 81.0</td>
+<td align="left">70.0, 80.0</td>
+<td align="left">71.0, 82.0</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">Age (years)</td>
+<td align="left">Min, Max</td>
+<td align="left">52, 89</td>
+<td align="left">56, 88</td>
+<td align="left">51, 88</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">Age (years)</td>
+<td align="left">Missing</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">6</td>
+</tr>
+</tbody>
+</table>
+<p>The syntax here gets a bit complicated, by using
+<code>dplyr::across()</code> we can apply the same function across each
+of the result variables, which in this the variable names start with
+<code>var</code>. The function here is using a <a href="https://purrr.tidyverse.org/index.html"><strong>purrr</strong></a>
+style anonymous function for simplicity. There are a couple ways you can
+do this in R. Referencing the documentation of <a href="https://purrr.tidyverse.org/reference/map.html"><code>purrr::map()</code></a>:</p>
+<ul>
+<li>A formula, e.g. <code>~ . + 1</code>. You must use <code>.</code> to
+refer to the first argument. Only recommended if you require backward
+compatibility with older versions of R.</li>
+<li>An anonymous function, e.g. <code>\(x) x + 1</code> or
+<code>function(x) x + 1</code>.</li>
+</ul>
+<p>Within that function, we’re additionally using <code>if_else()</code>
+to only apply this function on the first layer by using the
+<code>ord_layer_index</code> variable. All this together, we’re
+effectively running the <code>apply_conditional_formats()</code>
+function only on the first layer, and running it across all of the
+variables that start with <code>var</code>.</p>
+</div>
+<div id="extracting-a-format-group" class="section level2">
+<h2>Extracting a Format Group</h2>
+<p>When <strong>Tplyr</strong> outputs a result, using
+<code>set_format_strings()</code> and <code>f_str()</code> the result
+are concatenated together within a single result cell. For example,
+within a count layer in a <strong>Tplyr</strong> table, there’s no way
+to directly output the <code>n</code> and <code>pct</code> values in
+separate columns. If this is a result you want, then in a
+post-processing step you can use the function
+<code>str_extract_fmt_group()</code>.</p>
+<p><code>str_extract_fmt_group()</code> allows you to reach within a
+result string and extract an individual format group. Consider this
+example:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>string <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot; 5  (5.8%)&quot;</span>, <span class="st">&quot; 8  (9.3%)&quot;</span>, <span class="st">&quot;78 (90.7%)&quot;</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the n counts</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">str_extract_fmt_group</span>(string, <span class="dv">1</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot; 5&quot; &quot; 8&quot; &quot;78&quot;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the pct counts</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="fu">str_extract_fmt_group</span>(string, <span class="dv">2</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;(5.8%)&quot;  &quot;(9.3%)&quot;  &quot;(90.7%)&quot;</span></span></code></pre></div>
+<p>In the first call to <code>str_extract_fmt_group()</code>, we target
+the n counts. The first format group from each string is extracted,
+preserving the allotted width of that portion of the string. Similarly,
+in the second group we extract all the percent counts, including the
+surround parentheses.</p>
+<p>In practice, <code>str_extract_fmt_group()</code> can then be used to
+separate format groups into their own columns.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(RACE)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>()</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">%&gt;%</span> </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">&#39;var&#39;</span>), </span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>           <span class="sc">~</span> <span class="fu">str_extract_fmt_group</span>(., <span class="dv">1</span>),</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>           <span class="at">.names =</span> <span class="st">&quot;{.col}_n&quot;</span>),</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">&#39;var&#39;</span>), </span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>           <span class="sc">~</span> <span class="fu">str_extract_fmt_group</span>(., <span class="dv">2</span>),</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>           <span class="at">.names =</span> <span class="st">&quot;{.col}_pct&quot;</span>)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(row_label1, var1_Placebo_n, var1_Placebo_pct) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">var1_Placebo_n</th>
+<th align="left">var1_Placebo_pct</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">AMERICAN INDIAN OR ALASKA NATIVE</td>
+<td align="left">0</td>
+<td align="left">( 0.0%)</td>
+</tr>
+<tr class="even">
+<td align="left">BLACK OR AFRICAN AMERICAN</td>
+<td align="left">8</td>
+<td align="left">( 9.3%)</td>
+</tr>
+<tr class="odd">
+<td align="left">WHITE</td>
+<td align="left">78</td>
+<td align="left">( 90.7%)</td>
+</tr>
+</tbody>
+</table>
+<p>For the sake of display, in this output I only select the Placebo
+column, but note that we were able to dynamically separate out the
+<code>n</code> results from the <code>pct</code> results. In some cases,
+functions such as <code>tidyr::separate()</code> could also be used to
+get a result like this, but <code>str_extract_fmt_group()</code>
+specifically targets the expected formatting of format groups, without
+having to craft a specific expression that may get confused over things
+like spaces in unexpected places.</p>
+</div>
+<div id="highly-customized-sort-variables" class="section level2">
+<h2>Highly Customized Sort Variables</h2>
+<p>In very much the same vein as <code>str_extract_fmt_group()</code>,
+the function <code>str_extract_num()</code> allows you to target a
+format group and extract the number from within. This can be used in any
+circumstance where you may want to pull a number out of a result cell,
+but probably the best example of this would be for a highly specific
+sort sequence.</p>
+<p>Consider an adverse event table. In <code>vignette(&quot;sort&quot;)</code> we
+go over circumstances where you may want to sort by the descending
+occurrence of a result. We’ve received questions about how to establish
+tie breakers in this scenario, where ties should be broken sorting
+descending occurrence of an adverse event within the high dose group,
+then the low dose group, and finally the placebo group.
+<strong>Tplyr</strong> doesn’t allow you to output these order variables
+by default, but getting these numbers is quite simple with
+<code>str_extract_num()</code>. Let’s consider a simplified scenario</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">tplyr_table</span>(adae, TRTA) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_pop_data</span>(adsl) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_pop_treat_var</span>(TRT01A) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(AEDECOD) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="fu">f_str</span>(<span class="st">&quot;xx (XX.x%) [A]&quot;</span>, distinct_n, distinct_pct, n))  <span class="sc">%&gt;%</span> </span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_distinct_by</span>(USUBJID)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>()</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">%&gt;%</span> </span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<colgroup>
+<col width="16%" />
+<col width="13%" />
+<col width="23%" />
+<col width="22%" />
+<col width="14%" />
+<col width="10%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">var1_Placebo</th>
+<th align="left">var1_Xanomeline High Dose</th>
+<th align="left">var1_Xanomeline Low Dose</th>
+<th align="right">ord_layer_index</th>
+<th align="right">ord_layer_1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ACTINIC KERATOSIS</td>
+<td align="left">0 (0.0%) [0]</td>
+<td align="left">1 (1.2%) [1]</td>
+<td align="left">0 (0.0%) [0]</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">ALOPECIA</td>
+<td align="left">1 (1.2%) [1]</td>
+<td align="left">0 (0.0%) [0]</td>
+<td align="left">0 (0.0%) [0]</td>
+<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">BLISTER</td>
+<td align="left">0 (0.0%) [0]</td>
+<td align="left">1 (1.2%) [2]</td>
+<td align="left">5 (6.0%) [8]</td>
+<td align="right">1</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">COLD SWEAT</td>
+<td align="left">1 (1.2%) [3]</td>
+<td align="left">0 (0.0%) [0]</td>
+<td align="left">0 (0.0%) [0]</td>
+<td align="right">1</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">DERMATITIS ATOPIC</td>
+<td align="left">1 (1.2%) [1]</td>
+<td align="left">0 (0.0%) [0]</td>
+<td align="left">0 (0.0%) [0]</td>
+<td align="right">1</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">DERMATITIS CONTACT</td>
+<td align="left">0 (0.0%) [0]</td>
+<td align="left">0 (0.0%) [0]</td>
+<td align="left">1 (1.2%) [2]</td>
+<td align="right">1</td>
+<td align="right">6</td>
+</tr>
+</tbody>
+</table>
+<p>Given this data, let’s say we want to sort by descending occurrence
+of the event, using the number of subjects. That would be the first
+format group. And then we want to sort using high dose, then low dose,
+then placebo. Let’s create the order variables.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>dat_ord <span class="ot">&lt;-</span> dat  <span class="sc">%&gt;%</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">&#39;var1&#39;</span>),</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>           <span class="sc">~</span><span class="fu">str_extract_num</span>(., <span class="dv">1</span>),</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">.names =</span> <span class="st">&quot;{.col}_ord&quot;</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  ) </span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>dat_ord <span class="sc">%&gt;%</span> </span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(row_label1, <span class="fu">matches</span>(<span class="st">&#39;^var.*ord$&#39;</span>))</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 4</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   row_label1         var1_Placebo_ord `var1_Xanomeline High Dose_ord` var1_Xan…¹</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                         &lt;dbl&gt;                           &lt;dbl&gt;      &lt;dbl&gt;</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 ACTINIC KERATOSIS                 0                               1          0</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 ALOPECIA                          1                               0          0</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 BLISTER                           0                               1          5</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 COLD SWEAT                        1                               0          0</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 DERMATITIS ATOPIC                 1                               0          0</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6 DERMATITIS CONTACT                0                               0          1</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with abbreviated variable name ¹​`var1_Xanomeline Low Dose_ord`</span></span></code></pre></div>
+<p>Now we effectively have additional order variables necessary to do
+the sort sequence desired.</p>
+</div>
+<div id="external-data-formatting" class="section level2">
+<h2>External Data Formatting</h2>
+<p>The last post processing function worth mentioning isn’t necessarily
+meant for post-processing data from <strong>Tplyr</strong> itself. We
+understand that <strong>Tplyr</strong> can’t produce every single
+summary you’d need for a clinical trial - and we never intended it to be
+able to do this. But we built <strong>Tplyr</strong> to try to work
+effectively with other packages and tools. <strong>Tplyr</strong>’s
+string formatting tools work quite well, so we’ve externalized this
+capability using the function <code>apply_formats()</code>.</p>
+<p>As a basic example, let’s look at the <code>mtcars</code> data.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>mtcars <span class="sc">%&gt;%</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">new_column =</span> <span class="fu">apply_formats</span>(<span class="st">&quot;xx (xx.x)&quot;</span>, gear, mpg)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(gear, mpg, new_column) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">gear</th>
+<th align="right">mpg</th>
+<th align="left">new_column</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Mazda RX4</td>
+<td align="right">4</td>
+<td align="right">21.0</td>
+<td align="left">4 (21.0)</td>
+</tr>
+<tr class="even">
+<td align="left">Mazda RX4 Wag</td>
+<td align="right">4</td>
+<td align="right">21.0</td>
+<td align="left">4 (21.0)</td>
+</tr>
+<tr class="odd">
+<td align="left">Datsun 710</td>
+<td align="right">4</td>
+<td align="right">22.8</td>
+<td align="left">4 (22.8)</td>
+</tr>
+<tr class="even">
+<td align="left">Hornet 4 Drive</td>
+<td align="right">3</td>
+<td align="right">21.4</td>
+<td align="left">3 (21.4)</td>
+</tr>
+<tr class="odd">
+<td align="left">Hornet Sportabout</td>
+<td align="right">3</td>
+<td align="right">18.7</td>
+<td align="left">3 (18.7)</td>
+</tr>
+<tr class="even">
+<td align="left">Valiant</td>
+<td align="right">3</td>
+<td align="right">18.1</td>
+<td align="left">3 (18.1)</td>
+</tr>
+</tbody>
+</table>
+<p>Here we were able to leverage the string formatting available in
+<code>f_str()</code>, but apply it generically in another data frame
+within <code>dplyr::mutate()</code>. This allows you to format other
+data, outside of <strong>Tplyr</strong>, but still bring some of the
+quality of life that Tplyr has to offer.</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

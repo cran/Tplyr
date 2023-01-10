@@ -129,5 +129,5 @@ get_meta_subset(eff_meta, 'x4_1', "var1_Xanomeline High Dose", target=adas) %>%
   kable()
 
 ## ---- out.width=850, out.extra='style="border: 1px solid #464646;" allowfullscreen="" allow="autoplay"', echo=FALSE----
-knitr::include_app("http://michael-stackhouse.shinyapps.io/Tplyr-efficacy-shiny-demo", height = "900px")
+knitr::include_app("https://michael-stackhouse.shinyapps.io/Tplyr-efficacy-shiny-demo", height = "900px")
 

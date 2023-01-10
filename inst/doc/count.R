@@ -41,6 +41,19 @@ t <- tplyr_table(adae, TRTA) %>%
 kable(t)
 
 ## -----------------------------------------------------------------------------
+t <- tplyr_table(adae, TRTA) %>%
+  add_layer(
+    group_count(AEDECOD) %>%
+      set_distinct_by(USUBJID) %>%
+      set_format_strings(f_str("xxx (XXX.xx%) [A]", distinct_n, distinct_pct, n))
+  ) %>%
+  build() %>%
+  head() %>% 
+  select(row_label1, `var1_Xanomeline Low Dose`)
+
+t
+
+## -----------------------------------------------------------------------------
 tplyr_table(adae, TRTA) %>%
   add_layer(
     group_count(vars(AEBODSYS, AEDECOD))

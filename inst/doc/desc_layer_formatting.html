@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Advanced Descriptive Statistic Layer Formatting</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Advanced Descriptive Statistic Layer
+Formatting</h1>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#empty-value-formatting" id="toc-empty-value-formatting">Empty Value Formatting</a></li>
+<li><a href="#auto-precision" id="toc-auto-precision">Auto
+Precision</a></li>
+<li><a href="#external-precision" id="toc-external-precision">External
+Precision</a></li>
+<li><a href="#parenthesis-hugging" id="toc-parenthesis-hugging">Parenthesis Hugging</a></li>
+</ul>
+</div>
+
+<p>A lot of the nuance to formatting descriptive statistics layers was
+covered in the descriptive statistic layer vignette, but there are a
+couple more tricks to getting the most out of <strong>Tplyr</strong>. In
+this vignette, we’ll cover some of the options in more detail.</p>
+<div id="empty-value-formatting" class="section level1">
+<h1>Empty Value Formatting</h1>
+<p>By default, if there is no available value for a summary in a
+particular observation, the result being presented will be blanked
+out.</p>
+<p><em>Note: <strong>Tplyr</strong> generally respects factor levels -
+so in instances of a missing row or column group, if the factor level is
+present, then the variable or row will still generate)</em></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>adsl<span class="sc">$</span>TRT01P <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(adsl<span class="sc">$</span>TRT01P)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>adlb<span class="sc">$</span>TRTA <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(adlb<span class="sc">$</span>TRTA)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>adlb_2 <span class="ot">&lt;-</span> adlb <span class="sc">%&gt;%</span> </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(TRTA <span class="sc">!=</span> <span class="st">&quot;Placebo&quot;</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adlb_2, TRTA) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_pop_data</span>(adsl) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_pop_treat_var</span>(TRT01P) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AVAL, <span class="at">by=</span>PARAMCD) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="st">&#39;Mean (SD)&#39;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&#39;xxx (xxx)&#39;</span>, mean, sd))</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;ord&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<colgroup>
+<col width="12%" />
+<col width="12%" />
+<col width="15%" />
+<col width="30%" />
+<col width="29%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">row_label2</th>
+<th align="left">var1_Placebo</th>
+<th align="left">var1_Xanomeline High Dose</th>
+<th align="left">var1_Xanomeline Low Dose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">BUN</td>
+<td align="left">Mean (SD)</td>
+<td align="left"></td>
+<td align="left">5 ( 1)</td>
+<td align="left">6 ( 3)</td>
+</tr>
+<tr class="even">
+<td align="left">CA</td>
+<td align="left">Mean (SD)</td>
+<td align="left"></td>
+<td align="left">2 ( 0)</td>
+<td align="left">2 ( 0)</td>
+</tr>
+<tr class="odd">
+<td align="left">CK</td>
+<td align="left">Mean (SD)</td>
+<td align="left"></td>
+<td align="left">64 ( 94)</td>
+<td align="left">58 ( 78)</td>
+</tr>
+<tr class="even">
+<td align="left">GGT</td>
+<td align="left">Mean (SD)</td>
+<td align="left"></td>
+<td align="left">17 ( 49)</td>
+<td align="left">21 ( 27)</td>
+</tr>
+<tr class="odd">
+<td align="left">URATE</td>
+<td align="left">Mean (SD)</td>
+<td align="left"></td>
+<td align="left">271 ( 88)</td>
+<td align="left">231 ( 87)</td>
+</tr>
+</tbody>
+</table>
+<p>Note how the entire example above has all records in
+<code>var1_Placebo</code> missing. <strong>Tplyr</strong> gives you
+control over how you fill this space. Let’s say that we wanted instead
+to make that space say “Missing”. You can control this with the
+<code>f_str()</code> object using the <code>empty</code> parameter.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adlb_2, TRTA) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_pop_data</span>(adsl) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_pop_treat_var</span>(TRT01P) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AVAL, <span class="at">by=</span>PARAMCD) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="st">&#39;Mean (SD)&#39;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&#39;xxx.xx (xxx.xxx)&#39;</span>, mean, sd, <span class="at">empty=</span><span class="fu">c</span>(<span class="at">.overall=</span><span class="st">&quot;MISSING&quot;</span>)))</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;ord&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<colgroup>
+<col width="12%" />
+<col width="12%" />
+<col width="15%" />
+<col width="30%" />
+<col width="29%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">row_label2</th>
+<th align="left">var1_Placebo</th>
+<th align="left">var1_Xanomeline High Dose</th>
+<th align="left">var1_Xanomeline Low Dose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">BUN</td>
+<td align="left">Mean (SD)</td>
+<td align="left">MISSING</td>
+<td align="left">4.57 ( 1.301)</td>
+<td align="left">5.71 ( 2.940)</td>
+</tr>
+<tr class="even">
+<td align="left">CA</td>
+<td align="left">Mean (SD)</td>
+<td align="left">MISSING</td>
+<td align="left">2.19 ( 0.137)</td>
+<td align="left">2.15 ( 0.083)</td>
+</tr>
+<tr class="odd">
+<td align="left">CK</td>
+<td align="left">Mean (SD)</td>
+<td align="left">MISSING</td>
+<td align="left">64.25 ( 93.986)</td>
+<td align="left">58.33 ( 77.915)</td>
+</tr>
+<tr class="even">
+<td align="left">GGT</td>
+<td align="left">Mean (SD)</td>
+<td align="left">MISSING</td>
+<td align="left">16.75 ( 48.692)</td>
+<td align="left">21.33 ( 26.989)</td>
+</tr>
+<tr class="odd">
+<td align="left">URATE</td>
+<td align="left">Mean (SD)</td>
+<td align="left">MISSING</td>
+<td align="left">271.23 ( 88.161)</td>
+<td align="left">230.98 ( 87.006)</td>
+</tr>
+</tbody>
+</table>
+<p>Look at the <code>empty</code> parameter above. Here, we use a named
+character vector, where the name is <code>.overall</code>. When this
+name is used, if all elements within the cell are missing, they will be
+filled with the specified text. Otherwise, the provided string will fill
+just the missing parameter. In some cases, this may not be what you’d
+like to see. Perhaps we want a string that fills each missing space.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adlb_2, TRTA) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_pop_data</span>(adsl) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_pop_treat_var</span>(TRT01P) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AVAL, <span class="at">by=</span>PARAMCD) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="st">&#39;Mean (SD)&#39;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&#39;xxx.xx (xxx.xxx)&#39;</span>, mean, sd, <span class="at">empty=</span><span class="fu">c</span>(<span class="st">&quot;NA&quot;</span>)))</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;ord&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<colgroup>
+<col width="12%" />
+<col width="12%" />
+<col width="15%" />
+<col width="30%" />
+<col width="29%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">row_label2</th>
+<th align="left">var1_Placebo</th>
+<th align="left">var1_Xanomeline High Dose</th>
+<th align="left">var1_Xanomeline Low Dose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">BUN</td>
+<td align="left">Mean (SD)</td>
+<td align="left">NA ( NA)</td>
+<td align="left">4.57 ( 1.301)</td>
+<td align="left">5.71 ( 2.940)</td>
+</tr>
+<tr class="even">
+<td align="left">CA</td>
+<td align="left">Mean (SD)</td>
+<td align="left">NA ( NA)</td>
+<td align="left">2.19 ( 0.137)</td>
+<td align="left">2.15 ( 0.083)</td>
+</tr>
+<tr class="odd">
+<td align="left">CK</td>
+<td align="left">Mean (SD)</td>
+<td align="left">NA ( NA)</td>
+<td align="left">64.25 ( 93.986)</td>
+<td align="left">58.33 ( 77.915)</td>
+</tr>
+<tr class="even">
+<td align="left">GGT</td>
+<td align="left">Mean (SD)</td>
+<td align="left">NA ( NA)</td>
+<td align="left">16.75 ( 48.692)</td>
+<td align="left">21.33 ( 26.989)</td>
+</tr>
+<tr class="odd">
+<td align="left">URATE</td>
+<td align="left">Mean (SD)</td>
+<td align="left">NA ( NA)</td>
+<td align="left">271.23 ( 88.161)</td>
+<td align="left">230.98 ( 87.006)</td>
+</tr>
+</tbody>
+</table>
+<p>In the example above, instead of filling the whole space, the
+<code>empty</code> text of “NA” replaces the empty value for each
+element. So for ‘Mean (SD)’, we now have ‘NA ( NA)’. Note that the
+proper padding was still used for ‘NA’ to make sure the parentheses
+still align with populated records.</p>
+</div>
+<div id="auto-precision" class="section level1">
+<h1>Auto Precision</h1>
+<p>You may have noticed that the approach to formatting covered so far
+leaves a lot to be desired. Consider analyzing lab results, where you
+may want precision to vary based on the collected precision of the
+tests. Furthermore, depending on the summary being presented, you may
+wish to increase the precision further. For example, you may want the
+mean to be at collected precision +1 decimal place, and for standard
+deviation +2.</p>
+<p><strong>Tplyr</strong> has this covered using auto-precision.
+Auto-precision allows you to format your numeric summaries based on the
+precision of the data collected. This has all been built into the format
+strings, because a natural place to specify your desired format is where
+you specify how you want your data presented. If you wish to use
+auto-precision, use <code>a</code> instead of <code>x</code> when
+creating your summaries. Note that only one <code>a</code> is needed on
+each side of a decimal. To use increased precision, use <code>a+n</code>
+where <code>n</code> is the number of additional spaces you wish to
+add.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adlb, TRTA) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AVAL, <span class="at">by =</span> PARAMCD) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;Mean (SD)&#39;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&#39;a.a+1 (a.a+2)&#39;</span>, mean, sd)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">20</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;ord&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<colgroup>
+<col width="11%" />
+<col width="11%" />
+<col width="22%" />
+<col width="27%" />
+<col width="26%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">row_label2</th>
+<th align="left">var1_Placebo</th>
+<th align="left">var1_Xanomeline High Dose</th>
+<th align="left">var1_Xanomeline Low Dose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">BUN</td>
+<td align="left">Mean (SD)</td>
+<td align="left">4.7430 ( 2.05463)</td>
+<td align="left">4.5696 ( 1.30148)</td>
+<td align="left">5.7120 ( 2.94018)</td>
+</tr>
+<tr class="even">
+<td align="left">CA</td>
+<td align="left">Mean (SD)</td>
+<td align="left">2.165660 (0.0692494)</td>
+<td align="left">2.189362 (0.1372011)</td>
+<td align="left">2.145700 (0.0830867)</td>
+</tr>
+<tr class="odd">
+<td align="left">CK</td>
+<td align="left">Mean (SD)</td>
+<td align="left">72.4 ( 288.41)</td>
+<td align="left">64.2 ( 93.99)</td>
+<td align="left">58.3 ( 77.91)</td>
+</tr>
+<tr class="even">
+<td align="left">GGT</td>
+<td align="left">Mean (SD)</td>
+<td align="left">17.8 ( 34.77)</td>
+<td align="left">16.8 ( 48.69)</td>
+<td align="left">21.3 ( 26.99)</td>
+</tr>
+<tr class="odd">
+<td align="left">URATE</td>
+<td align="left">Mean (SD)</td>
+<td align="left">235.9373 ( 83.69662)</td>
+<td align="left">271.2288 ( 88.16093)</td>
+<td align="left">230.9807 ( 87.00646)</td>
+</tr>
+</tbody>
+</table>
+<p>As you can see, the decimal precision is now varying depending on the
+test being performed. Notice that both the integer and the decimal side
+of each number fluctuate as well. <strong>Tplyr</strong> collects both
+the integer and decimal precision, and you can specify both separately.
+For example, you could use <code>x</code>’s to specify a default number
+of spaces for your integers that are used consistently across by
+variables, but vary the decimal precision based on collected data. You
+can also increment the number of spaces for both integer and decimal
+separately.</p>
+<p>But - this is kind of ugly, isn’t it? Do we really need all 6 decimal
+places collected for CA? For this reason, you’re able to set a cap on
+the precision that’s displayed:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adlb, TRTA) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AVAL, <span class="at">by =</span> PARAMCD) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;Mean (SD)&#39;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&#39;a.a+1 (a.a+2)&#39;</span>, mean, sd),</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">cap =</span> <span class="fu">c</span>(<span class="at">int=</span><span class="dv">3</span>, <span class="at">dec=</span><span class="dv">2</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">20</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;ord&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<table style="width:100%;">
+<colgroup>
+<col width="11%" />
+<col width="11%" />
+<col width="20%" />
+<col width="28%" />
+<col width="27%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">row_label2</th>
+<th align="left">var1_Placebo</th>
+<th align="left">var1_Xanomeline High Dose</th>
+<th align="left">var1_Xanomeline Low Dose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">BUN</td>
+<td align="left">Mean (SD)</td>
+<td align="left">4.743 ( 2.0546)</td>
+<td align="left">4.570 ( 1.3015)</td>
+<td align="left">5.712 ( 2.9402)</td>
+</tr>
+<tr class="even">
+<td align="left">CA</td>
+<td align="left">Mean (SD)</td>
+<td align="left">2.166 (0.0692)</td>
+<td align="left">2.189 (0.1372)</td>
+<td align="left">2.146 (0.0831)</td>
+</tr>
+<tr class="odd">
+<td align="left">CK</td>
+<td align="left">Mean (SD)</td>
+<td align="left">72.4 (288.41)</td>
+<td align="left">64.2 ( 93.99)</td>
+<td align="left">58.3 ( 77.91)</td>
+</tr>
+<tr class="even">
+<td align="left">GGT</td>
+<td align="left">Mean (SD)</td>
+<td align="left">17.8 ( 34.77)</td>
+<td align="left">16.8 ( 48.69)</td>
+<td align="left">21.3 ( 26.99)</td>
+</tr>
+<tr class="odd">
+<td align="left">URATE</td>
+<td align="left">Mean (SD)</td>
+<td align="left">235.937 ( 83.6966)</td>
+<td align="left">271.229 ( 88.1609)</td>
+<td align="left">230.981 ( 87.0065)</td>
+</tr>
+</tbody>
+</table>
+<p>Now that looks better. The <code>cap</code> argument is part of
+<code>set_format_strings()</code>. You need to specify the integer and
+decimal caps separately. Note that integer precision works slightly
+differently than decimal precision. Integer precision relates to the
+length allotted for the left side of a decimal, but integers will not
+truncate. When using ‘x’ formatting, if an integer exceeds the set
+length, it will push the number over. If the integer side of
+auto-precision is not capped, the necessary length for an integer in the
+associated by group will be as long as necessary. Decimals, on the other
+hand, round to the specified length. These caps apply to the length
+allotted for the “a” on either the integer or the decimal. So for
+example, if the decimal length is capped at 2 and the selected precision
+is “a+1”, then 3 decimal places will be allotted.</p>
+<p>This was a basic situation, but if you’re paying close attention, you
+may have some questions. What if you have more by variables, like by
+visit AND test. Do we then calculate precision by visit and test? What
+if collected precision is different per visit and we don’t want that?
+What about multiple summary variables? How do we determine precision
+then? We have modifier functions for this:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adlb, TRTA) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(<span class="fu">vars</span>(AVAL, CHG, BASE), <span class="at">by =</span> PARAMCD) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;Mean (SD)&#39;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&#39;a.a+1 (a.a+2)&#39;</span>, mean, sd, <span class="at">empty=</span><span class="st">&quot;NA&quot;</span>),</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">cap =</span> <span class="fu">c</span>(<span class="at">int=</span><span class="dv">3</span>, <span class="at">dec=</span><span class="dv">2</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_precision_on</span>(AVAL) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_precision_by</span>(PARAMCD)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;ord&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<table style="width:100%;">
+<colgroup>
+<col width="4%" />
+<col width="4%" />
+<col width="8%" />
+<col width="11%" />
+<col width="10%" />
+<col width="8%" />
+<col width="11%" />
+<col width="10%" />
+<col width="8%" />
+<col width="11%" />
+<col width="10%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">row_label2</th>
+<th align="left">var1_Placebo</th>
+<th align="left">var1_Xanomeline High Dose</th>
+<th align="left">var1_Xanomeline Low Dose</th>
+<th align="left">var2_Placebo</th>
+<th align="left">var2_Xanomeline High Dose</th>
+<th align="left">var2_Xanomeline Low Dose</th>
+<th align="left">var3_Placebo</th>
+<th align="left">var3_Xanomeline High Dose</th>
+<th align="left">var3_Xanomeline Low Dose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">BUN</td>
+<td align="left">Mean (SD)</td>
+<td align="left">4.743 ( 2.0546)</td>
+<td align="left">4.570 ( 1.3015)</td>
+<td align="left">5.712 ( 2.9402)</td>
+<td align="left">-0.765 ( 1.6734)</td>
+<td align="left">-0.428 ( 1.5910)</td>
+<td align="left">-0.428 ( 1.3299)</td>
+<td align="left">5.457 ( 1.5661)</td>
+<td align="left">4.712 ( 1.6382)</td>
+<td align="left">6.497 ( 2.7940)</td>
+</tr>
+<tr class="even">
+<td align="left">CA</td>
+<td align="left">Mean (SD)</td>
+<td align="left">2.166 (0.0692)</td>
+<td align="left">2.189 (0.1372)</td>
+<td align="left">2.146 (0.0831)</td>
+<td align="left">-0.105 (0.0972)</td>
+<td align="left">-0.100 (0.1242)</td>
+<td align="left">-0.141 (0.0621)</td>
+<td align="left">2.290 (0.0923)</td>
+<td align="left">2.289 (0.0828)</td>
+<td align="left">2.304 (0.0719)</td>
+</tr>
+<tr class="odd">
+<td align="left">CK</td>
+<td align="left">Mean (SD)</td>
+<td align="left">72.4 (288.41)</td>
+<td align="left">64.2 ( 93.99)</td>
+<td align="left">58.3 ( 77.91)</td>
+<td align="left">-3.9 (275.75)</td>
+<td align="left">-15.2 ( 77.56)</td>
+<td align="left">-14.7 ( 51.54)</td>
+<td align="left">83.4 ( 38.13)</td>
+<td align="left">84.8 ( 64.27)</td>
+<td align="left">72.3 ( 35.71)</td>
+</tr>
+<tr class="even">
+<td align="left">GGT</td>
+<td align="left">Mean (SD)</td>
+<td align="left">17.8 ( 34.77)</td>
+<td align="left">16.8 ( 48.69)</td>
+<td align="left">21.3 ( 26.99)</td>
+<td align="left">-1.2 ( 21.67)</td>
+<td align="left">-1.5 ( 41.48)</td>
+<td align="left">-0.3 ( 20.55)</td>
+<td align="left">24.2 ( 19.36)</td>
+<td align="left">18.8 ( 25.84)</td>
+<td align="left">22.7 ( 11.05)</td>
+</tr>
+<tr class="odd">
+<td align="left">URATE</td>
+<td align="left">Mean (SD)</td>
+<td align="left">235.937 ( 83.6966)</td>
+<td align="left">271.229 ( 88.1609)</td>
+<td align="left">230.981 ( 87.0065)</td>
+<td align="left">-23.792 ( 37.1799)</td>
+<td align="left">-28.550 ( 55.6673)</td>
+<td align="left">-40.645 ( 24.7959)</td>
+<td align="left">272.617 ( 65.7021)</td>
+<td align="left">310.486 ( 61.8285)</td>
+<td align="left">273.608 ( 86.9470)</td>
+</tr>
+</tbody>
+</table>
+<p>Three variables are being summarized here - AVAL, CHG, and BASE. So
+which should be used for precision? <code>set_precision_on()</code>
+allows you to specify this, where the <code>precision_on()</code>
+variable must be one of the variables within <code>target_var</code>.
+Similarly, <code>set_precision_by()</code> changes the <code>by</code>
+variables used to determine collected precision. If no
+<code>precision_on()</code> variable is specified, the first variable in
+<code>target_var</code> is used. If no <code>precision_by</code>
+variables are specified, then the default <code>by</code> variables are
+used.</p>
+</div>
+<div id="external-precision" class="section level1">
+<h1>External Precision</h1>
+<p>Lastly, while dynamic precision might be what you’re looking for, you
+may not want precision driven by the data. Perhaps there’s a company
+standard that dictates what decimal precision should be used for each
+separate lab test. Maybe even deeper down to the lab test and category.
+New in <strong>Tplyr</strong> 1.0.0 we’ve added the ability to take
+decimal precision from an external source.</p>
+<p>The principal of external precision is exactly the same as
+auto-precision. The only difference is that you - the user - provide the
+precision table that <strong>Tplyr</strong> was automatically
+calculating in the background. This is done using the new function
+<code>set_precision_data()</code>. In the output below, Notice how the
+precision by PARAMCD varies depending on what was specified in the data
+frame <code>prec_data</code>.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>prec_data <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>PARAMCD, <span class="sc">~</span>max_int, <span class="sc">~</span>max_dec,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;BUN&quot;</span>,   <span class="dv">1</span>, <span class="dv">0</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;CA&quot;</span>,    <span class="dv">2</span>, <span class="dv">4</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;CK&quot;</span>,    <span class="dv">3</span>, <span class="dv">1</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;GGT&quot;</span>,   <span class="dv">3</span>, <span class="dv">0</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;URATE&quot;</span>, <span class="dv">3</span>, <span class="dv">1</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adlb, TRTA) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AVAL, <span class="at">by =</span> PARAMCD) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;Mean (SD)&#39;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&#39;a.a+1 (a.a+2)&#39;</span>, mean, sd, <span class="at">empty=</span><span class="st">&quot;NA&quot;</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_precision_on</span>(AVAL) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_precision_by</span>(PARAMCD) <span class="sc">%&gt;%</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_precision_data</span>(prec_data)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;ord&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<colgroup>
+<col width="11%" />
+<col width="11%" />
+<col width="21%" />
+<col width="27%" />
+<col width="26%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">row_label2</th>
+<th align="left">var1_Placebo</th>
+<th align="left">var1_Xanomeline High Dose</th>
+<th align="left">var1_Xanomeline Low Dose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">BUN</td>
+<td align="left">Mean (SD)</td>
+<td align="left">4.7 (2.05)</td>
+<td align="left">4.6 (1.30)</td>
+<td align="left">5.7 (2.94)</td>
+</tr>
+<tr class="even">
+<td align="left">CA</td>
+<td align="left">Mean (SD)</td>
+<td align="left">2.16566 ( 0.069249)</td>
+<td align="left">2.18936 ( 0.137201)</td>
+<td align="left">2.14570 ( 0.083087)</td>
+</tr>
+<tr class="odd">
+<td align="left">CK</td>
+<td align="left">Mean (SD)</td>
+<td align="left">72.43 (288.405)</td>
+<td align="left">64.25 ( 93.986)</td>
+<td align="left">58.33 ( 77.915)</td>
+</tr>
+<tr class="even">
+<td align="left">GGT</td>
+<td align="left">Mean (SD)</td>
+<td align="left">17.8 ( 34.77)</td>
+<td align="left">16.8 ( 48.69)</td>
+<td align="left">21.3 ( 26.99)</td>
+</tr>
+<tr class="odd">
+<td align="left">URATE</td>
+<td align="left">Mean (SD)</td>
+<td align="left">235.94 ( 83.697)</td>
+<td align="left">271.23 ( 88.161)</td>
+<td align="left">230.98 ( 87.006)</td>
+</tr>
+</tbody>
+</table>
+<p>If one of your by variable groups are missing in the precision data,
+<strong>Tplyr</strong> can default back to using auto-precision by using
+the option <code>default=auto</code>.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>prec_data <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>PARAMCD, <span class="sc">~</span>max_int, <span class="sc">~</span>max_dec,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;BUN&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;CA&quot;</span>,  <span class="dv">2</span>, <span class="dv">4</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;CK&quot;</span>,  <span class="dv">3</span>, <span class="dv">1</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;GGT&quot;</span>, <span class="dv">3</span>, <span class="dv">0</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adlb, TRTA) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AVAL, <span class="at">by =</span> PARAMCD) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;Mean (SD)&#39;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&#39;a.a+1 (a.a+2)&#39;</span>, mean, sd, <span class="at">empty=</span><span class="st">&quot;NA&quot;</span>)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_precision_on</span>(AVAL) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_precision_by</span>(PARAMCD) <span class="sc">%&gt;%</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_precision_data</span>(prec_data, <span class="at">default=</span><span class="st">&quot;auto&quot;</span>)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;ord&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Unhandled precision cases were found - calculating precision based on source data</span></span></code></pre></div>
+<table>
+<colgroup>
+<col width="11%" />
+<col width="11%" />
+<col width="22%" />
+<col width="27%" />
+<col width="26%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">row_label2</th>
+<th align="left">var1_Placebo</th>
+<th align="left">var1_Xanomeline High Dose</th>
+<th align="left">var1_Xanomeline Low Dose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">BUN</td>
+<td align="left">Mean (SD)</td>
+<td align="left">4.7 (2.05)</td>
+<td align="left">4.6 (1.30)</td>
+<td align="left">5.7 (2.94)</td>
+</tr>
+<tr class="even">
+<td align="left">CA</td>
+<td align="left">Mean (SD)</td>
+<td align="left">2.16566 ( 0.069249)</td>
+<td align="left">2.18936 ( 0.137201)</td>
+<td align="left">2.14570 ( 0.083087)</td>
+</tr>
+<tr class="odd">
+<td align="left">CK</td>
+<td align="left">Mean (SD)</td>
+<td align="left">72.43 (288.405)</td>
+<td align="left">64.25 ( 93.986)</td>
+<td align="left">58.33 ( 77.915)</td>
+</tr>
+<tr class="even">
+<td align="left">GGT</td>
+<td align="left">Mean (SD)</td>
+<td align="left">17.8 ( 34.77)</td>
+<td align="left">16.8 ( 48.69)</td>
+<td align="left">21.3 ( 26.99)</td>
+</tr>
+<tr class="odd">
+<td align="left">URATE</td>
+<td align="left">Mean (SD)</td>
+<td align="left">235.9373 ( 83.69662)</td>
+<td align="left">271.2288 ( 88.16093)</td>
+<td align="left">230.9807 ( 87.00646)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="parenthesis-hugging" class="section level1">
+<h1>Parenthesis Hugging</h1>
+<p>By default, when using ‘x’ or ‘a’, any other character within a
+format string will stay stationary. Consider the standard example from
+the descriptive statistic layer vignette.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AGE, <span class="at">by =</span> <span class="st">&quot;Age (years)&quot;</span>, <span class="at">where=</span> SAFFL<span class="sc">==</span><span class="st">&quot;Y&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;n&quot;</span>        <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&quot;xx&quot;</span>, n),</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;Mean (SD)&quot;</span><span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&quot;xx.x (xx.xx)&quot;</span>, mean, sd),</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;Median&quot;</span>   <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&quot;xx.x&quot;</span>, median),</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;Q1, Q3&quot;</span>   <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&quot;xx, xx&quot;</span>, q1, q3),</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;Min, Max&quot;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&quot;xx, xx&quot;</span>, min, max),</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;Missing&quot;</span>  <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&quot;xx&quot;</span>, missing)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&#39;ord&#39;</span>))</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 5</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   row_label1  row_label2 var1_Placebo   `var1_Xanomeline High Dose` var1_Xanom…¹</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;          &lt;chr&gt;                       &lt;chr&gt;       </span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 Age (years) n          &quot;86&quot;           &quot;84&quot;                        &quot;84&quot;        </span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 Age (years) Mean (SD)  &quot;76.3 ( 8.59)&quot; &quot;75.9 ( 7.89)&quot;              &quot;77.4 ( 8.2…</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 Age (years) Median     &quot;76.0&quot;         &quot;76.0&quot;                      &quot;77.5&quot;      </span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 Age (years) Q1, Q3     &quot;69, 82&quot;       &quot;71, 80&quot;                    &quot;71, 82&quot;    </span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 Age (years) Min, Max   &quot;52, 89&quot;       &quot;56, 88&quot;                    &quot;51, 88&quot;    </span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6 Age (years) Missing    &quot; 0&quot;           &quot; 0&quot;                        &quot; 0&quot;        </span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with abbreviated variable name ¹​`var1_Xanomeline Low Dose`</span></span></code></pre></div>
+<p>Note that if a certain number of integers are alotted, space will be
+left for the numbers that fill that space, but the position of the
+parenthesis stays fixed. In some displays, you may want the parenthesis
+to ‘hug’ your number - the “format group” width should stay fixed, the
+parenthesis should move to the right along with the numbers consuming
+less integer space. Within your <code>f_str()</code>, you can achieve
+this by using a capital ‘X’. For example, focusing on the mean and
+standard deviation line:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adlb, TRTA, PARAMCD <span class="sc">==</span> <span class="st">&quot;CK&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AVAL, <span class="at">by=</span><span class="fu">vars</span>(PARAMCD, AVISIT)) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">TEST =</span> <span class="fu">f_str</span>(<span class="st">&quot;xxx.x (XXX.x)&quot;</span>, mean, sd, <span class="at">empty=</span><span class="st">&quot;NA&quot;</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_precision_by</span>(PARAMCD)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&#39;ord&#39;</span>))</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 6</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   row_label1 row_label2 row_label3 var1_Placebo    var1_Xanomeline Hig…¹ var1_…²</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;           &lt;chr&gt;                 &lt;chr&gt;  </span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 CK         Week 12    </span><span class="al">TEST</span><span class="co">       &quot; 67.5 (148.6)&quot; &quot;122.0 (115.5)&quot;       &quot; 75.3…</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 CK         Week 24    </span><span class="al">TEST</span><span class="co">       &quot; 73.2 (438.5)&quot; &quot; 55.5   (3.5)&quot;       &quot; 55.5…</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 CK         Week 8     </span><span class="al">TEST</span><span class="co">       &quot; 82.0  (78.9)&quot; &quot; 67.5  (80.6)&quot;       &quot; 48.5…</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with abbreviated variable names ¹​`var1_Xanomeline High Dose`,</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ²​`var1_Xanomeline Low Dose`</span></span></code></pre></div>
+<p>Similarly, the same functionality works with auto precision by using
+a capital A.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adlb, TRTA, PARAMCD <span class="sc">==</span> <span class="st">&quot;CK&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AVAL, <span class="at">by=</span><span class="fu">vars</span>(PARAMCD, AVISIT)) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">TEST =</span> <span class="fu">f_str</span>(<span class="st">&quot;a.a (A.a)&quot;</span>, mean, sd, <span class="at">empty=</span><span class="st">&quot;NA&quot;</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_precision_by</span>(PARAMCD)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&#39;ord&#39;</span>))</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 6</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   row_label1 row_label2 row_label3 var1_Placebo var1_Xanomeline High D…¹ var1_…²</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;                    &lt;chr&gt;  </span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 CK         Week 12    </span><span class="al">TEST</span><span class="co">       &quot;  68 (149)&quot; &quot; 122 (115)&quot;             &quot;  75 …</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 CK         Week 24    </span><span class="al">TEST</span><span class="co">       &quot;  73 (438)&quot; &quot;  56   (4)&quot;             &quot;  56 …</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 CK         Week 8     </span><span class="al">TEST</span><span class="co">       &quot;  82  (79)&quot; &quot;  68  (81)&quot;             &quot;  48 …</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with abbreviated variable names ¹​`var1_Xanomeline High Dose`,</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ²​`var1_Xanomeline Low Dose`</span></span></code></pre></div>
+<p>There are a two rules when using ‘parenthesis hugging’:</p>
+<ul>
+<li>Capital letters should only be used on the integer side of a
+number</li>
+<li>A character must precede the capital letter, otherwise there’s no
+character to ‘hug’</li>
+</ul>
+<p>Aside from these rules, parenthesis hugging can be combined with all
+other valid format string capabilities.</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

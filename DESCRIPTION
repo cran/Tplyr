@@ -1,6 +1,6 @@
 Package: Tplyr
 Title: A Traceability Focused Grammar of Clinical Data Summary
-Version: 1.0.2
+Version: 1.1.0
 Authors@R: 
     c(
     person(given = "Eli",
@@ -20,8 +20,12 @@ Authors@R:
     person(given = "Nathan",
            family = "Kosiba",
            email = "Nathan.Kosiba@atorusresearch.com",
-           role = "aut",
+           role = "ctb",
            comment = c(ORCID = "0000-0001-5359-4234")),
+    person(given = "Sadchla",
+           family = "Mascary",
+           email = "sadchla.mascary@atorusresearch.com",
+           role = "ctb"),
     person(given = "Atorus Research LLC",
            role = "cph")
     )
@@ -38,16 +42,17 @@ Imports: rlang (>= 0.4.6), assertthat (>= 0.2.1), magrittr (>= 1.5),
 Suggests: testthat (>= 2.1.0), haven (>= 2.2.0), knitr, rmarkdown,
         huxtable, tidyverse, readr, kableExtra, pharmaRTF, withr
 VignetteBuilder: knitr
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 RdMacros: lifecycle
 Config/testthat/edition: 3
 NeedsCompilation: no
-Packaged: 2022-11-07 17:28:42 UTC; eli.miller
+Packaged: 2023-01-10 22:04:10 UTC; eli.miller
 Author: Eli Miller [aut] (<https://orcid.org/0000-0002-2127-9456>),
   Mike Stackhouse [aut, cre] (<https://orcid.org/0000-0001-6030-723X>),
   Ashley Tarasiewicz [aut],
-  Nathan Kosiba [aut] (<https://orcid.org/0000-0001-5359-4234>),
+  Nathan Kosiba [ctb] (<https://orcid.org/0000-0001-5359-4234>),
+  Sadchla Mascary [ctb],
   Atorus Research LLC [cph]
 Maintainer: Mike Stackhouse <mike.stackhouse@atorusresearch.com>
 Repository: CRAN
-Date/Publication: 2022-11-07 23:30:02 UTC
+Date/Publication: 2023-01-10 23:00:02 UTC
