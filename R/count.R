@@ -39,6 +39,13 @@ process_summaries.count_layer <- function(x, ...) {
                                         sep = " ")))
       }
 
+      # Do this here to make sure that defaults are available everywhere else
+      # Downstream
+      if (is.null(include_total_row)) include_total_row <- FALSE
+      if (is.null(total_row_label)) total_row_label <- "Total"
+      if (is.null(include_missing_subjects_row)) include_missing_subjects_row <- FALSE
+      if (is.null(missing_subjects_row_label)) missing_subjects_row_label <- "Missing"
+
       # Save this for the denominator where, but only if it hasn't been saved yet.
       if (is.null(built_target_pre_where)) built_target_pre_where <- built_target
 
@@ -48,7 +55,7 @@ process_summaries.count_layer <- function(x, ...) {
 
       ## Drop levels if target var is factor and kept levels used
       if (eval_tidy(keep_levels_logic) &&
-         is.factor(built_target[[as_name(tail(target_var, 1)[[1]])]])) {
+          is.factor(built_target[[as_name(tail(target_var, 1)[[1]])]])) {
         # Pull out the levels that weren't in keep levels.
         target_levels <- levels(built_target[[as_name(tail(target_var, 1)[[1]])]])
         drop_levels_ind <- !(target_levels %in% levels_to_keep)
@@ -72,7 +79,7 @@ process_summaries.count_layer <- function(x, ...) {
     }
 
     if (length(target_var) == 2 && !quo_is_symbol(target_var[[2]]) &&
-                as_name(target_var[[2]]) %in% names(target)) {
+        as_name(target_var[[2]]) %in% names(target)) {
       warning(paste0("The second target variable has been coerced into a symbol.",
                      "You should pass variable names unquoted."), immediate. = TRUE)
 
@@ -121,14 +128,11 @@ process_summaries.count_layer <- function(x, ...) {
 #' If include_total_row is true a row will be added with a total row labeled
 #' with total_row_label.
 #'
-#' Complete is used to complete the combinaions of by, treat_var, and target_var
+#' Complete is used to complete the combinations of by, treat_var, and target_var
 #'
 #' @noRd
 process_single_count_target <- function(x) {
   evalq({
-
-    if (is.null(include_total_row)) include_total_row <- FALSE
-    if (is.null(total_row_label)) total_row_label <- "Total"
 
     # The current environment should be the layer itself
     process_count_n(current_env())
@@ -139,41 +143,65 @@ process_single_count_target <- function(x) {
       # Used to temporarily check formats
       if (is.null(format_strings)) tmp_fmt <- gather_defaults.count_layer(current_env())
       if (count_missings && !(is.null(denom_ignore) || length(denom_ignore) == 0) &&
-         (("pct" %in% total_count_format$vars || "distinct_pct" %in% total_count_format$vars) ||
-         # Logic if no total_count format
-         (is.null(total_count_format) && is.null(format_strings) && ("pct" %in% tmp_fmt$n_counts$vars || "distinct_pct" %in% tmp_fmt$n_counts$vars)) ||
-         (is.null(total_count_format) && ("pct" %in% count_fmt$n_counts$vars || "distinct_pct" %in% count_fmt$n_counts$vars))
-         )
-         ) {
-           warning("Your total row is ignoring certain values. The 'pct' in this row may not be 100%",
-                   immediate. = TRUE)
-         }
+          (("pct" %in% total_count_format$vars || "distinct_pct" %in% total_count_format$vars) ||
+           # Logic if no total_count format
+           (is.null(total_count_format) && is.null(format_strings) && ("pct" %in% tmp_fmt$n_counts$vars || "distinct_pct" %in% tmp_fmt$n_counts$vars)) ||
+           (is.null(total_count_format) && ("pct" %in% count_fmt$n_counts$vars || "distinct_pct" %in% count_fmt$n_counts$vars))
+          )
+      ) {
+        warning("Your total row is ignoring certain values. The 'pct' in this row may not be 100%",
+                immediate. = TRUE)
+      }
+    }
+
+    if (include_missing_subjects_row) {
+      process_missing_subjects_row(current_env())
     }
 
     if (is.null(count_row_prefix)) count_row_prefix <- ""
 
-    if (is.null(denoms_by)) denoms_by <- c(treat_var, cols)
+    # If a denoms variable is factor then it should be character for the denoms calculations
+    denoms_df_prep <- denoms_df %>%
+      mutate(
+        across(dplyr::where(is.factor), ~as.character(.))
+      )
+
+    # Nested counts might have summary var come through as numeric
+    if ('summary_var' %in% map_chr(denoms_by, as_name) && is.numeric(denoms_df_prep$summary_var)) {
+      denoms_df_prep$summary_var <- as.character(denoms_df_prep$summary_var)
+    }
+
+    # But if a summary_stat variable is factor, then the denoms needs to match this
+    # This happens if sorting was triggered for the variable as a factor
+    # fct_cols will be a named logical vector of the variable names, where TRUE
+    # is the summary_stat variables that are factors
+    fct_cols <- map_lgl(summary_stat, is.factor)
+
+    if (any(fct_cols)) {
+      # From the bool vector of fct_cols, grab the names of the ones that
+      # are TRUE
+      # Create a regular expression like var1|var2|var3
+      fct_cols_ns <- paste(names(fct_cols[fct_cols]), collapse="|")
+
+      # Reset each factor variable to have the appropriate levels for the denom
+      # so that 0 filling can happen appropriately later on
+      denoms_df_prep <- denoms_df_prep %>%
+        mutate(
+          across(matches(fct_cols_ns), ~ factor(., levels=levels(summary_stat[[cur_column()]])))
+        )
+
+      rm(fct_cols_ns)
+    }
 
     # rbind tables together
-    numeric_data <- summary_stat %>%
-      bind_rows(total_stat) %>%
+    numeric_data <- bind_rows(summary_stat, total_stat, missing_subjects_stat) %>%
       rename("summary_var" = !!target_var[[1]]) %>%
       group_by(!!!denoms_by) %>%
-      do(get_denom_total(., denoms_by, denoms_df, "n")) %>%
+      do(get_denom_total(., denoms_by, denoms_df_prep, "n")) %>%
       mutate(summary_var = prefix_count_row(summary_var, count_row_prefix)) %>%
       ungroup()
 
-
-    if (!is.null(distinct_stat)) {
-      if (include_total_row) {
-        distinct_stat <- distinct_stat %>%
-          bind_rows(total_stat_denom) %>%
-          group_by(!!!denoms_by) %>%
-          do(get_denom_total(., denoms_by, denoms_df, "distinct_n"))
-      }
-      numeric_data <- bind_cols(numeric_data,
-                                distinct_stat[, c("distinct_n", "distinct_total")])
-    }
+    rm(denoms_df_prep, fct_cols)
 
   }, envir = x)
 }
@@ -214,8 +242,8 @@ process_count_n <- function(x) {
     # If there is a missing_count_string, but its not in the dataset
     if (!is.null(missing_count_string) &&
 
-       !((any(unname(unlist(missing_count_list)) %in% unique(built_target[, as_name(target_var[[1]])]))) ||
-        any(is.na(built_target[, as_name(target_var[[1]])])))) {
+        !((any(unname(unlist(missing_count_list)) %in% unique(built_target[, as_name(target_var[[1]])]))) ||
+          any(is.na(built_target[, as_name(target_var[[1]])])))) {
       # This adds the missing string as a factor to the tallies. This is needed
       # to make sure the missing row is added even if there are no missing values.
       summary_stat <- summary_stat %>%
@@ -223,11 +251,15 @@ process_count_n <- function(x) {
                                                names(missing_count_list)))
     }
 
-    summary_stat <- summary_stat %>%
-      # complete all combinations of factors to include combinations that don't exist.
-      # add 0 for combinations that don't exist
-      complete(!!treat_var, !!!by, !!!target_var, !!!cols,
-               fill = list(n = 0, total = 0, distinct_n = 0, distinct_total = 0)) %>%
+    # Need to mark this for nested counts
+    if (!exists('outer_')) outer_ <- FALSE
+
+    complete_levels <- summary_stat %>%
+      complete_and_limit(treat_var, by, cols, target_var, limit_data_by,
+                         .fill = list(n = 0, total = 0, distinct_n = 0, distinct_total = 0),
+                         outer=outer_)
+
+    summary_stat <- complete_levels %>%
       # Change the treat_var and first target_var to characters to resolve any
       # issues if there are total rows and the original column is numeric
       mutate(!!treat_var := as.character(!!treat_var)) %>%
@@ -240,6 +272,25 @@ process_count_n <- function(x) {
     if (nrow(summary_stat) == 0) return()
   }, envir = x)
 
+}
+
+
+#' Get Logical vector that is used to remove the treat_var and cols
+#'
+#' In total row and missing subject counts, denoms_by needs to be stripped of
+#' cols and treat_var variables, otherwise it will error out in the group_by
+#'
+#' @param denoms_by The layer denoms by
+#' @param treat_var table treat var
+#' @param cols tables cols vars
+#'
+#' @return list of quosures
+#' @noRd
+get_needed_denoms_by <- function(denoms_by, treat_var, cols) {
+  map_lgl(denoms_by, function(x, treat_var, cols) {
+    all(as_name(x) != as_name(treat_var),
+        as_name(x) != map_chr(cols, as_name))
+  }, treat_var, cols)
 }
 
 #' Process the amounts for a total row
@@ -257,16 +308,8 @@ no denoms_by variable was set. This may cause unexpected results. If you wish to
 change this behavior, use `set_denoms_by()`.", immediate. = TRUE)
     }
 
-    # Make sure the denoms_by is stripped
-    # Stripped of cols and treat_var variables, otherwise it will error out in the group_by
-    # I thought of replacing the group by with !!!unique(c(treat_var, cols, denoms_by))
-    # but that doesn't work due to the denoms_by having an environment set
-
     # Logical vector that is used to remove the treat_var and cols
-    needed_denoms_by <- map_lgl(denoms_by, function(x, treat_var, cols) {
-      all(as_name(x) != as_name(treat_var),
-          as_name(x) != map_chr(cols, as_name))
-    }, treat_var, cols)
+    needed_denoms_by <- get_needed_denoms_by(denoms_by, treat_var, cols)
 
     #Create an expression to evaluate filter
     if (!count_missings) {
@@ -293,9 +336,46 @@ change this behavior, use `set_denoms_by()`.", immediate. = TRUE)
       # aren't symbols
       group_by(!!!extract_character_from_quo(by)) %>%
       # ungroup right away to make sure the complete works
+      ungroup()
+  }, envir = x)
+}
+
+#' Process the amounts for a missing subjects row
+#'
+#' @param x A Count layer
+#' @noRd
+process_missing_subjects_row <- function(x) {
+  evalq({
+
+    # Logical vector that is used to remove the treat_var and cols
+    needed_denoms_by <- get_needed_denoms_by(denoms_by, treat_var, cols)
+
+    # Create the merge variables to join the header_n data
+    mrg_vars <- map_chr(c(pop_treat_var, cols, denoms_by[needed_denoms_by]), as_name)
+    names(mrg_vars)[1] <- as_name(treat_var)
+    # create a data.frame to create total counts
+    missing_subjects_stat <- built_target %>%
+      # Use distinct if this is a distinct total row
+      # Group by all column variables
+      distinct(!!treat_var, !!!cols, !!!by, !!!distinct_by) %>%
       ungroup() %>%
+      count(!!treat_var, !!!cols, !!!by, name="n_present") %>%
       # complete based on missing groupings
-      complete(!!treat_var, !!!cols, fill = list(n = 0, total = 0))
+      complete(!!treat_var, !!!cols, !!!by, fill = list(n_present = 0)) %>%
+      left_join(
+        header_n %>% rename(header_tots = n), by = mrg_vars
+      ) %>%
+      # Create a variable to label the totals when it is merged in.
+      mutate(
+        !!as_name(target_var[[1]]) := missing_subjects_row_label,
+        distinct_n = header_tots - n_present
+      ) %>%
+      # Create variables to carry forward 'by'. Only pull out the ones that
+      # aren't symbols
+      group_by(!!!extract_character_from_quo(by)) %>%
+      # ungroup right away to make sure the complete works
+      ungroup() %>%
+      select(-c(n_present, header_tots))
   }, envir = x)
 }
 
@@ -318,12 +398,12 @@ prepare_format_metadata.count_layer <- function(x) {
     # distinct_by
     # If both distinct and n
     if (((("distinct_n" %in% map(format_strings$n_counts$vars, as_name) &
-         "n" %in% map(format_strings$n_counts$vars, as_name)) |
-        # or both distinct_pct and pct
-        ("distinct_pct" %in% map(format_strings$n_counts$vars, as_name) &
-         "pct" %in% map(format_strings$n_counts$vars, as_name))) &
-        # AND distinct_by is null
-        is.null(distinct_by))) {
+           "n" %in% map(format_strings$n_counts$vars, as_name)) |
+          # or both distinct_pct and pct
+          ("distinct_pct" %in% map(format_strings$n_counts$vars, as_name) &
+           "pct" %in% map(format_strings$n_counts$vars, as_name))) &
+         # AND distinct_by is null
+         is.null(distinct_by))) {
       stop("You can't use distinct and non-distinct parameters without specifying a distinct_by")
     }
 
@@ -385,15 +465,17 @@ process_formatting.count_layer <- function(x, ...) {
                                summary_var = summary_var,
                                indentation_length = indentation_length,
                                total_count_format = total_count_format,
+                               missing_subjects_count_format = missing_subjects_count_format,
                                total_row_label = total_row_label,
+                               missing_subjects_row_label = missing_subjects_row_label,
                                has_missing_count = has_missing_count)
       }) %>%
       # Pivot table
-        pivot_wider(id_cols = c(match_exact(by), "summary_var"),
+      pivot_wider(id_cols = c(match_exact(by), "summary_var"),
                   names_from = c(!!treat_var, match_exact(cols)), values_from = n,
                   names_prefix = "var1_") %>%
-    # Replace the by variables and target variable names with `row_label<n>`
-    replace_by_string_names(quos(!!!by, summary_var))
+      # Replace the by variables and target variable names with `row_label<n>`
+      replace_by_string_names(quos(!!!by, summary_var))
 
     if (is_built_nest) {
       # I had trouble doing this in a 'tidy' way so I just did it here.
@@ -446,19 +528,26 @@ process_formatting.count_layer <- function(x, ...) {
 #'   target variable.
 #' @param indentation_length If this is a nested count layer. The row prefixes
 #'   must be removed
+#' @param total_count_format f_str for total counts
+#' @param missing_subjects_count_format f_str for missing subjects
+#' @param total_row_label Label string for total rows
+#' @param missing_subjects_row_label Label string for missing subjects
+#' @param has_missing_count Boolean for if missing counts are present
 #'
 #' @return A tibble replacing the original counts
 #' @noRd
 construct_count_string <- function(.n, .total, .distinct_n = NULL, .distinct_total = NULL,
                                    count_fmt = NULL, max_layer_length, max_n_width, missing_string,
                                    missing_f_str, summary_var, indentation_length, total_count_format,
-                                   total_row_label, has_missing_count) {
+                                   missing_subjects_count_format, total_row_label, missing_subjects_row_label,
+                                   has_missing_count) {
 
   ## Added this for processing formatting in nested count layers where this won't be processed yet
   if (is.null(max_layer_length)) max_layer_length <- 0
   if (is.null(max_n_width)) max_n_width <- 0
   missing_rows <- FALSE
   total_rows <- FALSE
+  missing_subject_rows <- FALSE
 
   # Add in the missing format if its null and there are missing counts
   if (has_missing_count && is.null(missing_f_str)) {
@@ -482,6 +571,12 @@ construct_count_string <- function(.n, .total, .distinct_n = NULL, .distinct_tot
     total_vars_ord <- map_chr(total_count_format$vars, as_name)
   }
 
+  ## Pull out string information for missing subject rows
+  if (!is.null(missing_subjects_count_format)) {
+    missing_subject_rows <- summary_var %in% missing_subjects_row_label
+    missing_subject_vars_ord <- map_chr(missing_subjects_count_format$vars, as_name)
+  }
+
   vars_ord <- map_chr(count_fmt$vars, as_name)
 
   # str_all is a list that contains character vectors for each parameter that might be calculated
@@ -489,11 +584,15 @@ construct_count_string <- function(.n, .total, .distinct_n = NULL, .distinct_tot
   # Append the repl_str to be passed to do.call
   str_all[1] <- count_fmt$repl_str
   # Iterate over every variable
+  rows_ <- !missing_rows & !total_rows & !missing_subject_rows
   for (i in seq_along(vars_ord)) {
-    str_all[[i + 1]] <-  count_string_switch_help(vars_ord[i], count_fmt, .n[!missing_rows & !total_rows], .total[!missing_rows & !total_rows],
-                                                .distinct_n[!missing_rows & !total_rows], .distinct_total[!missing_rows & !total_rows], vars_ord)
+    str_all[[i + 1]] <-  count_string_switch_help(vars_ord[i], count_fmt,
+                                                  .n[rows_],
+                                                  .total[rows_],
+                                                  .distinct_n[rows_],
+                                                  .distinct_total[rows_],
+                                                  vars_ord)
   }
-
 
   # Logic for missing
   # Same logic as above, just add for missing
@@ -501,12 +600,12 @@ construct_count_string <- function(.n, .total, .distinct_n = NULL, .distinct_tot
   missing_str_all[1] <- missing_f_str$repl_str
   for (i in seq_along(missing_vars_ord)) {
     missing_str_all[[i + 1]] <- count_string_switch_help(missing_vars_ord[i],
-                                                       missing_f_str,
-                                                       .n[missing_rows],
-                                                       .total[missing_rows],
-                                                       .distinct_n[missing_rows],
-                                                       .distinct_total[missing_rows],
-                                                       missing_vars_ord)
+                                                         missing_f_str,
+                                                         .n[missing_rows],
+                                                         .total[missing_rows],
+                                                         .distinct_n[missing_rows],
+                                                         .distinct_total[missing_rows],
+                                                         missing_vars_ord)
   }
 
   total_str_all <- vector("list", 5)
@@ -516,25 +615,35 @@ construct_count_string <- function(.n, .total, .distinct_n = NULL, .distinct_tot
                                                        total_count_format,
                                                        .n[total_rows],
                                                        .total[total_rows],
-                                                     .distinct_n[total_rows],
-                                                     .distinct_total[total_rows],
-                                                     total_vars_ord)
+                                                       .distinct_n[total_rows],
+                                                       .distinct_total[total_rows],
+                                                       total_vars_ord)
+  }
+
+  missing_subs_str_all <- vector("list", 5)
+  missing_subs_str_all[1] <- missing_subjects_count_format$repl_str
+  for (i in seq_along(missing_subject_vars_ord)) {
+    missing_subs_str_all[[i + 1]] <- count_string_switch_help(missing_subject_vars_ord[i],
+                                                              missing_subjects_count_format,
+                                                              .n[missing_subject_rows],
+                                                              .total[missing_subject_rows],
+                                                              .distinct_n[missing_subject_rows],
+                                                              .distinct_total[missing_subject_rows],
+                                                              missing_subject_vars_ord)
   }
 
   # Put the vector strings together. Only include parts of str_all that aren't null
-  # nm is non-missing, m is mising, and t is total.
+  # nm is non-missing, m is missing, t is total, ms is missing subjects
   string_nm <- do.call(sprintf, str_all[!map_lgl(str_all, is.null)])
   if (!is.null(missing_vars_ord)) string_m <-  do.call(sprintf, missing_str_all[!map_lgl(missing_str_all, is.null)])
   if (!is.null(total_vars_ord)) string_t <- do.call(sprintf, total_str_all[!map_lgl(total_str_all, is.null)])
+  if (!is.null(missing_subject_vars_ord)) string_ms <- do.call(sprintf, missing_subs_str_all[!map_lgl(missing_subs_str_all, is.null)])
   # string_ is the final string to return. Merge the missing, non-missing, and others together
-  string_ <- character(length(string_nm) + length(string_m) + length(string_t))
-  string_[!missing_rows & !total_rows] <- string_nm
+  string_ <- character(sum(length(string_nm), length(string_m), length(string_t), length(string_ms)))
+  string_[rows_] <- string_nm
   string_[total_rows] <-   string_t
   string_[missing_rows] <-  string_m
-
-
-
-
+  string_[missing_subject_rows] <-  string_ms
   # Left pad set to 0 meaning it won't pad to the left at all
   # right pad is set to the maximum n count in the table
   string_ <- pad_formatted_data(string_, 0, max_n_width)
@@ -658,8 +767,8 @@ process_count_denoms <- function(x) {
                    "` is invalid. Filter error:\n", e))
     })
 
-      # For distinct counts, we want to defer back to the
-      # population dataset. Trigger this by identifying that
+    # For distinct counts, we want to defer back to the
+    # population dataset. Trigger this by identifying that
     # the population dataset was overridden
     if (!isTRUE(try(identical(pop_data, target)))) {
       # If the denom_where doesn't match the where AND the denom_where isn't true
@@ -675,29 +784,47 @@ process_count_denoms <- function(x) {
       group_by(!!!layer_params[param_apears]) %>%
       summarize(
         n = n()
-        ) %>%
+      ) %>%
       ungroup()
+
+    # If user specified treatment var as a denom by then remove it
+    # and if inside a nested layer, rename summary_var in the denoms_by
+    # for building this table
+    if (is.null(denoms_by)) denoms_by <- c(treat_var, cols)
+    dist_grp <- denoms_by
+    which_is_treatvar <- which(
+      map_lgl(denoms_by, ~ as_name(.) %in% c(as_name(pop_treat_var), as_name(treat_var)))
+    )
+    if (length(which_is_treatvar) > 0) {
+      dist_grp <- dist_grp[-which_is_treatvar]
+    }
+    is_svar <- map_lgl(dist_grp, ~as_name(.) == "summary_var")
+    if (any(is_svar)) {
+      dist_grp[[which(is_svar)]] <- layer_params[[1]]
+    }
 
     denoms_df_dist <- built_pop_data %>%
       filter(!!denom_where) %>%
-      group_by(!!pop_treat_var) %>%
+      group_by(!!pop_treat_var, !!!dist_grp) %>%
       summarize(
         distinct_n = n_distinct(!!!distinct_by, !!pop_treat_var)
       ) %>%
       ungroup()
 
-    by_join <- as_name(pop_treat_var)
-    names(by_join) <- as_name(treat_var)
+    # Create merge variables to get the denoms dataframe merged correctly
+    by_join <- map_chr(append(dist_grp, pop_treat_var, after=0), as_name)
+    names(by_join) <- map_chr(append(dist_grp, treat_var, after=0), as_name)
+
 
     denoms_df <- denoms_df_n %>%
-      complete(!!!layer_params[param_apears],
-               fill = list(n = 0)) %>%
       left_join(denoms_df_dist, by = by_join)
 
     if (as_name(target_var[[1]]) %in% names(target)) {
       denoms_df <- denoms_df %>%
         rename("summary_var" := !!target_var[[1]])
     }
+
+    rm(by_join, denoms_df_n, denoms_df_dist, dist_grp, is_svar, which_is_treatvar)
 
   }, envir = x)
 
@@ -732,7 +859,7 @@ rename_missing_values <- function(x) {
           # Replace the implicit values in built_target
           built_target <- built_target %>%
             mutate(!!target_var[[1]] := fct_expand(!!target_var[[1]], "(Missing)")) %>%
-            mutate(!!target_var[[1]] := fct_explicit_na(!!target_var[[1]]))
+            mutate(!!target_var[[1]] := fct_na_value_to_level(!!target_var[[1]], level="(Missing)"))
 
         }
         built_target <- built_target %>%
@@ -757,17 +884,17 @@ filter_numeric <- function(.data,
     return(.data)
   }
 
-    vals <- .data %>%
-      {if (is.null(numeric_cutoff_column)) . else filter(., !!treat_var == numeric_cutoff_column)} %>%
-      mutate(
-        pct = n/total,
-        distinct_pct = distinct_n/distinct_total
-      ) %>%
-      filter(!!sym(numeric_cutoff_stat) >= !!numeric_cutoff) %>%
-      extract2("summary_var")
+  vals <- .data %>%
+    {if (is.null(numeric_cutoff_column)) . else filter(., !!treat_var == numeric_cutoff_column)} %>%
+    mutate(
+      pct = n/total,
+      distinct_pct = distinct_n/distinct_total
+    ) %>%
+    filter(!!sym(numeric_cutoff_stat) >= !!numeric_cutoff) %>%
+    extract2("summary_var")
 
-    .data %>%
-      filter(summary_var %in% vals)
+  .data %>%
+    filter(summary_var %in% vals)
 
 
 }

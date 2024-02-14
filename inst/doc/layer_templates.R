@@ -7,7 +7,6 @@ knitr::opts_chunk$set(
 ## ----setup, echo=FALSE--------------------------------------------------------
 library(Tplyr)
 library(knitr)
-load('adsl.Rdata')
 
 ## ----creating a template------------------------------------------------------
 new_layer_template(
@@ -17,7 +16,7 @@ new_layer_template(
 )
 
 ## ----using a template---------------------------------------------------------
-tplyr_table(adsl, TRT01P) %>% 
+tplyr_table(tplyr_adsl, TRT01P) %>% 
   add_layer(
     use_template("example_template", RACE, by=ETHNIC)
   ) %>% 
@@ -25,7 +24,7 @@ tplyr_table(adsl, TRT01P) %>%
   kable()
 
 ## ----extending a template-----------------------------------------------------
-tplyr_table(adsl, TRT01P) %>% 
+tplyr_table(tplyr_adsl, TRT01P) %>% 
   add_layer(
     use_template("example_template", RACE) %>% 
       add_total_row()
@@ -42,7 +41,7 @@ new_layer_template("example_params",
  )
 
 ## ----using params-------------------------------------------------------------
-tplyr_table(adsl, TRT01P) %>% 
+tplyr_table(tplyr_adsl, TRT01P) %>% 
   add_layer(
     use_template('example_params', RACE, add_params = 
                    list(

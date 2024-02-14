@@ -376,17 +376,17 @@ back to the source.</p>
 <div id="generating-the-metadata" class="section level2">
 <h2>Generating the Metadata</h2>
 <p>Consider the following example:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">tplyr_table</span>(adsl, TRT01P, <span class="at">where =</span> SAFFL <span class="sc">==</span> <span class="st">&quot;Y&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(RACE)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AGE, <span class="at">where =</span> EFFFL <span class="sc">==</span> <span class="st">&quot;Y&quot;</span>)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> t <span class="sc">%&gt;%</span> <span class="fu">build</span>(<span class="at">metadata=</span><span class="cn">TRUE</span>)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(dat)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">tplyr_table</span>(tplyr_adsl, TRT01P, <span class="at">where =</span> SAFFL <span class="sc">==</span> <span class="st">&quot;Y&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>    <span class="fu">group_count</span>(RACE)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>    <span class="fu">group_desc</span>(AGE, <span class="at">where =</span> EFFFL <span class="sc">==</span> <span class="st">&quot;Y&quot;</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>  )</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>dat <span class="ot">&lt;-</span> t <span class="sc">%&gt;%</span> <span class="fu">build</span>(<span class="at">metadata=</span><span class="cn">TRUE</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="fu">kable</span>(dat)</span></code></pre></div>
 <table>
 <colgroup>
 <col width="5%" />
@@ -515,8 +515,8 @@ information that you need is the <code>row_id</code> and column name of
 the result cell of interest. For example, looking at the result above,
 what if we want to know who the 8 subjects in the Placebo group who
 where Black or African American:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_meta_subset</span>(t, <span class="st">&#39;c2_1&#39;</span>, <span class="st">&#39;var1_Placebo&#39;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">get_meta_subset</span>(t, <span class="st">&#39;c2_1&#39;</span>, <span class="st">&#39;var1_Placebo&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -586,8 +586,8 @@ an additional argument <code>add_cols</code> that allows you to specify
 additional columns you want included in the resulting dataframe, and has
 a default of USUBJID. So let’s say we want additionally include the
 variable <code>SEX</code>.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_meta_subset</span>(t, <span class="st">&#39;c2_1&#39;</span>, <span class="st">&#39;var1_Placebo&#39;</span>, <span class="at">add_cols =</span> <span class="fu">vars</span>(USUBJID, SEX)) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">get_meta_subset</span>(t, <span class="st">&#39;c2_1&#39;</span>, <span class="st">&#39;var1_Placebo&#39;</span>, <span class="at">add_cols =</span> <span class="fu">vars</span>(USUBJID, SEX)) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -664,9 +664,9 @@ the <code>by</code> arguments in each layer type.</p>
 cell created by Tplyr. So let’s say we want to know the subjects
 relevant for the descriptive statistics around age in the Xanomeline
 High Dose group:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_meta_subset</span>(t, <span class="st">&#39;d1_2&#39;</span>, <span class="st">&#39;var1_Xanomeline High Dose&#39;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">get_meta_subset</span>(t, <span class="st">&#39;d1_2&#39;</span>, <span class="st">&#39;var1_Xanomeline High Dose&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -766,12 +766,12 @@ metadata of the result cell needs to first be extracted. This metadata
 can be directly accessed using the function
 <code>get_meta_result()</code>. Using the last example of
 <code>get_meta_subset()</code> above:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_meta_result</span>(t, <span class="st">&#39;d1_2&#39;</span>, <span class="st">&#39;var1_Xanomeline High Dose&#39;</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; tplyr_meta: 4 names, 3 filters</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Names:</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     TRT01P, EFFFL, SAFFL, AGE </span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Filters:</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     TRT01P == c(&quot;Xanomeline High Dose&quot;), EFFFL == &quot;Y&quot;, SAFFL == &quot;Y&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">get_meta_result</span>(t, <span class="st">&#39;d1_2&#39;</span>, <span class="st">&#39;var1_Xanomeline High Dose&#39;</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co">#&gt; tplyr_meta: 4 names, 3 filters</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co">#&gt; Names:</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co">#&gt;     TRT01P, EFFFL, SAFFL, AGE </span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#&gt; Filters:</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt;     TRT01P == c(&quot;Xanomeline High Dose&quot;), EFFFL == &quot;Y&quot;, SAFFL == &quot;Y&quot;</span></span></code></pre></div>
 <p>The resulting output is a new object <strong>Tplyr</strong> called
 <code>tplyr_meta()</code>. This is a container of a relevent metadata
 for a specific result. The object itself is a list with two elements:
@@ -791,13 +791,13 @@ interest.</p>
 <p>The results are provided this was so that they can be unpacked
 directly into <code>dplyr</code> syntax when necessary, which is exactly
 what happens in <code>get_meta_subset()</code>. For example:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">get_meta_result</span>(t, <span class="st">&#39;d1_2&#39;</span>, <span class="st">&#39;var1_Xanomeline High Dose&#39;</span>)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>adsl <span class="sc">%&gt;%</span> </span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!!!</span>m<span class="sc">$</span>filters) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">!!!</span>m<span class="sc">$</span>names) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">get_meta_result</span>(t, <span class="st">&#39;d1_2&#39;</span>, <span class="st">&#39;var1_Xanomeline High Dose&#39;</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>tplyr_adsl <span class="sc">%&gt;%</span> </span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!!!</span>m<span class="sc">$</span>filters) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">!!!</span>m<span class="sc">$</span>names) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -872,13 +872,13 @@ what happens in <code>get_meta_subset()</code>. For example:</p>
 </table>
 <p><em>Note: Trimmed for space</em></p>
 <p>But - who says you can’t let your imagination run wild?</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">c</span>(<span class="st">&quot;adsl %&gt;%</span><span class="sc">\n</span><span class="st">&quot;</span>,</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;   filter(</span><span class="sc">\n</span><span class="st">      &quot;</span>,</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(purrr<span class="sc">::</span><span class="fu">map_chr</span>(m<span class="sc">$</span>filters, <span class="sc">~</span> rlang<span class="sc">::</span><span class="fu">as_label</span>(.)), <span class="at">collpase=</span><span class="st">&quot;,</span><span class="sc">\n</span><span class="st">      &quot;</span>),</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;) %&gt;%</span><span class="sc">\n</span><span class="st">&quot;</span>,</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="st">&quot;   select(&quot;</span>, <span class="fu">paste</span>(purrr<span class="sc">::</span><span class="fu">map_chr</span>(m<span class="sc">$</span>names, rlang<span class="sc">::</span>as_label), <span class="at">collapse=</span><span class="st">&quot;, &quot;</span>), <span class="st">&quot;)&quot;</span>, <span class="at">sep=</span><span class="st">&quot;&quot;</span>)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div>
-<pre><code>adsl %&gt;%
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">c</span>(<span class="st">&quot;tplyr_adsl %&gt;%</span><span class="sc">\n</span><span class="st">&quot;</span>,</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="st">&quot;   filter(</span><span class="sc">\n</span><span class="st">      &quot;</span>,</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>  <span class="fu">paste</span>(purrr<span class="sc">::</span><span class="fu">map_chr</span>(m<span class="sc">$</span>filters, <span class="sc">~</span> rlang<span class="sc">::</span><span class="fu">as_label</span>(.)), <span class="at">collpase=</span><span class="st">&quot;,</span><span class="sc">\n</span><span class="st">      &quot;</span>),</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>  <span class="st">&quot;) %&gt;%</span><span class="sc">\n</span><span class="st">&quot;</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="st">&quot;   select(&quot;</span>, <span class="fu">paste</span>(purrr<span class="sc">::</span><span class="fu">map_chr</span>(m<span class="sc">$</span>names, rlang<span class="sc">::</span>as_label), <span class="at">collapse=</span><span class="st">&quot;, &quot;</span>), <span class="st">&quot;)&quot;</span>, <span class="at">sep=</span><span class="st">&quot;&quot;</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>))</span></code></pre></div>
+<pre><code>tplyr_adsl %&gt;%
     filter(
        TRT01P == c(&quot;Xanomeline High Dose&quot;) ,
        EFFFL == &quot;Y&quot; ,
@@ -892,7 +892,7 @@ what happens in <code>get_meta_subset()</code>. For example:</p>
 results from a result cell. You just need a row ID and a column name.
 But - what does that get you? You can query your tables - and that’s
 great. But how do you <em>use</em> that.</p>
-<p>The idea behind this is really to support <a href="https://shiny.rstudio.com/">Shiny</a>. Consider this minimal
+<p>The idea behind this is really to support <a href="https://shiny.posit.co/">Shiny</a>. Consider this minimal
 application. Click any of the result cells within the table and see what
 happens.</p>
 <iframe src="https://michael-stackhouse.shinyapps.io/Tplyr-shiny-demo/?showcase=0" width="850" height="900px" data-external="1" style="border: 1px solid #464646;" allowfullscreen allow="autoplay">

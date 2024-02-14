@@ -8,12 +8,9 @@ knitr::opts_chunk$set(
 library(Tplyr)
 library(dplyr, warn.conflicts = FALSE)
 library(knitr)
-load("adsl.Rdata")
-load("adae.Rdata")
-load("adlb.Rdata")
 
 ## -----------------------------------------------------------------------------
-t <- tplyr_table(adsl, TRT01P, where = SAFFL == "Y") %>%
+t <- tplyr_table(tplyr_adsl, TRT01P, where = SAFFL == "Y") %>%
   add_total_group() %>%
   add_treat_grps(Treated = c("Xanomeline Low Dose", "Xanomeline High Dose")) %>%
   add_layer(
@@ -29,7 +26,7 @@ t <- tplyr_table(adsl, TRT01P, where = SAFFL == "Y") %>%
 kable(t)
 
 ## -----------------------------------------------------------------------------
-t <- tplyr_table(adae, TRTA) %>%
+t <- tplyr_table(tplyr_adae, TRTA) %>%
   add_layer(
     group_count(AEDECOD) %>%
       set_distinct_by(USUBJID) %>%
@@ -41,7 +38,7 @@ t <- tplyr_table(adae, TRTA) %>%
 kable(t)
 
 ## -----------------------------------------------------------------------------
-t <- tplyr_table(adae, TRTA) %>%
+t <- tplyr_table(tplyr_adae, TRTA) %>%
   add_layer(
     group_count(AEDECOD) %>%
       set_distinct_by(USUBJID) %>%
@@ -54,7 +51,7 @@ t <- tplyr_table(adae, TRTA) %>%
 t
 
 ## -----------------------------------------------------------------------------
-tplyr_table(adae, TRTA) %>%
+tplyr_table(tplyr_adae, TRTA) %>%
   add_layer(
     group_count(vars(AEBODSYS, AEDECOD))
   ) %>%
@@ -63,7 +60,7 @@ tplyr_table(adae, TRTA) %>%
   kable()
 
 ## -----------------------------------------------------------------------------
-tplyr_table(adae, TRTA) %>%
+tplyr_table(tplyr_adae, TRTA) %>%
   add_layer(
     group_count(vars(AEBODSYS, AEDECOD)) %>% 
       set_nest_count(TRUE) %>% 

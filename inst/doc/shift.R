@@ -8,12 +8,9 @@ knitr::opts_chunk$set(
 library(Tplyr)
 library(dplyr, warn.conflicts = FALSE)
 library(knitr)
-load("adsl.Rdata")
-load("adae.Rdata")
-load("adlb.Rdata")
 
 ## -----------------------------------------------------------------------------
-tplyr_table(adlb, TRTA, where=PARAMCD == "CK") %>%
+tplyr_table(tplyr_adlb, TRTA, where=PARAMCD == "CK") %>%
   add_layer(
     group_shift(vars(row = BNRIND, column = ANRIND), by = vars(PARAM, VISIT))
   ) %>%
@@ -22,9 +19,9 @@ tplyr_table(adlb, TRTA, where=PARAMCD == "CK") %>%
   kable()
 
 ## -----------------------------------------------------------------------------
-adlb$ANRIND <- factor(adlb$ANRIND, levels=c("L", "N", "H"))
-adlb$BNRIND <- factor(adlb$BNRIND, levels=c("L", "N", "H"))
-tplyr_table(adlb, TRTA, where=PARAMCD == "CK") %>%
+tplyr_adlb$ANRIND <- factor(tplyr_adlb$ANRIND, levels=c("L", "N", "H"))
+tplyr_adlb$BNRIND <- factor(tplyr_adlb$BNRIND, levels=c("L", "N", "H"))
+tplyr_table(tplyr_adlb, TRTA, where=PARAMCD == "CK") %>%
   add_layer(
     group_shift(vars(row = BNRIND, column = ANRIND), by = vars(PARAM, VISIT))
   ) %>%

@@ -372,28 +372,28 @@ sure to check out <code>vignette(&quot;metadata&quot;)</code></em></p>
 <p>Regardless of what layer type you use within <strong>Tplyr</strong>,
 control of formatting is handled by using format strings. Consider the
 following example.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(RACE) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">f_str</span>(<span class="st">&quot;xx (xx.x%)&quot;</span>, n, pct)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AGE) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;Mean (SD)&quot;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&quot;xx.x (xx.xx)&quot;</span>, mean, sd)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 4 × 3</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   row_label1                       var1_Placebo   `var1_Xanomeline High Dose`</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                            &lt;chr&gt;          &lt;chr&gt;                      </span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 AMERICAN INDIAN OR ALASKA NATIVE &quot; 0 ( 0.0%)&quot;   &quot; 1 ( 1.2%)&quot;               </span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 BLACK OR AFRICAN AMERICAN        &quot; 8 ( 9.3%)&quot;   &quot; 9 (10.7%)&quot;               </span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 WHITE                            &quot;78 (90.7%)&quot;   &quot;74 (88.1%)&quot;               </span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 Mean (SD)                        &quot;76.3 ( 8.59)&quot; &quot;75.9 ( 7.89)&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">tplyr_table</span>(tplyr_adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>    <span class="fu">group_count</span>(RACE) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>        <span class="fu">f_str</span>(<span class="st">&quot;xx (xx.x%)&quot;</span>, n, pct)</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>      )</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>    <span class="fu">group_desc</span>(AGE) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>        <span class="st">&quot;Mean (SD)&quot;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&quot;xx.x (xx.xx)&quot;</span>, mean, sd)</span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>      )</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a><span class="co">#&gt; # A tibble: 4 × 3</span></span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a><span class="co">#&gt;   row_label1                       var1_Placebo   `var1_Xanomeline High Dose`</span></span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                            &lt;chr&gt;          &lt;chr&gt;                      </span></span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a><span class="co">#&gt; 1 AMERICAN INDIAN OR ALASKA NATIVE &quot; 0 ( 0.0%)&quot;   &quot; 1 ( 1.2%)&quot;               </span></span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a><span class="co">#&gt; 2 BLACK OR AFRICAN AMERICAN        &quot; 8 ( 9.3%)&quot;   &quot; 9 (10.7%)&quot;               </span></span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a><span class="co">#&gt; 3 WHITE                            &quot;78 (90.7%)&quot;   &quot;74 (88.1%)&quot;               </span></span>
+<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a><span class="co">#&gt; 4 Mean (SD)                        &quot;76.3 ( 8.59)&quot; &quot;75.9 ( 7.89)&quot;</span></span></code></pre></div>
 <p>For each layer type, when you want to configure string formatting you
 use the function <code>set_format_strings()</code>. Inside
 <code>set_format_strings()</code> you provide <code>f_str()</code>
@@ -532,17 +532,17 @@ layers, see <code>vignettes(&quot;desc&quot;)</code></em></p>
 <h2>General Formatting</h2>
 <p>Looking back at the <strong>Tplyr</strong> table above, let’s look at
 the count layer’s <code>f_str()</code> call.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">f_str</span>(<span class="st">&quot;xx (xx.x%)&quot;</span>, n, pct)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; *** Format String ***</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; xx (xx.x%)</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; *** vars, extracted formats, and settings ***</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; n formated as: xx</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  integer length: 2</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  decimal length: 0</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; pct formated as: xx.x</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  integer length: 2</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  decimal length: 1</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Total Format Size: 10</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">f_str</span>(<span class="st">&quot;xx (xx.x%)&quot;</span>, n, pct)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co">#&gt; *** Format String ***</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co">#&gt; xx (xx.x%)</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co">#&gt; *** vars, extracted formats, and settings ***</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="co">#&gt; n formated as: xx</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="co">#&gt;  integer length: 2</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="co">#&gt;  decimal length: 0</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="co">#&gt; pct formated as: xx.x</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="co">#&gt;  integer length: 2</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="co">#&gt;  decimal length: 1</span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="co">#&gt; Total Format Size: 10</span></span></code></pre></div>
 <p>You can see from the print method of the <code>f_str()</code> object
 that we capture the “format string”, here <code>xx (xx.x%)</code>, and
 metadata surrounding it. This string details exactly where numbers
@@ -609,21 +609,21 @@ characters to specifically control the numeric fields.</p>
 <p>As detailed in the first example, when using a lower case ‘x’, the
 exact width of space allotted by the x’s will be preserved. Note the
 <code>var1_Placebo</code> row below.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(RACE) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">f_str</span>(<span class="st">&quot;xx (xx.x%)&quot;</span>, n, pct)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 3</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   row_label1                       var1_Placebo `var1_Xanomeline High Dose`</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                            &lt;chr&gt;        &lt;chr&gt;                      </span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 AMERICAN INDIAN OR ALASKA NATIVE &quot; 0 ( 0.0%)&quot; &quot; 1 ( 1.2%)&quot;               </span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 BLACK OR AFRICAN AMERICAN        &quot; 8 ( 9.3%)&quot; &quot; 9 (10.7%)&quot;               </span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 WHITE                            &quot;78 (90.7%)&quot; &quot;74 (88.1%)&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">tplyr_table</span>(tplyr_adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>    <span class="fu">group_count</span>(RACE) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>        <span class="fu">f_str</span>(<span class="st">&quot;xx (xx.x%)&quot;</span>, n, pct)</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>      )</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 3</span></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="co">#&gt;   row_label1                       var1_Placebo `var1_Xanomeline High Dose`</span></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                            &lt;chr&gt;        &lt;chr&gt;                      </span></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="co">#&gt; 1 AMERICAN INDIAN OR ALASKA NATIVE &quot; 0 ( 0.0%)&quot; &quot; 1 ( 1.2%)&quot;               </span></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="co">#&gt; 2 BLACK OR AFRICAN AMERICAN        &quot; 8 ( 9.3%)&quot; &quot; 9 (10.7%)&quot;               </span></span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co">#&gt; 3 WHITE                            &quot;78 (90.7%)&quot; &quot;74 (88.1%)&quot;</span></span></code></pre></div>
 <p>Both the integer width for the <code>n</code> counts and the space to
 the right of the opening parenthesis of the <code>pct</code> field are
 preserved. This guarentees that (when using a monospace font) the
@@ -634,21 +634,21 @@ below, if the <code>n</code> or <code>pct</code> result exceeds 10, the
 width of the output string automatically expands. You can trigger this
 behaivor by using a single ‘x’ in the integer side of a format
 group.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(RACE) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">f_str</span>(<span class="st">&quot;x (x.x%)&quot;</span>, n, pct)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 3</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   row_label1                       var1_Placebo `var1_Xanomeline High Dose`</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                            &lt;chr&gt;        &lt;chr&gt;                      </span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 AMERICAN INDIAN OR ALASKA NATIVE 0 (0.0%)     1 (1.2%)                   </span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 BLACK OR AFRICAN AMERICAN        8 (9.3%)     9 (10.7%)                  </span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 WHITE                            78 (90.7%)   74 (88.1%)</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">tplyr_table</span>(tplyr_adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>    <span class="fu">group_count</span>(RACE) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>        <span class="fu">f_str</span>(<span class="st">&quot;x (x.x%)&quot;</span>, n, pct)</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>      )</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 3</span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co">#&gt;   row_label1                       var1_Placebo `var1_Xanomeline High Dose`</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                            &lt;chr&gt;        &lt;chr&gt;                      </span></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="co">#&gt; 1 AMERICAN INDIAN OR ALASKA NATIVE 0 (0.0%)     1 (1.2%)                   </span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co">#&gt; 2 BLACK OR AFRICAN AMERICAN        8 (9.3%)     9 (10.7%)                  </span></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co">#&gt; 3 WHITE                            78 (90.7%)   74 (88.1%)</span></span></code></pre></div>
 </div>
 <div id="uppercase-x" class="section level3">
 <h3>Uppercase ‘X’</h3>
@@ -659,22 +659,22 @@ is shifted to the right. <strong>Tplyr</strong> offers customization
 over this by using a concept called “parenthesis hugging”. This is
 triggered by using an uppercase ‘X’ in the integer side of a format
 group. Consider the following example:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(RACE) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">f_str</span>(<span class="st">&quot;xx (XX.x%)&quot;</span>, n, pct)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 3</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   row_label1                       var1_Placebo `var1_Xanomeline High Dose`</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                            &lt;chr&gt;        &lt;chr&gt;                      </span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 AMERICAN INDIAN OR ALASKA NATIVE &quot; 0  (0.0%)&quot; &quot; 1  (1.2%)&quot;               </span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 BLACK OR AFRICAN AMERICAN        &quot; 8  (9.3%)&quot; &quot; 9 (10.7%)&quot;               </span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 WHITE                            &quot;78 (90.7%)&quot; &quot;74 (88.1%)&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="fu">tplyr_table</span>(tplyr_adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>    <span class="fu">group_count</span>(RACE) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>        <span class="fu">f_str</span>(<span class="st">&quot;xx (XX.x%)&quot;</span>, n, pct)</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>      )</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 3</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt;   row_label1                       var1_Placebo `var1_Xanomeline High Dose`</span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                            &lt;chr&gt;        &lt;chr&gt;                      </span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co">#&gt; 1 AMERICAN INDIAN OR ALASKA NATIVE &quot; 0  (0.0%)&quot; &quot; 1  (1.2%)&quot;               </span></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="co">#&gt; 2 BLACK OR AFRICAN AMERICAN        &quot; 8  (9.3%)&quot; &quot; 9 (10.7%)&quot;               </span></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="co">#&gt; 3 WHITE                            &quot;78 (90.7%)&quot; &quot;74 (88.1%)&quot;</span></span></code></pre></div>
 <p>Now the total string width has been preserved properly. The change
 here is that instead of pulling the right side of the format group in,
 essentially aligning left on the format group, the parenthesis has been
@@ -695,26 +695,26 @@ character to ‘hug’</li>
 automatically determine some widths necessary to format strings. This is
 done by using the character ‘a’ instead of ‘x’ in the format string.</p>
 <p>Consider the following example.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adlb, TRTA, <span class="at">where=</span>PARAMCD <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;CA&quot;</span>, <span class="st">&quot;URATE&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AVAL, <span class="at">by=</span><span class="fu">vars</span>(PARAMCD, AVISIT)) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;Mean (SD)&#39;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&#39;a.a (a.a+1)&#39;</span>, mean, sd)</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_precision_by</span>(PARAMCD)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 5</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   row_label1 row_label2 row_label3 var1_Placebo       var1_Xanomeline High Dos…¹</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;              &lt;chr&gt;                     </span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 CA         Week 12    Mean (SD)  2.18312 (0.074711) 2.17897 (0.062553)        </span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 CA         Week 24    Mean (SD)  2.16233 (0.046617) 2.19560 (0.099174)        </span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 CA         Week 8     Mean (SD)  2.17065 (0.102771) 2.19560 (0.199489)        </span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 URATE      Week 12    Mean (SD)  249.816 (105.3868) 264.686 ( 85.1772)        </span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 URATE      Week 24    Mean (SD)  226.024 (111.8899) 273.608 (126.6612)        </span></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6 URATE      Week 8     Mean (SD)  237.920 ( 45.8806) 291.452 ( 36.6659)        </span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with abbreviated variable name ¹​`var1_Xanomeline High Dose`</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">tplyr_table</span>(tplyr_adlb, TRTA, <span class="at">where=</span>PARAMCD <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;CA&quot;</span>, <span class="st">&quot;URATE&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>    <span class="fu">group_desc</span>(AVAL, <span class="at">by=</span><span class="fu">vars</span>(PARAMCD, AVISIT)) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>        <span class="st">&#39;Mean (SD)&#39;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&#39;a.a (a.a+1)&#39;</span>, mean, sd)</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>      ) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>      <span class="fu">set_precision_by</span>(PARAMCD)</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 5</span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="co">#&gt;   row_label1 row_label2 row_label3 var1_Placebo       var1_Xanomeline High Dos…¹</span></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;              &lt;chr&gt;                     </span></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="co">#&gt; 1 CA         Week 12    Mean (SD)  2.18312 (0.074711) 2.17897 (0.062553)        </span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#&gt; 2 CA         Week 24    Mean (SD)  2.16233 (0.046617) 2.19560 (0.099174)        </span></span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co">#&gt; 3 CA         Week 8     Mean (SD)  2.17065 (0.102771) 2.19560 (0.199489)        </span></span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="co">#&gt; 4 URATE      Week 12    Mean (SD)  249.816 (105.3868) 264.686 ( 85.1772)        </span></span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="co">#&gt; 5 URATE      Week 24    Mean (SD)  226.024 (111.8899) 273.608 (126.6612)        </span></span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a><span class="co">#&gt; 6 URATE      Week 8     Mean (SD)  237.920 ( 45.8806) 291.452 ( 36.6659)        </span></span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a><span class="co">#&gt; # ℹ abbreviated name: ¹​`var1_Xanomeline High Dose`</span></span></code></pre></div>
 <p>Note that the decimal precision varies between different lab test
 results. This feature is beneficial when decimal precision rules must be
 based on the precision of the data as collected. For more information of
@@ -725,19 +725,19 @@ auto-precision for descriptive statistics layers, see
 layers in <strong>Tplyr</strong> is set as <code>a (xxx.x%)</code>. This
 will auto-format the <code>n</code> result based on the maximum
 summarized value of <code>n</code> within the data. For example:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(RACE) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="fu">f_str</span>(<span class="st">&quot;a (xxx.x%)&quot;</span>, n, pct))</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 3</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   row_label1                       var1_Placebo  `var1_Xanomeline High Dose`</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                            &lt;chr&gt;         &lt;chr&gt;                      </span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 AMERICAN INDIAN OR ALASKA NATIVE &quot; 0 (  0.0%)&quot; &quot; 1 (  1.2%)&quot;              </span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 BLACK OR AFRICAN AMERICAN        &quot; 8 (  9.3%)&quot; &quot; 9 ( 10.7%)&quot;              </span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 WHITE                            &quot;78 ( 90.7%)&quot; &quot;74 ( 88.1%)&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">tplyr_table</span>(tplyr_adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>    <span class="fu">group_count</span>(RACE) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="fu">f_str</span>(<span class="st">&quot;a (xxx.x%)&quot;</span>, n, pct))</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 3</span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="co">#&gt;   row_label1                       var1_Placebo  `var1_Xanomeline High Dose`</span></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                            &lt;chr&gt;         &lt;chr&gt;                      </span></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="co">#&gt; 1 AMERICAN INDIAN OR ALASKA NATIVE &quot; 0 (  0.0%)&quot; &quot; 1 (  1.2%)&quot;              </span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a><span class="co">#&gt; 2 BLACK OR AFRICAN AMERICAN        &quot; 8 (  9.3%)&quot; &quot; 9 ( 10.7%)&quot;              </span></span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="co">#&gt; 3 WHITE                            &quot;78 ( 90.7%)&quot; &quot;74 ( 88.1%)&quot;</span></span></code></pre></div>
 <p>Given that the maximum count was &gt;=10 and &lt;100, the integer
 width for <code>n</code> was assigned as 2. Note that auto-precision for
 percents will not auto-format based on available percentages. The count
@@ -745,30 +745,30 @@ filled by <code>a</code> will be based on the <code>n</code> result.</p>
 <p>For both layer types, a capital <code>A</code> follows the same logic
 as <code>X</code>, but is triggered using auto-precision. Take this
 example of an adverse event table:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adae, TRTA) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_pop_data</span>(adsl) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_pop_treat_var</span>(TRT01A) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(AEDECOD) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="fu">f_str</span>(<span class="st">&quot;a (XX.x%) [A]&quot;</span>, distinct_n, distinct_pct, n)) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_distinct_by</span>(USUBJID)</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 21 × 3</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    row_label1         var1_Placebo      `var1_Xanomeline High Dose`</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;              &lt;chr&gt;             &lt;chr&gt;                      </span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 ACTINIC KERATOSIS  &quot; 0  (0.0%)  [0]&quot; &quot; 1  (1.2%)  [1]&quot;          </span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 ALOPECIA           &quot; 1  (1.2%)  [1]&quot; &quot; 0  (0.0%)  [0]&quot;          </span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 BLISTER            &quot; 0  (0.0%)  [0]&quot; &quot; 1  (1.2%)  [2]&quot;          </span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 COLD SWEAT         &quot; 1  (1.2%)  [3]&quot; &quot; 0  (0.0%)  [0]&quot;          </span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 DERMATITIS ATOPIC  &quot; 1  (1.2%)  [1]&quot; &quot; 0  (0.0%)  [0]&quot;          </span></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 DERMATITIS CONTACT &quot; 0  (0.0%)  [0]&quot; &quot; 0  (0.0%)  [0]&quot;          </span></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 DRUG ERUPTION      &quot; 1  (1.2%)  [1]&quot; &quot; 0  (0.0%)  [0]&quot;          </span></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 ERYTHEMA           &quot; 9 (10.5%) [13]&quot; &quot;14 (16.7%) [22]&quot;          </span></span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 HYPERHIDROSIS      &quot; 2  (2.3%)  [2]&quot; &quot; 8  (9.5%) [10]&quot;          </span></span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 PRURITUS           &quot; 8  (9.3%) [11]&quot; &quot;26 (31.0%) [38]&quot;          </span></span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 11 more rows</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">tplyr_table</span>(tplyr_adae, TRTA) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  <span class="fu">set_pop_data</span>(tplyr_adsl) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  <span class="fu">set_pop_treat_var</span>(TRT01A) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>    <span class="fu">group_count</span>(AEDECOD) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="fu">f_str</span>(<span class="st">&quot;a (XX.x%) [A]&quot;</span>, distinct_n, distinct_pct, n)) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>      <span class="fu">set_distinct_by</span>(USUBJID)</span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="co">#&gt; # A tibble: 21 × 3</span></span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="co">#&gt;    row_label1         var1_Placebo      `var1_Xanomeline High Dose`</span></span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;              &lt;chr&gt;             &lt;chr&gt;                      </span></span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a><span class="co">#&gt;  1 ACTINIC KERATOSIS  &quot; 0  (0.0%)  [0]&quot; &quot; 1  (1.2%)  [1]&quot;          </span></span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a><span class="co">#&gt;  2 ALOPECIA           &quot; 1  (1.2%)  [1]&quot; &quot; 0  (0.0%)  [0]&quot;          </span></span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a><span class="co">#&gt;  3 BLISTER            &quot; 0  (0.0%)  [0]&quot; &quot; 1  (1.2%)  [2]&quot;          </span></span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a><span class="co">#&gt;  4 COLD SWEAT         &quot; 1  (1.2%)  [3]&quot; &quot; 0  (0.0%)  [0]&quot;          </span></span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a><span class="co">#&gt;  5 DERMATITIS ATOPIC  &quot; 1  (1.2%)  [1]&quot; &quot; 0  (0.0%)  [0]&quot;          </span></span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a><span class="co">#&gt;  6 DERMATITIS CONTACT &quot; 0  (0.0%)  [0]&quot; &quot; 0  (0.0%)  [0]&quot;          </span></span>
+<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a><span class="co">#&gt;  7 DRUG ERUPTION      &quot; 1  (1.2%)  [1]&quot; &quot; 0  (0.0%)  [0]&quot;          </span></span>
+<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a><span class="co">#&gt;  8 ERYTHEMA           &quot; 9 (10.5%) [13]&quot; &quot;14 (16.7%) [22]&quot;          </span></span>
+<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a><span class="co">#&gt;  9 HYPERHIDROSIS      &quot; 2  (2.3%)  [2]&quot; &quot; 8  (9.5%) [10]&quot;          </span></span>
+<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a><span class="co">#&gt; 10 PRURITUS           &quot; 8  (9.3%) [11]&quot; &quot;26 (31.0%) [38]&quot;          </span></span>
+<span id="cb8-24"><a href="#cb8-24" tabindex="-1"></a><span class="co">#&gt; # ℹ 11 more rows</span></span></code></pre></div>
 <p>To go over each format group:</p>
 <ul>
 <li>The distinct n count has been spaced based on the width of the

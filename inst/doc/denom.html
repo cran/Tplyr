@@ -352,6 +352,8 @@ Denominator</a></li>
 Filter</a></li>
 <li><a href="#missing-counts" id="toc-missing-counts">Missing
 Counts</a></li>
+<li><a href="#missing-subjects" id="toc-missing-subjects">Missing
+Subjects</a></li>
 <li><a href="#adding-a-total-row" id="toc-adding-a-total-row">Adding a
 ‘Total’ Row</a></li>
 </ul>
@@ -385,15 +387,15 @@ population dataset - but there are a couple things you need to do to
 trigger <strong>Tplyr</strong> to use the population data as your
 denominator.</p>
 <p>Consider these two examples.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adae, TRTA) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(AEDECOD) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_distinct_by</span>(USUBJID) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="fu">f_str</span>(<span class="st">&#39;xx (xx.x%)&#39;</span>, distinct_n, distinct_pct))</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">tplyr_table</span>(tplyr_adae, TRTA) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>    <span class="fu">group_count</span>(AEDECOD) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>      <span class="fu">set_distinct_by</span>(USUBJID) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="fu">f_str</span>(<span class="st">&#39;xx (xx.x%)&#39;</span>, distinct_n, distinct_pct))</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <colgroup>
 <col width="17%" />
@@ -464,17 +466,17 @@ denominator.</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adae, TRTA) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_pop_data</span>(adsl) <span class="sc">%&gt;%</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_pop_treat_var</span>(TRT01A) <span class="sc">%&gt;%</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(AEDECOD) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_distinct_by</span>(USUBJID) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="fu">f_str</span>(<span class="st">&#39;xx (xx.x%)&#39;</span>, distinct_n, distinct_pct))</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">tplyr_table</span>(tplyr_adae, TRTA) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="fu">set_pop_data</span>(tplyr_adsl) <span class="sc">%&gt;%</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="fu">set_pop_treat_var</span>(TRT01A) <span class="sc">%&gt;%</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>    <span class="fu">group_count</span>(AEDECOD) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>      <span class="fu">set_distinct_by</span>(USUBJID) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="fu">f_str</span>(<span class="st">&#39;xx (xx.x%)&#39;</span>, distinct_n, distinct_pct))</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <colgroup>
 <col width="17%" />
@@ -578,15 +580,15 @@ two perspectives - count layers and shift layers.</p>
 A solid 80% of the time, defaults will work. For example, in a frequency
 table, you will typically want data within a column to sum to 100%. For
 example:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>adsl <span class="ot">&lt;-</span> adsl <span class="sc">%&gt;%</span> </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">DCSREAS =</span> <span class="fu">ifelse</span>(DCSREAS <span class="sc">==</span> <span class="st">&#39;&#39;</span>, <span class="st">&#39;Completed&#39;</span>, DCSREAS))</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>         </span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(DCSREAS)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>tplyr_adsl <span class="ot">&lt;-</span> tplyr_adsl <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">DCSREAS =</span> <span class="fu">ifelse</span>(DCSREAS <span class="sc">==</span> <span class="st">&#39;&#39;</span>, <span class="st">&#39;Completed&#39;</span>, DCSREAS))</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>         </span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="fu">tplyr_table</span>(tplyr_adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>    <span class="fu">group_count</span>(DCSREAS)</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <colgroup>
 <col width="17%" />
@@ -693,12 +695,12 @@ example:</p>
 a count layer assumes that you want columns to sum to 100%. But that’s
 not always the case. Perhaps you’d like to break this summary down by
 sex presented row-wise.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(DCSREAS, <span class="at">by=</span>SEX)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">tplyr_table</span>(tplyr_adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>    <span class="fu">group_count</span>(DCSREAS, <span class="at">by=</span>SEX)</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <colgroup>
 <col width="8%" />
@@ -930,13 +932,13 @@ group, the denominators are still the total treatment group. Does that
 make sense? 34 female Placebo group subjects completed, but that
 calculated 39.5% also includes male subjects in the denominator. Let’s
 fix this using <code>set_denoms_by()</code>.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(DCSREAS, <span class="at">by=</span>SEX) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_denoms_by</span>(SEX, TRT01P)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">tplyr_table</span>(tplyr_adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>    <span class="fu">group_count</span>(DCSREAS, <span class="at">by=</span>SEX) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>      <span class="fu">set_denoms_by</span>(SEX, TRT01P)</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <colgroup>
 <col width="8%" />
@@ -1186,42 +1188,48 @@ of the shift for each treatment group. Just like the count layers, the
 treatment variable, <code>cols</code> argument, <code>by</code>
 variables. The difference with shift layers is that now you can also
 include your target variables used for the row or column.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adlb, TRTA, <span class="at">where=</span>PARAMCD <span class="sc">==</span> <span class="st">&quot;CK&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_shift</span>(<span class="fu">vars</span>(<span class="at">row =</span> BNRIND, <span class="at">column =</span> ANRIND), <span class="at">by =</span> <span class="fu">vars</span>(PARAM, AVISIT)) <span class="sc">%&gt;%</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="fu">f_str</span>(<span class="st">&quot;xx (xxx.x%)&quot;</span>, n, pct)) <span class="sc">%&gt;%</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>      <span class="co"># This is the default, the 3x3 box formed by the target variables</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_denoms_by</span>(TRTA, PARAM, AVISIT) </span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">tplyr_table</span>(tplyr_adlb, TRTA, <span class="at">where=</span>PARAMCD <span class="sc">==</span> <span class="st">&quot;CK&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>    <span class="fu">group_shift</span>(<span class="fu">vars</span>(<span class="at">row =</span> BNRIND, <span class="at">column =</span> ANRIND), <span class="at">by =</span> <span class="fu">vars</span>(PARAM, AVISIT)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="fu">f_str</span>(<span class="st">&quot;xx (xxx.x%)&quot;</span>, n, pct)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>      <span class="co"># This is the default, the 3x3 box formed by the target variables</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>      <span class="fu">set_denoms_by</span>(TRTA, PARAM, AVISIT) </span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <colgroup>
+<col width="7%" />
+<col width="3%" />
+<col width="3%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
 <col width="9%" />
-<col width="4%" />
-<col width="4%" />
-<col width="6%" />
-<col width="6%" />
-<col width="11%" />
-<col width="11%" />
-<col width="11%" />
-<col width="11%" />
-<col width="6%" />
+<col width="9%" />
+<col width="9%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
 <col width="5%" />
-<col width="5%" />
-<col width="5%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
 </colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
 <th align="left">row_label2</th>
 <th align="left">row_label3</th>
-<th align="left">var1_Placebo_H</th>
+<th align="left">var1_Placebo_L</th>
 <th align="left">var1_Placebo_N</th>
-<th align="left">var1_Xanomeline High Dose_H</th>
+<th align="left">var1_Placebo_H</th>
+<th align="left">var1_Xanomeline High Dose_L</th>
 <th align="left">var1_Xanomeline High Dose_N</th>
-<th align="left">var1_Xanomeline Low Dose_H</th>
+<th align="left">var1_Xanomeline High Dose_H</th>
+<th align="left">var1_Xanomeline Low Dose_L</th>
 <th align="left">var1_Xanomeline Low Dose_N</th>
+<th align="left">var1_Xanomeline Low Dose_H</th>
 <th align="right">ord_layer_index</th>
 <th align="right">ord_layer_1</th>
 <th align="right">ord_layer_2</th>
@@ -1232,10 +1240,13 @@ include your target variables used for the row or column.</p>
 <tr class="odd">
 <td align="left">Creatine Kinase (U/L)</td>
 <td align="left">Week 12</td>
-<td align="left">H</td>
+<td align="left">L</td>
 <td align="left">0 ( 0.0%)</td>
 <td align="left">0 ( 0.0%)</td>
-<td align="left">1 ( 12.5%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
 <td align="left">0 ( 0.0%)</td>
 <td align="left">0 ( 0.0%)</td>
 <td align="left">0 ( 0.0%)</td>
@@ -1248,21 +1259,45 @@ include your target variables used for the row or column.</p>
 <td align="left">Creatine Kinase (U/L)</td>
 <td align="left">Week 12</td>
 <td align="left">N</td>
-<td align="left">1 ( 8.3%)</td>
+<td align="left">0 ( 0.0%)</td>
 <td align="left">11 ( 91.7%)</td>
-<td align="left">1 ( 12.5%)</td>
+<td align="left">1 ( 8.3%)</td>
+<td align="left">0 ( 0.0%)</td>
 <td align="left">6 ( 75.0%)</td>
-<td align="left">1 ( 14.3%)</td>
+<td align="left">1 ( 12.5%)</td>
+<td align="left">0 ( 0.0%)</td>
 <td align="left">6 ( 85.7%)</td>
+<td align="left">1 ( 14.3%)</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">12</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">Week 12</td>
+<td align="left">H</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">1 ( 12.5%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
 <td align="right">1</td>
 <td align="right">35</td>
 <td align="right">12</td>
 <td align="right">3</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Creatine Kinase (U/L)</td>
 <td align="left">Week 24</td>
-<td align="left">H</td>
+<td align="left">L</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
 <td align="left">0 ( 0.0%)</td>
 <td align="left">0 ( 0.0%)</td>
 <td align="left">0 ( 0.0%)</td>
@@ -1274,16 +1309,37 @@ include your target variables used for the row or column.</p>
 <td align="right">24</td>
 <td align="right">1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">Creatine Kinase (U/L)</td>
 <td align="left">Week 24</td>
 <td align="left">N</td>
-<td align="left">2 ( 16.7%)</td>
+<td align="left">0 ( 0.0%)</td>
 <td align="left">10 ( 83.3%)</td>
+<td align="left">2 ( 16.7%)</td>
 <td align="left">0 ( 0.0%)</td>
 <td align="left">2 (100.0%)</td>
 <td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
 <td align="left">2 (100.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">24</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">Week 24</td>
+<td align="left">H</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
 <td align="right">1</td>
 <td align="right">35</td>
 <td align="right">24</td>
@@ -1292,7 +1348,10 @@ include your target variables used for the row or column.</p>
 <tr class="odd">
 <td align="left">Creatine Kinase (U/L)</td>
 <td align="left">Week 8</td>
-<td align="left">H</td>
+<td align="left">L</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
 <td align="left">0 ( 0.0%)</td>
 <td align="left">0 ( 0.0%)</td>
 <td align="left">0 ( 0.0%)</td>
@@ -1308,12 +1367,33 @@ include your target variables used for the row or column.</p>
 <td align="left">Creatine Kinase (U/L)</td>
 <td align="left">Week 8</td>
 <td align="left">N</td>
-<td align="left">1 ( 14.3%)</td>
+<td align="left">0 ( 0.0%)</td>
 <td align="left">6 ( 85.7%)</td>
-<td align="left">1 ( 10.0%)</td>
+<td align="left">1 ( 14.3%)</td>
+<td align="left">0 ( 0.0%)</td>
 <td align="left">9 ( 90.0%)</td>
+<td align="left">1 ( 10.0%)</td>
 <td align="left">0 ( 0.0%)</td>
 <td align="left">6 (100.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">8</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">Week 8</td>
+<td align="left">H</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
 <td align="right">1</td>
 <td align="right">35</td>
 <td align="right">8</td>
@@ -1331,43 +1411,49 @@ will create the denominators if <code>set_denoms_by()</code> isn’t
 specified.</p>
 <p>In the next example, the percentage denominators are calculated
 row-wise, each row percentage sums to 100%.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adlb, TRTA, <span class="at">where=</span>PARAMCD <span class="sc">==</span> <span class="st">&quot;CK&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_shift</span>(<span class="fu">vars</span>(<span class="at">row =</span> BNRIND, <span class="at">column =</span> ANRIND), <span class="at">by =</span> <span class="fu">vars</span>(PARAM, AVISIT)) <span class="sc">%&gt;%</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="fu">f_str</span>(<span class="st">&quot;xx (xxx.x%)&quot;</span>, n, pct)) <span class="sc">%&gt;%</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_denoms_by</span>(TRTA, PARAM, AVISIT, BNRIND) <span class="co"># Each row made by TRTA, BNRIND</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(ord_layer_1, ord_layer_2, ord_layer_3) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">tplyr_table</span>(tplyr_adlb, TRTA, <span class="at">where=</span>PARAMCD <span class="sc">==</span> <span class="st">&quot;CK&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>    <span class="fu">group_shift</span>(<span class="fu">vars</span>(<span class="at">row =</span> BNRIND, <span class="at">column =</span> ANRIND), <span class="at">by =</span> <span class="fu">vars</span>(PARAM, AVISIT)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="fu">f_str</span>(<span class="st">&quot;xx (xxx.x%)&quot;</span>, n, pct)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>      <span class="fu">set_denoms_by</span>(TRTA, PARAM, AVISIT, BNRIND) <span class="co"># Each row made by TRTA, BNRIND</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>  <span class="fu">arrange</span>(ord_layer_1, ord_layer_2, ord_layer_3) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <colgroup>
+<col width="7%" />
+<col width="3%" />
+<col width="3%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
 <col width="9%" />
-<col width="4%" />
-<col width="4%" />
-<col width="6%" />
-<col width="6%" />
-<col width="11%" />
-<col width="11%" />
-<col width="11%" />
-<col width="11%" />
-<col width="6%" />
+<col width="9%" />
+<col width="9%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
 <col width="5%" />
-<col width="5%" />
-<col width="5%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
 </colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
 <th align="left">row_label2</th>
 <th align="left">row_label3</th>
-<th align="left">var1_Placebo_H</th>
+<th align="left">var1_Placebo_L</th>
 <th align="left">var1_Placebo_N</th>
-<th align="left">var1_Xanomeline High Dose_H</th>
+<th align="left">var1_Placebo_H</th>
+<th align="left">var1_Xanomeline High Dose_L</th>
 <th align="left">var1_Xanomeline High Dose_N</th>
-<th align="left">var1_Xanomeline Low Dose_H</th>
+<th align="left">var1_Xanomeline High Dose_H</th>
+<th align="left">var1_Xanomeline Low Dose_L</th>
 <th align="left">var1_Xanomeline Low Dose_N</th>
+<th align="left">var1_Xanomeline Low Dose_H</th>
 <th align="right">ord_layer_index</th>
 <th align="right">ord_layer_1</th>
 <th align="right">ord_layer_2</th>
@@ -1378,7 +1464,10 @@ row-wise, each row percentage sums to 100%.</p>
 <tr class="odd">
 <td align="left">Creatine Kinase (U/L)</td>
 <td align="left">Week 8</td>
-<td align="left">H</td>
+<td align="left">L</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
 <td align="left">0 ( 0.0%)</td>
 <td align="left">0 ( 0.0%)</td>
 <td align="left">0 ( 0.0%)</td>
@@ -1394,21 +1483,81 @@ row-wise, each row percentage sums to 100%.</p>
 <td align="left">Creatine Kinase (U/L)</td>
 <td align="left">Week 8</td>
 <td align="left">N</td>
-<td align="left">1 ( 14.3%)</td>
+<td align="left">0 ( 0.0%)</td>
 <td align="left">6 ( 85.7%)</td>
-<td align="left">1 ( 10.0%)</td>
+<td align="left">1 ( 14.3%)</td>
+<td align="left">0 ( 0.0%)</td>
 <td align="left">9 ( 90.0%)</td>
+<td align="left">1 ( 10.0%)</td>
 <td align="left">0 ( 0.0%)</td>
 <td align="left">6 (100.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">8</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">Week 8</td>
+<td align="left">H</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
 <td align="right">1</td>
 <td align="right">35</td>
 <td align="right">8</td>
 <td align="right">3</td>
 </tr>
+<tr class="even">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">Week 12</td>
+<td align="left">L</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">12</td>
+<td align="right">1</td>
+</tr>
 <tr class="odd">
 <td align="left">Creatine Kinase (U/L)</td>
 <td align="left">Week 12</td>
+<td align="left">N</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">11 ( 91.7%)</td>
+<td align="left">1 ( 8.3%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">6 ( 85.7%)</td>
+<td align="left">1 ( 14.3%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">6 ( 85.7%)</td>
+<td align="left">1 ( 14.3%)</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">12</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">Week 12</td>
 <td align="left">H</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
 <td align="left">0 ( 0.0%)</td>
 <td align="left">0 ( 0.0%)</td>
 <td align="left">1 (100.0%)</td>
@@ -1418,51 +1567,6 @@ row-wise, each row percentage sums to 100%.</p>
 <td align="right">1</td>
 <td align="right">35</td>
 <td align="right">12</td>
-<td align="right">1</td>
-</tr>
-<tr class="even">
-<td align="left">Creatine Kinase (U/L)</td>
-<td align="left">Week 12</td>
-<td align="left">N</td>
-<td align="left">1 ( 8.3%)</td>
-<td align="left">11 ( 91.7%)</td>
-<td align="left">1 ( 14.3%)</td>
-<td align="left">6 ( 85.7%)</td>
-<td align="left">1 ( 14.3%)</td>
-<td align="left">6 ( 85.7%)</td>
-<td align="right">1</td>
-<td align="right">35</td>
-<td align="right">12</td>
-<td align="right">3</td>
-</tr>
-<tr class="odd">
-<td align="left">Creatine Kinase (U/L)</td>
-<td align="left">Week 24</td>
-<td align="left">H</td>
-<td align="left">0 ( 0.0%)</td>
-<td align="left">0 ( 0.0%)</td>
-<td align="left">0 ( 0.0%)</td>
-<td align="left">0 ( 0.0%)</td>
-<td align="left">0 ( 0.0%)</td>
-<td align="left">0 ( 0.0%)</td>
-<td align="right">1</td>
-<td align="right">35</td>
-<td align="right">24</td>
-<td align="right">1</td>
-</tr>
-<tr class="even">
-<td align="left">Creatine Kinase (U/L)</td>
-<td align="left">Week 24</td>
-<td align="left">N</td>
-<td align="left">2 ( 16.7%)</td>
-<td align="left">10 ( 83.3%)</td>
-<td align="left">0 ( 0.0%)</td>
-<td align="left">2 (100.0%)</td>
-<td align="left">0 ( 0.0%)</td>
-<td align="left">2 (100.0%)</td>
-<td align="right">1</td>
-<td align="right">35</td>
-<td align="right">24</td>
 <td align="right">3</td>
 </tr>
 </tbody>
@@ -1472,43 +1576,49 @@ changed to be based on the entire column instead of the 3 x 3 box. By
 passing the column variables, <code>TRTA</code> and <code>ANRIND</code>
 the layer will use those denominators when determining the
 percentages.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adlb, TRTA, <span class="at">where =</span> PARAMCD <span class="sc">==</span> <span class="st">&quot;CK&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_shift</span>(<span class="fu">vars</span>(<span class="at">row =</span> BNRIND, <span class="at">column =</span> ANRIND), <span class="at">by =</span> <span class="fu">vars</span>(PARAM, AVISIT)) <span class="sc">%&gt;%</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="fu">f_str</span>(<span class="st">&quot;xx (xx.xx%)&quot;</span>, n, pct)) <span class="sc">%&gt;%</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_denoms_by</span>(TRTA, ANRIND) <span class="co"># Use the column total as the denominator</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(ord_layer_1, ord_layer_2, ord_layer_3) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">tplyr_table</span>(tplyr_adlb, TRTA, <span class="at">where =</span> PARAMCD <span class="sc">==</span> <span class="st">&quot;CK&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>    <span class="fu">group_shift</span>(<span class="fu">vars</span>(<span class="at">row =</span> BNRIND, <span class="at">column =</span> ANRIND), <span class="at">by =</span> <span class="fu">vars</span>(PARAM, AVISIT)) <span class="sc">%&gt;%</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="fu">f_str</span>(<span class="st">&quot;xx (xx.xx%)&quot;</span>, n, pct)) <span class="sc">%&gt;%</span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>      <span class="fu">set_denoms_by</span>(TRTA, ANRIND) <span class="co"># Use the column total as the denominator</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>  <span class="fu">arrange</span>(ord_layer_1, ord_layer_2, ord_layer_3) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <colgroup>
+<col width="7%" />
+<col width="3%" />
+<col width="3%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
 <col width="9%" />
-<col width="4%" />
-<col width="4%" />
-<col width="6%" />
-<col width="6%" />
-<col width="11%" />
-<col width="11%" />
-<col width="11%" />
-<col width="11%" />
-<col width="6%" />
+<col width="9%" />
+<col width="9%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
 <col width="5%" />
-<col width="5%" />
-<col width="5%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
 </colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
 <th align="left">row_label2</th>
 <th align="left">row_label3</th>
-<th align="left">var1_Placebo_H</th>
+<th align="left">var1_Placebo_L</th>
 <th align="left">var1_Placebo_N</th>
-<th align="left">var1_Xanomeline High Dose_H</th>
+<th align="left">var1_Placebo_H</th>
+<th align="left">var1_Xanomeline High Dose_L</th>
 <th align="left">var1_Xanomeline High Dose_N</th>
-<th align="left">var1_Xanomeline Low Dose_H</th>
+<th align="left">var1_Xanomeline High Dose_H</th>
+<th align="left">var1_Xanomeline Low Dose_L</th>
 <th align="left">var1_Xanomeline Low Dose_N</th>
+<th align="left">var1_Xanomeline Low Dose_H</th>
 <th align="right">ord_layer_index</th>
 <th align="right">ord_layer_1</th>
 <th align="right">ord_layer_2</th>
@@ -1519,7 +1629,10 @@ percentages.</p>
 <tr class="odd">
 <td align="left">Creatine Kinase (U/L)</td>
 <td align="left">Week 8</td>
-<td align="left">H</td>
+<td align="left">L</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">0 ( 0.00%)</td>
 <td align="left">0 ( 0.00%)</td>
 <td align="left">0 ( 0.00%)</td>
 <td align="left">0 ( 0.00%)</td>
@@ -1535,24 +1648,48 @@ percentages.</p>
 <td align="left">Creatine Kinase (U/L)</td>
 <td align="left">Week 8</td>
 <td align="left">N</td>
-<td align="left">1 (25.00%)</td>
+<td align="left">0 ( 0.00%)</td>
 <td align="left">6 (22.22%)</td>
-<td align="left">1 (33.33%)</td>
+<td align="left">1 (25.00%)</td>
+<td align="left">0 ( 0.00%)</td>
 <td align="left">9 (52.94%)</td>
+<td align="left">1 (33.33%)</td>
 <td align="left">0 ( 0.00%)</td>
 <td align="left">6 (42.86%)</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">8</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">Week 8</td>
+<td align="left">H</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">0 ( 0.00%)</td>
 <td align="right">1</td>
 <td align="right">35</td>
 <td align="right">8</td>
 <td align="right">3</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Creatine Kinase (U/L)</td>
 <td align="left">Week 12</td>
-<td align="left">H</td>
+<td align="left">L</td>
 <td align="left">0 ( 0.00%)</td>
 <td align="left">0 ( 0.00%)</td>
-<td align="left">1 (33.33%)</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">0 ( 0.00%)</td>
 <td align="left">0 ( 0.00%)</td>
 <td align="left">0 ( 0.00%)</td>
 <td align="left">0 ( 0.00%)</td>
@@ -1561,49 +1698,40 @@ percentages.</p>
 <td align="right">12</td>
 <td align="right">1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">Creatine Kinase (U/L)</td>
 <td align="left">Week 12</td>
 <td align="left">N</td>
-<td align="left">1 (25.00%)</td>
+<td align="left">0 ( 0.00%)</td>
 <td align="left">11 (40.74%)</td>
-<td align="left">1 (33.33%)</td>
+<td align="left">1 (25.00%)</td>
+<td align="left">0 ( 0.00%)</td>
 <td align="left">6 (35.29%)</td>
-<td align="left">1 (100.00%)</td>
+<td align="left">1 (33.33%)</td>
+<td align="left">0 ( 0.00%)</td>
 <td align="left">6 (42.86%)</td>
+<td align="left">1 (100.00%)</td>
 <td align="right">1</td>
 <td align="right">35</td>
 <td align="right">12</td>
-<td align="right">3</td>
+<td align="right">2</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Creatine Kinase (U/L)</td>
-<td align="left">Week 24</td>
+<td align="left">Week 12</td>
 <td align="left">H</td>
 <td align="left">0 ( 0.00%)</td>
 <td align="left">0 ( 0.00%)</td>
 <td align="left">0 ( 0.00%)</td>
 <td align="left">0 ( 0.00%)</td>
 <td align="left">0 ( 0.00%)</td>
+<td align="left">1 (33.33%)</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">0 ( 0.00%)</td>
 <td align="left">0 ( 0.00%)</td>
 <td align="right">1</td>
 <td align="right">35</td>
-<td align="right">24</td>
-<td align="right">1</td>
-</tr>
-<tr class="even">
-<td align="left">Creatine Kinase (U/L)</td>
-<td align="left">Week 24</td>
-<td align="left">N</td>
-<td align="left">2 (50.00%)</td>
-<td align="left">10 (37.04%)</td>
-<td align="left">0 ( 0.00%)</td>
-<td align="left">2 (11.76%)</td>
-<td align="left">0 ( 0.00%)</td>
-<td align="left">2 (14.29%)</td>
-<td align="right">1</td>
-<td align="right">35</td>
-<td align="right">24</td>
+<td align="right">12</td>
 <td align="right">3</td>
 </tr>
 </tbody>
@@ -1647,25 +1775,25 @@ all values available from the table and not just those selected for that
 layer - so for this layer, the percentages will <em>not add up to
 100%</em>. This is important - this allows the percentages from Layer 3
 to sum to the total percentage of “DISCONTINUED” from Layer 1.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>adsl2 <span class="ot">&lt;-</span> adsl <span class="sc">%&gt;%</span> </span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">DISCONTEXT =</span> <span class="fu">if_else</span>(DISCONFL <span class="sc">==</span> <span class="st">&#39;Y&#39;</span>, <span class="st">&#39;DISCONTINUED&#39;</span>, <span class="st">&#39;COMPLETED&#39;</span>))</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">tplyr_table</span>(adsl2, TRT01P, <span class="at">where =</span> SAFFL <span class="sc">==</span> <span class="st">&#39;Y&#39;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(DISCONTEXT)</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(DCSREAS, <span class="at">where =</span> DISCONFL <span class="sc">==</span> <span class="st">&#39;Y&#39;</span>)</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(DCSREAS, <span class="at">where =</span> DISCONFL <span class="sc">==</span> <span class="st">&#39;Y&#39;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set_denom_where</span>(<span class="cn">TRUE</span>)</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(ord_layer_index, ord_layer_1) </span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>t <span class="sc">%&gt;%</span> </span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>tplyr_adsl2 <span class="ot">&lt;-</span> tplyr_adsl <span class="sc">%&gt;%</span> </span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">DISCONTEXT =</span> <span class="fu">if_else</span>(DISCONFL <span class="sc">==</span> <span class="st">&#39;Y&#39;</span>, <span class="st">&#39;DISCONTINUED&#39;</span>, <span class="st">&#39;COMPLETED&#39;</span>))</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">tplyr_table</span>(tplyr_adsl2, TRT01P, <span class="at">where =</span> SAFFL <span class="sc">==</span> <span class="st">&#39;Y&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>    <span class="fu">group_count</span>(DISCONTEXT)</span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>    <span class="fu">group_count</span>(DCSREAS, <span class="at">where =</span> DISCONFL <span class="sc">==</span> <span class="st">&#39;Y&#39;</span>)</span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a>    <span class="fu">group_count</span>(DCSREAS, <span class="at">where =</span> DISCONFL <span class="sc">==</span> <span class="st">&#39;Y&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a>    <span class="fu">set_denom_where</span>(<span class="cn">TRUE</span>)</span>
+<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb9-15"><a href="#cb9-15" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a>  <span class="fu">arrange</span>(ord_layer_index, ord_layer_1) </span>
+<span id="cb9-17"><a href="#cb9-17" tabindex="-1"></a></span>
+<span id="cb9-18"><a href="#cb9-18" tabindex="-1"></a>t <span class="sc">%&gt;%</span> </span>
+<span id="cb9-19"><a href="#cb9-19" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <colgroup>
 <col width="17%" />
@@ -1875,20 +2003,20 @@ missing counts, you may wish to exclude them from the totals being
 summarized. By setting <code>denom_ignore</code> to TRUE, your
 denominators will ignore any groups of missing values that you’ve
 specified.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>adae2 <span class="ot">&lt;-</span> adae</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>adae2[<span class="fu">sample</span>(<span class="fu">nrow</span>(adae2), <span class="dv">50</span>), <span class="st">&quot;AESEV&quot;</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">tplyr_table</span>(adae2, TRTA) <span class="sc">%&gt;%</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(AESEV) <span class="sc">%&gt;%</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="fu">f_str</span>(<span class="st">&quot;xxx (xx.xx%)&quot;</span>, n, pct)) <span class="sc">%&gt;%</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_missing_count</span>(<span class="fu">f_str</span>(<span class="st">&quot;xxx&quot;</span>, n), <span class="at">sort_value=</span><span class="cn">Inf</span>, <span class="at">denom_ignore=</span><span class="cn">TRUE</span>, <span class="at">Missing =</span> <span class="cn">NA</span>)</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(ord_layer_1)</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>t <span class="sc">%&gt;%</span> </span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>tplyr_adae2 <span class="ot">&lt;-</span> tplyr_adae</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>tplyr_adae2[<span class="fu">sample</span>(<span class="fu">nrow</span>(tplyr_adae2), <span class="dv">50</span>), <span class="st">&quot;AESEV&quot;</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">tplyr_table</span>(tplyr_adae2, TRTA) <span class="sc">%&gt;%</span></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>    <span class="fu">group_count</span>(AESEV) <span class="sc">%&gt;%</span></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="fu">f_str</span>(<span class="st">&quot;xxx (xx.xx%)&quot;</span>, n, pct)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a>      <span class="fu">set_missing_count</span>(<span class="fu">f_str</span>(<span class="st">&quot;xxx&quot;</span>, n), <span class="at">sort_value=</span><span class="cn">Inf</span>, <span class="at">denom_ignore=</span><span class="cn">TRUE</span>, <span class="at">Missing =</span> <span class="cn">NA</span>)</span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a>  <span class="fu">arrange</span>(ord_layer_1)</span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a>t <span class="sc">%&gt;%</span> </span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <colgroup>
 <col width="10%" />
@@ -1911,33 +2039,33 @@ specified.</p>
 <tbody>
 <tr class="odd">
 <td align="left">MILD</td>
-<td align="left">25 (58.14%)</td>
-<td align="left">69 (78.41%)</td>
-<td align="left">41 (43.16%)</td>
+<td align="left">25 (65.79%)</td>
+<td align="left">70 (76.09%)</td>
+<td align="left">48 (50.00%)</td>
 <td align="right">1</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="left">MODERATE</td>
-<td align="left">18 (41.86%)</td>
-<td align="left">18 (20.45%)</td>
-<td align="left">50 (52.63%)</td>
+<td align="left">13 (34.21%)</td>
+<td align="left">21 (22.83%)</td>
+<td align="left">43 (44.79%)</td>
 <td align="right">1</td>
 <td align="right">2</td>
 </tr>
 <tr class="odd">
 <td align="left">SEVERE</td>
 <td align="left">0 ( 0.00%)</td>
-<td align="left">1 ( 1.14%)</td>
-<td align="left">4 ( 4.21%)</td>
+<td align="left">1 ( 1.09%)</td>
+<td align="left">5 ( 5.21%)</td>
 <td align="right">1</td>
 <td align="right">3</td>
 </tr>
 <tr class="even">
 <td align="left">Missing</td>
-<td align="left">4</td>
-<td align="left">23</td>
-<td align="left">23</td>
+<td align="left">9</td>
+<td align="left">19</td>
+<td align="left">22</td>
 <td align="right">1</td>
 <td align="right">Inf</td>
 </tr>
@@ -1951,6 +2079,102 @@ can be sorted a lot of different ways, as you’ll see in the sort
 vignette. So instead of trying to come up with novel ways for you to
 control where the missing row goes - we decided to just let you specify
 your own value.</p>
+</div>
+<div id="missing-subjects" class="section level2">
+<h2>Missing Subjects</h2>
+<p>Missing counts and counting missing subjects work two different ways
+within Tplyr. Missing counts, as described above, will examine the
+records present in the data and collect and missing values. But for
+these results to be counted, they need to first be provided within the
+input data itself. On the other hand, missing subjects are calculated by
+looking at the difference between the potential number of subjects
+within the column (i.e. the combination of the treatment variables and
+column variables) and the number of subjects actually present. Consider
+this example:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>  missing_subs <span class="ot">&lt;-</span> <span class="fu">tplyr_table</span>(tplyr_adae, TRTA) <span class="sc">%&gt;%</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>    <span class="fu">set_pop_data</span>(tplyr_adsl) <span class="sc">%&gt;%</span></span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>    <span class="fu">set_pop_treat_var</span>(TRT01A) <span class="sc">%&gt;%</span></span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>    <span class="fu">add_layer</span>(</span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>      <span class="fu">group_count</span>(<span class="fu">vars</span>(AEBODSYS, AEDECOD)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a>        <span class="fu">set_nest_count</span>(<span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a>        <span class="fu">set_distinct_by</span>(USUBJID) <span class="sc">%&gt;%</span></span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a>        <span class="fu">add_missing_subjects_row</span>(<span class="fu">f_str</span>(<span class="st">&quot;xx (XX.x%)&quot;</span>, distinct_n, distinct_pct), <span class="at">sort_value =</span> <span class="cn">Inf</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a>        <span class="fu">set_missing_subjects_row_label</span>(<span class="st">&quot;Missing Subjects&quot;</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a>    <span class="fu">build</span>()</span>
+<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a>  <span class="fu">tail</span>(missing_subs) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&#39;ord&#39;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-15"><a href="#cb11-15" tabindex="-1"></a>    <span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<colgroup>
+<col width="23%" />
+<col width="15%" />
+<col width="30%" />
+<col width="29%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">var1_Placebo</th>
+<th align="left">var1_Xanomeline High Dose</th>
+<th align="left">var1_Xanomeline Low Dose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">SKIN EXFOLIATION</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">1 ( 1.2%)</td>
+</tr>
+<tr class="even">
+<td align="left">SKIN IRRITATION</td>
+<td align="left">3 ( 3.5%)</td>
+<td align="left">5 ( 6.0%)</td>
+<td align="left">6 ( 7.1%)</td>
+</tr>
+<tr class="odd">
+<td align="left">SKIN ODOUR ABNORMAL</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">0 ( 0.0%)</td>
+</tr>
+<tr class="even">
+<td align="left">SKIN ULCER</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+</tr>
+<tr class="odd">
+<td align="left">URTICARIA</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">1 ( 1.2%)</td>
+<td align="left">1 ( 1.2%)</td>
+</tr>
+<tr class="even">
+<td align="left">Missing Subjects</td>
+<td align="left">65 ( 75.6%)</td>
+<td align="left">42 ( 50.0%)</td>
+<td align="left">42 ( 50.0%)</td>
+</tr>
+</tbody>
+</table>
+<p>In the example above, we produce a nested count layer. The function
+<code>add_missing_subjects_row()</code> triggers the addition of the new
+result row for which the missing subjects are calculated. The row label
+applied for this can be configured using
+<code>set_missing_subjects_row_label()</code>, and the row label itself
+will default to ‘Missing’. Depending on your sorting needs, a
+<code>sort_value</code> can be applied to whatever numeric value you
+provide. Lastly, you can provide an <code>f_str()</code> to format the
+missing subjects row separately from the rest of the layer, but whatever
+format is applied to the layer will apply otherwise.</p>
+<p>Note that in nested count layers, missing subject rows will generate
+for each independent group within the outer layer. Outer layers cannot
+have missing subject rows calculated individually. This would best be
+done in an independent layer itself, as the result would apply to the
+whole input target dataset.</p>
 </div>
 <div id="adding-a-total-row" class="section level2">
 <h2>Adding a ‘Total’ Row</h2>
@@ -1993,20 +2217,20 @@ to <code>TRUE</code>, the missing counts are included in the total row.
 This probably isn’t how you would choose to display things, but here
 we’re trying to show the flexibility built into
 <strong>Tplyr</strong>.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>adsl2 <span class="ot">&lt;-</span> adsl</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>adsl2[<span class="fu">sample</span>(<span class="fu">nrow</span>(adsl2), <span class="dv">50</span>), <span class="st">&quot;AGEGR1&quot;</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl2, TRT01P) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(AGEGR1, <span class="at">by=</span>SEX) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_denoms_by</span>(TRT01P, SEX) <span class="sc">%&gt;%</span>  <span class="co"># This gives me a Total row each group</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">add_total_row</span>(<span class="fu">f_str</span>(<span class="st">&quot;xxx&quot;</span>, n), <span class="at">count_missings=</span><span class="cn">TRUE</span>, <span class="at">sort_value=</span><span class="sc">-</span><span class="cn">Inf</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_total_row_label</span>(<span class="st">&quot;All Age Groups&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_missing_count</span>(<span class="fu">f_str</span>(<span class="st">&quot;xx (xx.x%)&quot;</span>, n, pct), <span class="at">Missing =</span> <span class="cn">NA</span>, <span class="at">sort_value=</span><span class="cn">Inf</span>)</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(ord_layer_1, ord_layer_2) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>tplyr_adsl2 <span class="ot">&lt;-</span> tplyr_adsl</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>tplyr_adsl2[<span class="fu">sample</span>(<span class="fu">nrow</span>(tplyr_adsl2), <span class="dv">50</span>), <span class="st">&quot;AGEGR1&quot;</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a><span class="fu">tplyr_table</span>(tplyr_adsl2, TRT01P) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a>    <span class="fu">group_count</span>(AGEGR1, <span class="at">by=</span>SEX) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a>      <span class="fu">set_denoms_by</span>(TRT01P, SEX) <span class="sc">%&gt;%</span>  <span class="co"># This gives me a Total row each group</span></span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a>      <span class="fu">add_total_row</span>(<span class="fu">f_str</span>(<span class="st">&quot;xxx&quot;</span>, n), <span class="at">count_missings=</span><span class="cn">TRUE</span>, <span class="at">sort_value=</span><span class="sc">-</span><span class="cn">Inf</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a>      <span class="fu">set_total_row_label</span>(<span class="st">&quot;All Age Groups&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a>      <span class="fu">set_missing_count</span>(<span class="fu">f_str</span>(<span class="st">&quot;xx (xx.x%)&quot;</span>, n, pct), <span class="at">Missing =</span> <span class="cn">NA</span>, <span class="at">sort_value=</span><span class="cn">Inf</span>)</span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a>  <span class="fu">arrange</span>(ord_layer_1, ord_layer_2) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <colgroup>
 <col width="8%" />
@@ -2045,8 +2269,8 @@ we’re trying to show the flexibility built into
 <td align="left">F</td>
 <td align="left">65-80</td>
 <td align="left">20 ( 37.7%)</td>
-<td align="left">20 ( 50.0%)</td>
-<td align="left">21 ( 42.0%)</td>
+<td align="left">23 ( 57.5%)</td>
+<td align="left">24 ( 48.0%)</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">1</td>
@@ -2054,7 +2278,7 @@ we’re trying to show the flexibility built into
 <tr class="odd">
 <td align="left">F</td>
 <td align="left">&lt;65</td>
-<td align="left">7 ( 13.2%)</td>
+<td align="left">6 ( 11.3%)</td>
 <td align="left">4 ( 10.0%)</td>
 <td align="left">5 ( 10.0%)</td>
 <td align="right">1</td>
@@ -2064,9 +2288,9 @@ we’re trying to show the flexibility built into
 <tr class="even">
 <td align="left">F</td>
 <td align="left">&gt;80</td>
-<td align="left">15 ( 28.3%)</td>
-<td align="left">6 ( 15.0%)</td>
-<td align="left">14 ( 28.0%)</td>
+<td align="left">17 ( 32.1%)</td>
+<td align="left">5 ( 12.5%)</td>
+<td align="left">12 ( 24.0%)</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">3</td>
@@ -2074,9 +2298,9 @@ we’re trying to show the flexibility built into
 <tr class="odd">
 <td align="left">F</td>
 <td align="left">Missing</td>
-<td align="left">11 (20.8%)</td>
-<td align="left">10 (25.0%)</td>
-<td align="left">10 (20.0%)</td>
+<td align="left">10 (18.9%)</td>
+<td align="left">8 (20.0%)</td>
+<td align="left">9 (18.0%)</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">Inf</td>
@@ -2094,9 +2318,9 @@ we’re trying to show the flexibility built into
 <tr class="odd">
 <td align="left">M</td>
 <td align="left">65-80</td>
-<td align="left">19 ( 57.6%)</td>
-<td align="left">23 ( 52.3%)</td>
-<td align="left">14 ( 41.2%)</td>
+<td align="left">15 ( 45.5%)</td>
+<td align="left">22 ( 50.0%)</td>
+<td align="left">17 ( 50.0%)</td>
 <td align="right">1</td>
 <td align="right">2</td>
 <td align="right">1</td>
@@ -2104,8 +2328,8 @@ we’re trying to show the flexibility built into
 <tr class="even">
 <td align="left">M</td>
 <td align="left">&lt;65</td>
-<td align="left">4 ( 12.1%)</td>
-<td align="left">6 ( 13.6%)</td>
+<td align="left">5 ( 15.2%)</td>
+<td align="left">3 ( 6.8%)</td>
 <td align="left">1 ( 2.9%)</td>
 <td align="right">1</td>
 <td align="right">2</td>
@@ -2114,9 +2338,9 @@ we’re trying to show the flexibility built into
 <tr class="odd">
 <td align="left">M</td>
 <td align="left">&gt;80</td>
-<td align="left">6 ( 18.2%)</td>
-<td align="left">9 ( 20.5%)</td>
-<td align="left">10 ( 29.4%)</td>
+<td align="left">8 ( 24.2%)</td>
+<td align="left">8 ( 18.2%)</td>
+<td align="left">9 ( 26.5%)</td>
 <td align="right">1</td>
 <td align="right">2</td>
 <td align="right">3</td>
@@ -2124,9 +2348,9 @@ we’re trying to show the flexibility built into
 <tr class="even">
 <td align="left">M</td>
 <td align="left">Missing</td>
-<td align="left">4 (12.1%)</td>
-<td align="left">6 (13.6%)</td>
-<td align="left">9 (26.5%)</td>
+<td align="left">5 (15.2%)</td>
+<td align="left">11 (25.0%)</td>
+<td align="left">7 (20.6%)</td>
 <td align="right">1</td>
 <td align="right">2</td>
 <td align="right">Inf</td>
@@ -2140,17 +2364,17 @@ used in your display.</p>
 display missings, you probably want to exclude them from the total. Here
 we do that using <code>set_missing_count()</code>. So more commonly,
 you’ll see this:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl2, TRT01P) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(AGEGR1, <span class="at">by=</span>SEX) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_denoms_by</span>(TRT01P, SEX) <span class="sc">%&gt;%</span>  <span class="co"># This gives me a Total row each group</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">add_total_row</span>(<span class="fu">f_str</span>(<span class="st">&quot;xxx&quot;</span>, n), <span class="at">count_missings=</span><span class="cn">FALSE</span>, <span class="at">sort_value=</span><span class="sc">-</span><span class="cn">Inf</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_total_row_label</span>(<span class="st">&quot;All Age Groups&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_missing_count</span>(<span class="fu">f_str</span>(<span class="st">&quot;xxx&quot;</span>, n), <span class="at">Missing =</span> <span class="cn">NA</span>, <span class="at">sort_value=</span><span class="cn">Inf</span>, <span class="at">denom_ignore=</span><span class="cn">TRUE</span>)</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(ord_layer_1, ord_layer_2) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">tplyr_table</span>(tplyr_adsl2, TRT01P) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>    <span class="fu">group_count</span>(AGEGR1, <span class="at">by=</span>SEX) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>      <span class="fu">set_denoms_by</span>(TRT01P, SEX) <span class="sc">%&gt;%</span>  <span class="co"># This gives me a Total row each group</span></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>      <span class="fu">add_total_row</span>(<span class="fu">f_str</span>(<span class="st">&quot;xxx&quot;</span>, n), <span class="at">count_missings=</span><span class="cn">FALSE</span>, <span class="at">sort_value=</span><span class="sc">-</span><span class="cn">Inf</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>      <span class="fu">set_total_row_label</span>(<span class="st">&quot;All Age Groups&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a>      <span class="fu">set_missing_count</span>(<span class="fu">f_str</span>(<span class="st">&quot;xxx&quot;</span>, n), <span class="at">Missing =</span> <span class="cn">NA</span>, <span class="at">sort_value=</span><span class="cn">Inf</span>, <span class="at">denom_ignore=</span><span class="cn">TRUE</span>)</span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a>  <span class="fu">arrange</span>(ord_layer_1, ord_layer_2) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <colgroup>
 <col width="8%" />
@@ -2178,9 +2402,9 @@ you’ll see this:</p>
 <tr class="odd">
 <td align="left">F</td>
 <td align="left">All Age Groups</td>
-<td align="left">42</td>
-<td align="left">30</td>
-<td align="left">40</td>
+<td align="left">43</td>
+<td align="left">32</td>
+<td align="left">41</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">-Inf</td>
@@ -2188,9 +2412,9 @@ you’ll see this:</p>
 <tr class="even">
 <td align="left">F</td>
 <td align="left">65-80</td>
-<td align="left">20 ( 47.6%)</td>
-<td align="left">20 ( 66.7%)</td>
-<td align="left">21 ( 52.5%)</td>
+<td align="left">20 ( 46.5%)</td>
+<td align="left">23 ( 71.9%)</td>
+<td align="left">24 ( 58.5%)</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">1</td>
@@ -2198,9 +2422,9 @@ you’ll see this:</p>
 <tr class="odd">
 <td align="left">F</td>
 <td align="left">&lt;65</td>
-<td align="left">7 ( 16.7%)</td>
-<td align="left">4 ( 13.3%)</td>
-<td align="left">5 ( 12.5%)</td>
+<td align="left">6 ( 14.0%)</td>
+<td align="left">4 ( 12.5%)</td>
+<td align="left">5 ( 12.2%)</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">2</td>
@@ -2208,9 +2432,9 @@ you’ll see this:</p>
 <tr class="even">
 <td align="left">F</td>
 <td align="left">&gt;80</td>
-<td align="left">15 ( 35.7%)</td>
-<td align="left">6 ( 20.0%)</td>
-<td align="left">14 ( 35.0%)</td>
+<td align="left">17 ( 39.5%)</td>
+<td align="left">5 ( 15.6%)</td>
+<td align="left">12 ( 29.3%)</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">3</td>
@@ -2218,9 +2442,9 @@ you’ll see this:</p>
 <tr class="odd">
 <td align="left">F</td>
 <td align="left">Missing</td>
-<td align="left">11</td>
 <td align="left">10</td>
-<td align="left">10</td>
+<td align="left">8</td>
+<td align="left">9</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">Inf</td>
@@ -2228,9 +2452,9 @@ you’ll see this:</p>
 <tr class="even">
 <td align="left">M</td>
 <td align="left">All Age Groups</td>
-<td align="left">29</td>
-<td align="left">38</td>
-<td align="left">25</td>
+<td align="left">28</td>
+<td align="left">33</td>
+<td align="left">27</td>
 <td align="right">1</td>
 <td align="right">2</td>
 <td align="right">-Inf</td>
@@ -2238,9 +2462,9 @@ you’ll see this:</p>
 <tr class="odd">
 <td align="left">M</td>
 <td align="left">65-80</td>
-<td align="left">19 ( 65.5%)</td>
-<td align="left">23 ( 60.5%)</td>
-<td align="left">14 ( 56.0%)</td>
+<td align="left">15 ( 53.6%)</td>
+<td align="left">22 ( 66.7%)</td>
+<td align="left">17 ( 63.0%)</td>
 <td align="right">1</td>
 <td align="right">2</td>
 <td align="right">1</td>
@@ -2248,9 +2472,9 @@ you’ll see this:</p>
 <tr class="even">
 <td align="left">M</td>
 <td align="left">&lt;65</td>
-<td align="left">4 ( 13.8%)</td>
-<td align="left">6 ( 15.8%)</td>
-<td align="left">1 ( 4.0%)</td>
+<td align="left">5 ( 17.9%)</td>
+<td align="left">3 ( 9.1%)</td>
+<td align="left">1 ( 3.7%)</td>
 <td align="right">1</td>
 <td align="right">2</td>
 <td align="right">2</td>
@@ -2258,9 +2482,9 @@ you’ll see this:</p>
 <tr class="odd">
 <td align="left">M</td>
 <td align="left">&gt;80</td>
-<td align="left">6 ( 20.7%)</td>
-<td align="left">9 ( 23.7%)</td>
-<td align="left">10 ( 40.0%)</td>
+<td align="left">8 ( 28.6%)</td>
+<td align="left">8 ( 24.2%)</td>
+<td align="left">9 ( 33.3%)</td>
 <td align="right">1</td>
 <td align="right">2</td>
 <td align="right">3</td>
@@ -2268,9 +2492,9 @@ you’ll see this:</p>
 <tr class="even">
 <td align="left">M</td>
 <td align="left">Missing</td>
-<td align="left">4</td>
-<td align="left">6</td>
-<td align="left">9</td>
+<td align="left">5</td>
+<td align="left">11</td>
+<td align="left">7</td>
 <td align="right">1</td>
 <td align="right">2</td>
 <td align="right">Inf</td>

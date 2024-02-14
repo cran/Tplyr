@@ -9,19 +9,16 @@ library(tidyverse)
 library(magrittr)
 library(Tplyr)
 library(knitr)
-load("adlb.Rdata")
-load("adsl.Rdata")
-load('adlb.Rdata')
 
 ## ----missing------------------------------------------------------------------
-adsl$TRT01P <- as.factor(adsl$TRT01P)
-adlb$TRTA <- as.factor(adlb$TRTA)
+tplyr_adsl$TRT01P <- as.factor(tplyr_adsl$TRT01P)
+tplyr_adlb$TRTA <- as.factor(tplyr_adlb$TRTA)
 
-adlb_2 <- adlb %>% 
+tplyr_adlb_2 <- tplyr_adlb %>% 
   filter(TRTA != "Placebo")
 
-tplyr_table(adlb_2, TRTA) %>% 
-  set_pop_data(adsl) %>% 
+tplyr_table(tplyr_adlb_2, TRTA) %>% 
+  set_pop_data(tplyr_adsl) %>% 
   set_pop_treat_var(TRT01P) %>% 
   add_layer(
     group_desc(AVAL, by=PARAMCD) %>% 
@@ -33,8 +30,8 @@ tplyr_table(adlb_2, TRTA) %>%
   kable()
 
 ## ----missing1-----------------------------------------------------------------
-tplyr_table(adlb_2, TRTA) %>% 
-  set_pop_data(adsl) %>% 
+tplyr_table(tplyr_adlb_2, TRTA) %>% 
+  set_pop_data(tplyr_adsl) %>% 
   set_pop_treat_var(TRT01P) %>% 
   add_layer(
     group_desc(AVAL, by=PARAMCD) %>% 
@@ -46,8 +43,8 @@ tplyr_table(adlb_2, TRTA) %>%
   kable()
 
 ## ----missing2-----------------------------------------------------------------
-tplyr_table(adlb_2, TRTA) %>% 
-  set_pop_data(adsl) %>% 
+tplyr_table(tplyr_adlb_2, TRTA) %>% 
+  set_pop_data(tplyr_adsl) %>% 
   set_pop_treat_var(TRT01P) %>% 
   add_layer(
     group_desc(AVAL, by=PARAMCD) %>% 
@@ -59,7 +56,7 @@ tplyr_table(adlb_2, TRTA) %>%
   kable()
 
 ## ----autoprecision1-----------------------------------------------------------
-tplyr_table(adlb, TRTA) %>% 
+tplyr_table(tplyr_adlb, TRTA) %>% 
   add_layer(
     group_desc(AVAL, by = PARAMCD) %>% 
       set_format_strings(
@@ -72,7 +69,7 @@ tplyr_table(adlb, TRTA) %>%
   kable()
 
 ## ----autoprecision2-----------------------------------------------------------
-tplyr_table(adlb, TRTA) %>% 
+tplyr_table(tplyr_adlb, TRTA) %>% 
   add_layer(
     group_desc(AVAL, by = PARAMCD) %>% 
       set_format_strings(
@@ -86,7 +83,7 @@ tplyr_table(adlb, TRTA) %>%
   kable()
 
 ## ----precision3---------------------------------------------------------------
-tplyr_table(adlb, TRTA) %>% 
+tplyr_table(tplyr_adlb, TRTA) %>% 
   add_layer(
     group_desc(vars(AVAL, CHG, BASE), by = PARAMCD) %>% 
       set_format_strings(
@@ -111,7 +108,7 @@ prec_data <- tibble::tribble(
   "URATE", 3, 1,
 )
   
-tplyr_table(adlb, TRTA) %>% 
+tplyr_table(tplyr_adlb, TRTA) %>% 
   add_layer(
     group_desc(AVAL, by = PARAMCD) %>% 
       set_format_strings(
@@ -136,7 +133,7 @@ prec_data <- tibble::tribble(
   "GGT", 3, 0,
 )
   
-tplyr_table(adlb, TRTA) %>% 
+tplyr_table(tplyr_adlb, TRTA) %>% 
   add_layer(
     group_desc(AVAL, by = PARAMCD) %>% 
       set_format_strings(
@@ -152,7 +149,7 @@ tplyr_table(adlb, TRTA) %>%
   kable()
 
 ## ----standard-----------------------------------------------------------------
-tplyr_table(adsl, TRT01P) %>% 
+tplyr_table(tplyr_adsl, TRT01P) %>% 
   add_layer(
     group_desc(AGE, by = "Age (years)", where= SAFFL=="Y") %>% 
       set_format_strings(
@@ -168,7 +165,7 @@ tplyr_table(adsl, TRT01P) %>%
   select(-starts_with('ord'))
 
 ## ----manual_hugging-----------------------------------------------------------
-tplyr_table(adlb, TRTA, PARAMCD == "CK") %>% 
+tplyr_table(tplyr_adlb, TRTA, PARAMCD == "CK") %>% 
   add_layer(
     group_desc(AVAL, by=vars(PARAMCD, AVISIT)) %>% 
       set_format_strings(
@@ -181,7 +178,7 @@ tplyr_table(adlb, TRTA, PARAMCD == "CK") %>%
   select(-starts_with('ord'))
 
 ## ----auto_hugging-------------------------------------------------------------
-tplyr_table(adlb, TRTA, PARAMCD == "CK") %>% 
+tplyr_table(tplyr_adlb, TRTA, PARAMCD == "CK") %>% 
   add_layer(
     group_desc(AVAL, by=vars(PARAMCD, AVISIT)) %>% 
       set_format_strings(

@@ -8,12 +8,9 @@ knitr::opts_chunk$set(
 library(Tplyr)
 library(dplyr, warn.conflicts = FALSE)
 library(knitr)
-load("adsl.Rdata")
-load("adae.Rdata")
-load("adlb.Rdata")
 
 ## -----------------------------------------------------------------------------
-tplyr_table(adae, TRTA) %>% 
+tplyr_table(tplyr_adae, TRTA) %>% 
   add_layer(
     group_count(AEDECOD) %>% 
       set_distinct_by(USUBJID) %>% 
@@ -24,8 +21,8 @@ tplyr_table(adae, TRTA) %>%
   kable()
 
 ## -----------------------------------------------------------------------------
-tplyr_table(adae, TRTA) %>% 
-  set_pop_data(adsl) %>%
+tplyr_table(tplyr_adae, TRTA) %>% 
+  set_pop_data(tplyr_adsl) %>%
   set_pop_treat_var(TRT01A) %>%
   add_layer(
     group_count(AEDECOD) %>% 
@@ -37,10 +34,10 @@ tplyr_table(adae, TRTA) %>%
   kable()
 
 ## -----------------------------------------------------------------------------
-adsl <- adsl %>% 
+tplyr_adsl <- tplyr_adsl %>% 
   mutate(DCSREAS = ifelse(DCSREAS == '', 'Completed', DCSREAS))
          
-tplyr_table(adsl, TRT01P) %>% 
+tplyr_table(tplyr_adsl, TRT01P) %>% 
   add_layer(
     group_count(DCSREAS)
   ) %>% 
@@ -48,7 +45,7 @@ tplyr_table(adsl, TRT01P) %>%
   kable()
 
 ## -----------------------------------------------------------------------------
-tplyr_table(adsl, TRT01P) %>% 
+tplyr_table(tplyr_adsl, TRT01P) %>% 
   add_layer(
     group_count(DCSREAS, by=SEX)
   ) %>% 
@@ -56,7 +53,7 @@ tplyr_table(adsl, TRT01P) %>%
   kable()
 
 ## -----------------------------------------------------------------------------
-tplyr_table(adsl, TRT01P) %>% 
+tplyr_table(tplyr_adsl, TRT01P) %>% 
   add_layer(
     group_count(DCSREAS, by=SEX) %>% 
       set_denoms_by(SEX, TRT01P)
@@ -65,7 +62,7 @@ tplyr_table(adsl, TRT01P) %>%
   kable()
 
 ## -----------------------------------------------------------------------------
-tplyr_table(adlb, TRTA, where=PARAMCD == "CK") %>%
+tplyr_table(tplyr_adlb, TRTA, where=PARAMCD == "CK") %>%
   add_layer(
     group_shift(vars(row = BNRIND, column = ANRIND), by = vars(PARAM, AVISIT)) %>%
       set_format_strings(f_str("xx (xxx.x%)", n, pct)) %>%
@@ -76,7 +73,7 @@ tplyr_table(adlb, TRTA, where=PARAMCD == "CK") %>%
   kable()
 
 ## -----------------------------------------------------------------------------
-tplyr_table(adlb, TRTA, where=PARAMCD == "CK") %>%
+tplyr_table(tplyr_adlb, TRTA, where=PARAMCD == "CK") %>%
   add_layer(
     group_shift(vars(row = BNRIND, column = ANRIND), by = vars(PARAM, AVISIT)) %>%
       set_format_strings(f_str("xx (xxx.x%)", n, pct)) %>%
@@ -88,7 +85,7 @@ tplyr_table(adlb, TRTA, where=PARAMCD == "CK") %>%
   kable()
 
 ## -----------------------------------------------------------------------------
-tplyr_table(adlb, TRTA, where = PARAMCD == "CK") %>%
+tplyr_table(tplyr_adlb, TRTA, where = PARAMCD == "CK") %>%
   add_layer(
     group_shift(vars(row = BNRIND, column = ANRIND), by = vars(PARAM, AVISIT)) %>%
       set_format_strings(f_str("xx (xx.xx%)", n, pct)) %>%
@@ -100,10 +97,10 @@ tplyr_table(adlb, TRTA, where = PARAMCD == "CK") %>%
   kable()
 
 ## -----------------------------------------------------------------------------
-adsl2 <- adsl %>% 
+tplyr_adsl2 <- tplyr_adsl %>% 
   mutate(DISCONTEXT = if_else(DISCONFL == 'Y', 'DISCONTINUED', 'COMPLETED'))
 
-t <- tplyr_table(adsl2, TRT01P, where = SAFFL == 'Y') %>%
+t <- tplyr_table(tplyr_adsl2, TRT01P, where = SAFFL == 'Y') %>%
   add_layer(
     group_count(DISCONTEXT)
   ) %>%
@@ -121,10 +118,10 @@ t %>%
   kable()
 
 ## -----------------------------------------------------------------------------
-adae2 <- adae
-adae2[sample(nrow(adae2), 50), "AESEV"] <- NA
+tplyr_adae2 <- tplyr_adae
+tplyr_adae2[sample(nrow(tplyr_adae2), 50), "AESEV"] <- NA
 
-t <- tplyr_table(adae2, TRTA) %>%
+t <- tplyr_table(tplyr_adae2, TRTA) %>%
   add_layer(
     group_count(AESEV) %>%
       set_format_strings(f_str("xxx (xx.xx%)", n, pct)) %>%
@@ -136,11 +133,28 @@ t <- tplyr_table(adae2, TRTA) %>%
 t %>% 
   kable()
 
-## -----------------------------------------------------------------------------
-adsl2 <- adsl
-adsl2[sample(nrow(adsl2), 50), "AGEGR1"] <- NA
+## ----missing_subs1------------------------------------------------------------
+  missing_subs <- tplyr_table(tplyr_adae, TRTA) %>%
+    set_pop_data(tplyr_adsl) %>%
+    set_pop_treat_var(TRT01A) %>%
+    add_layer(
+      group_count(vars(AEBODSYS, AEDECOD)) %>%
+        set_nest_count(TRUE) %>% 
+        set_distinct_by(USUBJID) %>%
+        add_missing_subjects_row(f_str("xx (XX.x%)", distinct_n, distinct_pct), sort_value = Inf) %>% 
+        set_missing_subjects_row_label("Missing Subjects")
+    ) %>%
+    build()
 
-tplyr_table(adsl2, TRT01P) %>% 
+  tail(missing_subs) %>% 
+    select(-starts_with('ord')) %>% 
+    kable()
+
+## -----------------------------------------------------------------------------
+tplyr_adsl2 <- tplyr_adsl
+tplyr_adsl2[sample(nrow(tplyr_adsl2), 50), "AGEGR1"] <- NA
+
+tplyr_table(tplyr_adsl2, TRT01P) %>% 
   add_layer(
     group_count(AGEGR1, by=SEX) %>% 
       set_denoms_by(TRT01P, SEX) %>%  # This gives me a Total row each group
@@ -153,7 +167,7 @@ tplyr_table(adsl2, TRT01P) %>%
   kable()
 
 ## -----------------------------------------------------------------------------
-tplyr_table(adsl2, TRT01P) %>% 
+tplyr_table(tplyr_adsl2, TRT01P) %>% 
   add_layer(
     group_count(AGEGR1, by=SEX) %>% 
       set_denoms_by(TRT01P, SEX) %>%  # This gives me a Total row each group

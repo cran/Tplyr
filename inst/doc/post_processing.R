@@ -8,8 +8,6 @@ knitr::opts_chunk$set(
 library(Tplyr)
 library(dplyr)
 library(knitr)
-load('adsl.Rdata')
-load('adae.Rdata')
 
 ## ----str_indent_wrap----------------------------------------------------------
 dat <- tibble(
@@ -23,7 +21,7 @@ dat %>%
   )
 
 ## ----row_mask1----------------------------------------------------------------
-dat <- tplyr_table(adsl, TRT01P) %>% 
+dat <- tplyr_table(tplyr_adsl, TRT01P) %>% 
   add_layer(
     group_count(RACE, by = "Race n (%)")
   ) %>% 
@@ -38,7 +36,7 @@ dat %>%
   kable()
 
 ## ----row_masks3---------------------------------------------------------------
-dat <- tplyr_table(adsl, TRT01P) %>% 
+dat <- tplyr_table(tplyr_adsl, TRT01P) %>% 
   add_layer(
     group_count(RACE, by = "Race n (%)")
   ) %>% 
@@ -50,6 +48,57 @@ dat <- tplyr_table(adsl, TRT01P) %>%
 dat %>% 
   apply_row_masks(row_breaks=TRUE) %>% 
   kable()
+
+## ----collapse_row_labels------------------------------------------------------
+dat <- tplyr_table(tplyr_adsl, TRT01P) %>% 
+  add_layer(
+    group_count(RACE, by = vars("Race n (%)", SEX))
+  ) %>% 
+  add_layer(
+    group_desc(AGE, by = vars("Age (years)", SEX))
+  ) %>% 
+  build()
+
+collapse_row_labels(dat, row_label1, row_label2, row_label3) %>% 
+  select(row_label, var1_Placebo)
+
+## ----collapse_row_labels2-----------------------------------------------------
+collapse_row_labels(dat, row_label1, row_label2, row_label3, indent = "&nbsp;&nbsp;") %>% 
+  select(row_label, var1_Placebo) %>% 
+  kable(escape=FALSE)
+
+## ----collapse_row_labels3-----------------------------------------------------
+collapse_row_labels(dat, row_label1, row_label2, indent = "&nbsp;&nbsp;") %>% 
+  select(row_label, row_label3, var1_Placebo) %>% 
+  head() %>% 
+  kable()
+
+## ----replace_leading_whitespace1----------------------------------------------
+collapse_row_labels(dat, row_label1, row_label2) %>% 
+  select(row_label, row_label3, var1_Placebo) %>% 
+  kable()
+
+## ----replace_leading_whitespace2----------------------------------------------
+collapse_row_labels(dat, row_label1, row_label2) %>% 
+  select(row_label, row_label3, var1_Placebo) %>% 
+  head()
+
+## ----replace_leading_whitespace3----------------------------------------------
+collapse_row_labels(dat, row_label1, row_label2) %>% 
+  select(row_label, row_label3, var1_Placebo) %>% 
+  mutate(
+    across(where(is.character), ~ replace_leading_whitespace(.))
+  ) %>% 
+  head()
+
+## ----replace_leading_whitespace4----------------------------------------------
+collapse_row_labels(dat, row_label1, row_label2) %>% 
+  select(row_label, row_label3, var1_Placebo) %>% 
+  mutate(
+    across(where(is.character), ~ replace_leading_whitespace(.))
+  ) %>% 
+  head() %>% 
+  kable(escape=FALSE)
 
 ## ----apply_conditional_format1------------------------------------------------
 string <- c(" 0  (0.0%)", " 8  (9.3%)", "78 (90.7%)")
@@ -90,7 +139,7 @@ str_extract_fmt_group(string, 1)
 str_extract_fmt_group(string, 2)
 
 ## ----fmt_group2---------------------------------------------------------------
-dat <- tplyr_table(adsl, TRT01P) %>% 
+dat <- tplyr_table(tplyr_adsl, TRT01P) %>% 
   add_layer(
     group_count(RACE)
   ) %>% 
@@ -109,8 +158,8 @@ dat %>%
   kable()
 
 ## ----num1---------------------------------------------------------------------
-dat <- tplyr_table(adae, TRTA) %>% 
-  set_pop_data(adsl) %>% 
+dat <- tplyr_table(tplyr_adae, TRTA) %>% 
+  set_pop_data(tplyr_adsl) %>% 
   set_pop_treat_var(TRT01A) %>% 
   add_layer(
     group_count(AEDECOD) %>% 

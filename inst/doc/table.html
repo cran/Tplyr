@@ -347,6 +347,9 @@ Parameters</a></li>
 Groups</a></li>
 <li><a href="#population-data" id="toc-population-data">Population
 Data</a></li>
+<li><a href="#data-completion" id="toc-data-completion">Data
+Completion</a></li>
+<li><a href="#where-to-go-from-here" id="toc-where-to-go-from-here">Where to Go From Here</a></li>
 </ul>
 </div>
 
@@ -375,15 +378,15 @@ will be transposed into columns in addition to
 <code>treat_var</code>.</li>
 </ul>
 <p>Let’s look at an example:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P, <span class="at">where=</span> SAFFL <span class="sc">==</span><span class="st">&quot;Y&quot;</span>, <span class="at">cols =</span> SEX) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(RACE, <span class="at">by =</span> <span class="st">&quot;Race&quot;</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AGE, <span class="at">by =</span> <span class="st">&quot;Age (Years)&quot;</span>)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">tplyr_table</span>(tplyr_adsl, TRT01P, <span class="at">where=</span> SAFFL <span class="sc">==</span><span class="st">&quot;Y&quot;</span>, <span class="at">cols =</span> SEX) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>    <span class="fu">group_count</span>(RACE, <span class="at">by =</span> <span class="st">&quot;Race&quot;</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>    <span class="fu">group_desc</span>(AGE, <span class="at">by =</span> <span class="st">&quot;Age (Years)&quot;</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <colgroup>
 <col width="5%" />
@@ -549,12 +552,12 @@ in the final output are always taken from the
 filter completed excludes a treatment group or group within a column
 variable, columns will still be created for those groups and will be
 empty/zero filled.</em></p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P, <span class="at">where=</span> SAFFL <span class="sc">==</span><span class="st">&quot;Y&quot;</span>, <span class="at">cols =</span> <span class="fu">vars</span>(SEX, RACE)) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AGE, <span class="at">by =</span> <span class="st">&quot;Age (Years)&quot;</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">tplyr_table</span>(tplyr_adsl, TRT01P, <span class="at">where=</span> SAFFL <span class="sc">==</span><span class="st">&quot;Y&quot;</span>, <span class="at">cols =</span> <span class="fu">vars</span>(SEX, RACE)) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>    <span class="fu">group_desc</span>(AGE, <span class="at">by =</span> <span class="st">&quot;Age (Years)&quot;</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table style="width:100%;">
 <colgroup>
 <col width="1%" />
@@ -787,14 +790,14 @@ combining existing treatment groups from values within
 an abstraction of <code>add_treat_grps()</code> named
 <code>add_total_group()</code> to simplify the process of creating a
 “Total” group.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_treat_grps</span>(<span class="st">&#39;Treated&#39;</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;Xanomeline High Dose&quot;</span>, <span class="st">&quot;Xanomeline Low Dose&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_total_group</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AGE, <span class="at">by =</span> <span class="st">&quot;Age (Years)&quot;</span>)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">tplyr_table</span>(tplyr_adsl, TRT01P) <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="fu">add_treat_grps</span>(<span class="st">&#39;Treated&#39;</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;Xanomeline High Dose&quot;</span>, <span class="st">&quot;Xanomeline Low Dose&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="fu">add_total_group</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>    <span class="fu">group_desc</span>(AGE, <span class="at">by =</span> <span class="st">&quot;Age (Years)&quot;</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <colgroup>
 <col width="7%" />
@@ -918,18 +921,18 @@ dataset to overcome this. Furthermore, you are also able to provide a
 separate population dataset <code>where</code> parameter and a
 population treatment variable named <code>pop_treat_var</code>, as
 variable names may differ between the datasets.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">tplyr_table</span>(adae, TRTA, <span class="at">where =</span> AEREL <span class="sc">!=</span> <span class="st">&quot;NONE&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_pop_data</span>(adsl) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_pop_treat_var</span>(TRT01A) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_pop_where</span>(<span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_count</span>(AEDECOD) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_distinct_by</span>(USUBJID)</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>t <span class="sc">%&gt;%</span> </span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">tplyr_table</span>(tplyr_adae, TRTA, <span class="at">where =</span> AEREL <span class="sc">!=</span> <span class="st">&quot;NONE&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="fu">set_pop_data</span>(tplyr_adsl) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="fu">set_pop_treat_var</span>(TRT01A) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="fu">set_pop_where</span>(<span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>    <span class="fu">group_count</span>(AEDECOD) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>      <span class="fu">set_distinct_by</span>(USUBJID)</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>  )</span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>  </span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>t <span class="sc">%&gt;%</span> </span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <colgroup>
 <col width="18%" />
@@ -1113,8 +1116,8 @@ when calculating the percentages for the distinct counts of subjects who
 experienced the summarized adverse events. Furthermore, with the
 population data provided, <strong>Tplyr</strong> is able to calculate
 your header N’s properly:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">header_n</span>(t) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">header_n</span>(t) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1137,6 +1140,446 @@ your header N’s properly:</p>
 </tr>
 </tbody>
 </table>
+<p>Note: it’s expected the <code>set_distinct_by()</code> function is
+used with population data. This is because it does not make sense to use
+population data denominators unless you have distinct counts. The entire
+point of population data is to use subject counts, so non-distinct
+counts would potentially count multiple records per subject and then the
+percentage doesn’t make any sense.</p>
+</div>
+<div id="data-completion" class="section level2">
+<h2>Data Completion</h2>
+<p>When creating summary tables, often we have to mock up the potential
+values of data, even if those values aren’t present in the data we’re
+summarizing. <strong>Tplyr</strong> does its best effort to do this for
+you. Let’s consider the following dataset:</p>
+<table>
+<colgroup>
+<col width="12%" />
+<col width="15%" />
+<col width="9%" />
+<col width="9%" />
+<col width="10%" />
+<col width="18%" />
+<col width="7%" />
+<col width="18%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">USUBJID</th>
+<th align="left">AVISIT</th>
+<th align="left">PECAT</th>
+<th align="left">PARAM</th>
+<th align="left">TRT01A</th>
+<th align="left">AVALC</th>
+<th align="right">AVAL</th>
+<th align="left">BASEC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">101-001</td>
+<td align="left">Screening</td>
+<td align="left">A</td>
+<td align="left">Head</td>
+<td align="left">TRT A</td>
+<td align="left">Normal</td>
+<td align="right">1</td>
+<td align="left">Abnormal</td>
+</tr>
+<tr class="even">
+<td align="left">101-001</td>
+<td align="left">Screening</td>
+<td align="left">A</td>
+<td align="left">Lungs</td>
+<td align="left">TRT A</td>
+<td align="left">Normal</td>
+<td align="right">2</td>
+<td align="left">Semi-Normal</td>
+</tr>
+<tr class="odd">
+<td align="left">101-001</td>
+<td align="left">Day -1</td>
+<td align="left">A</td>
+<td align="left">Lungs</td>
+<td align="left">TRT A</td>
+<td align="left">Normal</td>
+<td align="right">3</td>
+<td align="left">Normal</td>
+</tr>
+<tr class="even">
+<td align="left">101-001</td>
+<td align="left">Day 5</td>
+<td align="left">A</td>
+<td align="left">Lungs</td>
+<td align="left">TRT A</td>
+<td align="left">Normal</td>
+<td align="right">4</td>
+<td align="left">Normal</td>
+</tr>
+<tr class="odd">
+<td align="left">101-002</td>
+<td align="left">Screening</td>
+<td align="left">A</td>
+<td align="left">Head</td>
+<td align="left">TRT B</td>
+<td align="left">Semi-Normal</td>
+<td align="right">5</td>
+<td align="left">Normal</td>
+</tr>
+<tr class="even">
+<td align="left">101-002</td>
+<td align="left">Screening</td>
+<td align="left">A</td>
+<td align="left">Lungs</td>
+<td align="left">TRT B</td>
+<td align="left">Normal</td>
+<td align="right">6</td>
+<td align="left">Normal</td>
+</tr>
+</tbody>
+</table>
+<p>Let’s say we want to create a count summary for this dataset, and
+report it by PARAM and AVISIT. Note that in the data,
+<code>PARAM==&quot;HEAD&quot;</code> is only collected at screening, while
+<code>LUNGS</code> is collected at Screening, Day -1, and Day 5.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">tplyr_table</span>(tplyr_adpe, TRT01A) <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>    <span class="fu">group_count</span>(AVALC, <span class="at">by =</span> <span class="fu">vars</span>(PARAM, AVISIT))</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&#39;ord&#39;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">18</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">row_label2</th>
+<th align="left">row_label3</th>
+<th align="left">var1_TRT A</th>
+<th align="left">var1_TRT B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Head</td>
+<td align="left">Screening</td>
+<td align="left">Normal</td>
+<td align="left">2 ( 14.3%)</td>
+<td align="left">0 ( 0.0%)</td>
+</tr>
+<tr class="even">
+<td align="left">Head</td>
+<td align="left">Screening</td>
+<td align="left">Semi-Normal</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">1 ( 14.3%)</td>
+</tr>
+<tr class="odd">
+<td align="left">Head</td>
+<td align="left">Screening</td>
+<td align="left">Abnormal</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+</tr>
+<tr class="even">
+<td align="left">Head</td>
+<td align="left">Day -1</td>
+<td align="left">Normal</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+</tr>
+<tr class="odd">
+<td align="left">Head</td>
+<td align="left">Day -1</td>
+<td align="left">Semi-Normal</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+</tr>
+<tr class="even">
+<td align="left">Head</td>
+<td align="left">Day -1</td>
+<td align="left">Abnormal</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+</tr>
+<tr class="odd">
+<td align="left">Head</td>
+<td align="left">Day 5</td>
+<td align="left">Normal</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+</tr>
+<tr class="even">
+<td align="left">Head</td>
+<td align="left">Day 5</td>
+<td align="left">Semi-Normal</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+</tr>
+<tr class="odd">
+<td align="left">Head</td>
+<td align="left">Day 5</td>
+<td align="left">Abnormal</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+</tr>
+<tr class="even">
+<td align="left">Lungs</td>
+<td align="left">Screening</td>
+<td align="left">Normal</td>
+<td align="left">2 ( 14.3%)</td>
+<td align="left">2 ( 28.6%)</td>
+</tr>
+<tr class="odd">
+<td align="left">Lungs</td>
+<td align="left">Screening</td>
+<td align="left">Semi-Normal</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+</tr>
+<tr class="even">
+<td align="left">Lungs</td>
+<td align="left">Screening</td>
+<td align="left">Abnormal</td>
+<td align="left">2 ( 14.3%)</td>
+<td align="left">0 ( 0.0%)</td>
+</tr>
+<tr class="odd">
+<td align="left">Lungs</td>
+<td align="left">Day -1</td>
+<td align="left">Normal</td>
+<td align="left">4 ( 28.6%)</td>
+<td align="left">2 ( 28.6%)</td>
+</tr>
+<tr class="even">
+<td align="left">Lungs</td>
+<td align="left">Day -1</td>
+<td align="left">Semi-Normal</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+</tr>
+<tr class="odd">
+<td align="left">Lungs</td>
+<td align="left">Day -1</td>
+<td align="left">Abnormal</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+</tr>
+<tr class="even">
+<td align="left">Lungs</td>
+<td align="left">Day 5</td>
+<td align="left">Normal</td>
+<td align="left">2 ( 14.3%)</td>
+<td align="left">2 ( 28.6%)</td>
+</tr>
+<tr class="odd">
+<td align="left">Lungs</td>
+<td align="left">Day 5</td>
+<td align="left">Semi-Normal</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+</tr>
+<tr class="even">
+<td align="left">Lungs</td>
+<td align="left">Day 5</td>
+<td align="left">Abnormal</td>
+<td align="left">2 ( 14.3%)</td>
+<td align="left">0 ( 0.0%)</td>
+</tr>
+</tbody>
+</table>
+<p>By default, given the <code>by</code> variables of PARAM and AVISIT,
+all of the potential visits have dummy rows created that are 0 filled -
+meaning results of 0 records for all treatment groups are presented.
+However, that might not be what you wish to present. Perhaps
+<code>HEAD</code> was only intended to be collected at the Screening
+visit so it’s unnecessary to present other visits. To address this, you
+can use the <code>set_limit_data_by()</code> function.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">tplyr_table</span>(tplyr_adpe, TRT01A) <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>    <span class="fu">group_count</span>(AVALC, <span class="at">by =</span> <span class="fu">vars</span>(PARAM, AVISIT)) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>      <span class="fu">set_limit_data_by</span>(PARAM, AVISIT)</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&#39;ord&#39;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">12</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">row_label2</th>
+<th align="left">row_label3</th>
+<th align="left">var1_TRT A</th>
+<th align="left">var1_TRT B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Head</td>
+<td align="left">Screening</td>
+<td align="left">Normal</td>
+<td align="left">2 ( 14.3%)</td>
+<td align="left">0 ( 0.0%)</td>
+</tr>
+<tr class="even">
+<td align="left">Head</td>
+<td align="left">Screening</td>
+<td align="left">Semi-Normal</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">1 ( 14.3%)</td>
+</tr>
+<tr class="odd">
+<td align="left">Head</td>
+<td align="left">Screening</td>
+<td align="left">Abnormal</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+</tr>
+<tr class="even">
+<td align="left">Lungs</td>
+<td align="left">Screening</td>
+<td align="left">Normal</td>
+<td align="left">2 ( 14.3%)</td>
+<td align="left">2 ( 28.6%)</td>
+</tr>
+<tr class="odd">
+<td align="left">Lungs</td>
+<td align="left">Screening</td>
+<td align="left">Semi-Normal</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+</tr>
+<tr class="even">
+<td align="left">Lungs</td>
+<td align="left">Screening</td>
+<td align="left">Abnormal</td>
+<td align="left">2 ( 14.3%)</td>
+<td align="left">0 ( 0.0%)</td>
+</tr>
+<tr class="odd">
+<td align="left">Lungs</td>
+<td align="left">Day -1</td>
+<td align="left">Normal</td>
+<td align="left">4 ( 28.6%)</td>
+<td align="left">2 ( 28.6%)</td>
+</tr>
+<tr class="even">
+<td align="left">Lungs</td>
+<td align="left">Day -1</td>
+<td align="left">Semi-Normal</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+</tr>
+<tr class="odd">
+<td align="left">Lungs</td>
+<td align="left">Day -1</td>
+<td align="left">Abnormal</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+</tr>
+<tr class="even">
+<td align="left">Lungs</td>
+<td align="left">Day 5</td>
+<td align="left">Normal</td>
+<td align="left">2 ( 14.3%)</td>
+<td align="left">2 ( 28.6%)</td>
+</tr>
+<tr class="odd">
+<td align="left">Lungs</td>
+<td align="left">Day 5</td>
+<td align="left">Semi-Normal</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">0 ( 0.0%)</td>
+</tr>
+<tr class="even">
+<td align="left">Lungs</td>
+<td align="left">Day 5</td>
+<td align="left">Abnormal</td>
+<td align="left">2 ( 14.3%)</td>
+<td align="left">0 ( 0.0%)</td>
+</tr>
+</tbody>
+</table>
+<p>Here you can see that now records for <code>HEAD</code> only present
+the screening visit. For count and shift layers, you can additionally
+dig further in to use target variables:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">tplyr_table</span>(tplyr_adpe, TRT01A) <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>    <span class="fu">group_count</span>(AVALC, <span class="at">by =</span> <span class="fu">vars</span>(PARAM, AVISIT)) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>      <span class="fu">set_limit_data_by</span>(PARAM, AVISIT, AVALC)</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&#39;ord&#39;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">row_label1</th>
+<th align="left">row_label2</th>
+<th align="left">row_label3</th>
+<th align="left">var1_TRT A</th>
+<th align="left">var1_TRT B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Head</td>
+<td align="left">Screening</td>
+<td align="left">Normal</td>
+<td align="left">2 ( 14.3%)</td>
+<td align="left">0 ( 0.0%)</td>
+</tr>
+<tr class="even">
+<td align="left">Lungs</td>
+<td align="left">Screening</td>
+<td align="left">Normal</td>
+<td align="left">2 ( 14.3%)</td>
+<td align="left">2 ( 28.6%)</td>
+</tr>
+<tr class="odd">
+<td align="left">Lungs</td>
+<td align="left">Screening</td>
+<td align="left">Abnormal</td>
+<td align="left">2 ( 14.3%)</td>
+<td align="left">0 ( 0.0%)</td>
+</tr>
+<tr class="even">
+<td align="left">Lungs</td>
+<td align="left">Day -1</td>
+<td align="left">Normal</td>
+<td align="left">4 ( 28.6%)</td>
+<td align="left">2 ( 28.6%)</td>
+</tr>
+<tr class="odd">
+<td align="left">Lungs</td>
+<td align="left">Day 5</td>
+<td align="left">Normal</td>
+<td align="left">2 ( 14.3%)</td>
+<td align="left">2 ( 28.6%)</td>
+</tr>
+<tr class="even">
+<td align="left">Lungs</td>
+<td align="left">Day 5</td>
+<td align="left">Abnormal</td>
+<td align="left">2 ( 14.3%)</td>
+<td align="left">0 ( 0.0%)</td>
+</tr>
+<tr class="odd">
+<td align="left">Head</td>
+<td align="left">Screening</td>
+<td align="left">Semi-Normal</td>
+<td align="left">0 ( 0.0%)</td>
+<td align="left">1 ( 14.3%)</td>
+</tr>
+</tbody>
+</table>
+<p>This effectively limits to the values present in the data itself.</p>
+</div>
+<div id="where-to-go-from-here" class="section level2">
+<h2>Where to Go From Here</h2>
 <p>With the table level settings under control, now you’re ready to
 learn more about what <strong>Tplyr</strong> has to offer in each
 layer.</p>

@@ -8,12 +8,9 @@ knitr::opts_chunk$set(
 library(Tplyr)
 library(dplyr)
 library(tidyr)
-load('adsl.Rdata')
-load('adlb.Rdata')
-load('adae.Rdata')
 
 ## ----example_1----------------------------------------------------------------
-tplyr_table(adsl, TRT01P) %>% 
+tplyr_table(tplyr_adsl, TRT01P) %>% 
   add_layer(
     group_count(RACE) %>% 
       set_format_strings(
@@ -33,7 +30,7 @@ tplyr_table(adsl, TRT01P) %>%
 f_str("xx (xx.x%)", n, pct)
 
 ## ----example_3----------------------------------------------------------------
-tplyr_table(adsl, TRT01P) %>% 
+tplyr_table(tplyr_adsl, TRT01P) %>% 
   add_layer(
     group_count(RACE) %>% 
       set_format_strings(
@@ -44,7 +41,7 @@ tplyr_table(adsl, TRT01P) %>%
   select(1:3)
 
 ## ----example_4----------------------------------------------------------------
-tplyr_table(adsl, TRT01P) %>% 
+tplyr_table(tplyr_adsl, TRT01P) %>% 
   add_layer(
     group_count(RACE) %>% 
       set_format_strings(
@@ -56,7 +53,7 @@ tplyr_table(adsl, TRT01P) %>%
 
 ## ----example_5----------------------------------------------------------------
 
-tplyr_table(adsl, TRT01P) %>% 
+tplyr_table(tplyr_adsl, TRT01P) %>% 
   add_layer(
     group_count(RACE) %>% 
       set_format_strings(
@@ -67,7 +64,7 @@ tplyr_table(adsl, TRT01P) %>%
   select(1:3)
 
 ## ----example_6----------------------------------------------------------------
-tplyr_table(adlb, TRTA, where=PARAMCD %in% c("CA", "URATE")) %>% 
+tplyr_table(tplyr_adlb, TRTA, where=PARAMCD %in% c("CA", "URATE")) %>% 
   add_layer(
     group_desc(AVAL, by=vars(PARAMCD, AVISIT)) %>% 
       set_format_strings(
@@ -79,7 +76,7 @@ tplyr_table(adlb, TRTA, where=PARAMCD %in% c("CA", "URATE")) %>%
   select(1:5)
 
 ## ----example_7----------------------------------------------------------------
-tplyr_table(adsl, TRT01P) %>% 
+tplyr_table(tplyr_adsl, TRT01P) %>% 
   add_layer(
     group_count(RACE) %>% 
       set_format_strings(f_str("a (xxx.x%)", n, pct))
@@ -88,8 +85,8 @@ tplyr_table(adsl, TRT01P) %>%
   select(1:3)
 
 ## ----example_8----------------------------------------------------------------
-tplyr_table(adae, TRTA) %>% 
-  set_pop_data(adsl) %>% 
+tplyr_table(tplyr_adae, TRTA) %>% 
+  set_pop_data(tplyr_adsl) %>% 
   set_pop_treat_var(TRT01A) %>% 
   add_layer(
     group_count(AEDECOD) %>% 

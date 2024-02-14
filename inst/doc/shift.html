@@ -387,40 +387,46 @@ situations, <code>group_count()</code> will do just fine.</p>
 <div id="a-basic-example" class="section level2">
 <h2>A Basic Example</h2>
 <p>Let’s look at an example.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adlb, TRTA, <span class="at">where=</span>PARAMCD <span class="sc">==</span> <span class="st">&quot;CK&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_shift</span>(<span class="fu">vars</span>(<span class="at">row =</span> BNRIND, <span class="at">column =</span> ANRIND), <span class="at">by =</span> <span class="fu">vars</span>(PARAM, VISIT))</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">20</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">tplyr_table</span>(tplyr_adlb, TRTA, <span class="at">where=</span>PARAMCD <span class="sc">==</span> <span class="st">&quot;CK&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>    <span class="fu">group_shift</span>(<span class="fu">vars</span>(<span class="at">row =</span> BNRIND, <span class="at">column =</span> ANRIND), <span class="at">by =</span> <span class="fu">vars</span>(PARAM, VISIT))</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">20</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <colgroup>
+<col width="7%" />
+<col width="3%" />
+<col width="3%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
 <col width="9%" />
-<col width="4%" />
-<col width="4%" />
-<col width="6%" />
-<col width="6%" />
-<col width="11%" />
-<col width="11%" />
-<col width="11%" />
-<col width="11%" />
-<col width="6%" />
+<col width="9%" />
+<col width="9%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
 <col width="5%" />
-<col width="5%" />
-<col width="5%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
 </colgroup>
 <thead>
 <tr class="header">
 <th align="left">row_label1</th>
 <th align="left">row_label2</th>
 <th align="left">row_label3</th>
-<th align="left">var1_Placebo_H</th>
+<th align="left">var1_Placebo_L</th>
 <th align="left">var1_Placebo_N</th>
-<th align="left">var1_Xanomeline High Dose_H</th>
+<th align="left">var1_Placebo_H</th>
+<th align="left">var1_Xanomeline High Dose_L</th>
 <th align="left">var1_Xanomeline High Dose_N</th>
-<th align="left">var1_Xanomeline Low Dose_H</th>
+<th align="left">var1_Xanomeline High Dose_H</th>
+<th align="left">var1_Xanomeline Low Dose_L</th>
 <th align="left">var1_Xanomeline Low Dose_N</th>
+<th align="left">var1_Xanomeline Low Dose_H</th>
 <th align="right">ord_layer_index</th>
 <th align="right">ord_layer_1</th>
 <th align="right">ord_layer_2</th>
@@ -431,10 +437,13 @@ situations, <code>group_count()</code> will do just fine.</p>
 <tr class="odd">
 <td align="left">Creatine Kinase (U/L)</td>
 <td align="left">WEEK 12</td>
-<td align="left">H</td>
+<td align="left">L</td>
 <td align="left">0</td>
 <td align="left">0</td>
-<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
@@ -447,21 +456,45 @@ situations, <code>group_count()</code> will do just fine.</p>
 <td align="left">Creatine Kinase (U/L)</td>
 <td align="left">WEEK 12</td>
 <td align="left">N</td>
-<td align="left">1</td>
+<td align="left">0</td>
 <td align="left">11</td>
 <td align="left">1</td>
+<td align="left">0</td>
 <td align="left">6</td>
 <td align="left">1</td>
+<td align="left">0</td>
 <td align="left">6</td>
+<td align="left">1</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">WEEK 12</td>
+<td align="left">H</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
 <td align="right">1</td>
 <td align="right">35</td>
 <td align="right">1</td>
 <td align="right">3</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Creatine Kinase (U/L)</td>
 <td align="left">WEEK 24</td>
-<td align="left">H</td>
+<td align="left">L</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
@@ -473,16 +506,37 @@ situations, <code>group_count()</code> will do just fine.</p>
 <td align="right">2</td>
 <td align="right">1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">Creatine Kinase (U/L)</td>
 <td align="left">WEEK 24</td>
 <td align="left">N</td>
-<td align="left">2</td>
+<td align="left">0</td>
 <td align="left">10</td>
-<td align="left">0</td>
 <td align="left">2</td>
 <td align="left">0</td>
 <td align="left">2</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">2</td>
+<td align="left">0</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">2</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">WEEK 24</td>
+<td align="left">H</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
 <td align="right">1</td>
 <td align="right">35</td>
 <td align="right">2</td>
@@ -491,7 +545,10 @@ situations, <code>group_count()</code> will do just fine.</p>
 <tr class="odd">
 <td align="left">Creatine Kinase (U/L)</td>
 <td align="left">WEEK 8</td>
-<td align="left">H</td>
+<td align="left">L</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
@@ -507,12 +564,33 @@ situations, <code>group_count()</code> will do just fine.</p>
 <td align="left">Creatine Kinase (U/L)</td>
 <td align="left">WEEK 8</td>
 <td align="left">N</td>
-<td align="left">1</td>
-<td align="left">6</td>
-<td align="left">1</td>
-<td align="left">9</td>
 <td align="left">0</td>
 <td align="left">6</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">9</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">6</td>
+<td align="left">0</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">3</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Creatine Kinase (U/L)</td>
+<td align="left">WEEK 8</td>
+<td align="left">H</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
 <td align="right">1</td>
 <td align="right">35</td>
 <td align="right">3</td>
@@ -535,15 +613,15 @@ possible values.</p>
 </div>
 <div id="filling-missing-groups-using-factors" class="section level2">
 <h2>Filling Missing Groups Using Factors</h2>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>adlb<span class="sc">$</span>ANRIND <span class="ot">&lt;-</span> <span class="fu">factor</span>(adlb<span class="sc">$</span>ANRIND, <span class="at">levels=</span><span class="fu">c</span>(<span class="st">&quot;L&quot;</span>, <span class="st">&quot;N&quot;</span>, <span class="st">&quot;H&quot;</span>))</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>adlb<span class="sc">$</span>BNRIND <span class="ot">&lt;-</span> <span class="fu">factor</span>(adlb<span class="sc">$</span>BNRIND, <span class="at">levels=</span><span class="fu">c</span>(<span class="st">&quot;L&quot;</span>, <span class="st">&quot;N&quot;</span>, <span class="st">&quot;H&quot;</span>))</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adlb, TRTA, <span class="at">where=</span>PARAMCD <span class="sc">==</span> <span class="st">&quot;CK&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_shift</span>(<span class="fu">vars</span>(<span class="at">row =</span> BNRIND, <span class="at">column =</span> ANRIND), <span class="at">by =</span> <span class="fu">vars</span>(PARAM, VISIT))</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">20</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>tplyr_adlb<span class="sc">$</span>ANRIND <span class="ot">&lt;-</span> <span class="fu">factor</span>(tplyr_adlb<span class="sc">$</span>ANRIND, <span class="at">levels=</span><span class="fu">c</span>(<span class="st">&quot;L&quot;</span>, <span class="st">&quot;N&quot;</span>, <span class="st">&quot;H&quot;</span>))</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>tplyr_adlb<span class="sc">$</span>BNRIND <span class="ot">&lt;-</span> <span class="fu">factor</span>(tplyr_adlb<span class="sc">$</span>BNRIND, <span class="at">levels=</span><span class="fu">c</span>(<span class="st">&quot;L&quot;</span>, <span class="st">&quot;N&quot;</span>, <span class="st">&quot;H&quot;</span>))</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="fu">tplyr_table</span>(tplyr_adlb, TRTA, <span class="at">where=</span>PARAMCD <span class="sc">==</span> <span class="st">&quot;CK&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>    <span class="fu">group_shift</span>(<span class="fu">vars</span>(<span class="at">row =</span> BNRIND, <span class="at">column =</span> ANRIND), <span class="at">by =</span> <span class="fu">vars</span>(PARAM, VISIT))</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">20</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <colgroup>
 <col width="7%" />

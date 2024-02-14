@@ -440,6 +440,17 @@ test_that("set_denom_where works as expected", {
   expect_snapshot_output(dput(t13))
 })
 
+test_that("set_denom_where errors for incompatible object type", {
+  t1 <- tplyr_table(mtcars, gear)
+
+  # Modify the object type to make it incompatible
+  class(t1) <- "environment"
+
+  # Function errors
+  t1 <- set_denom_where(t1, mpg != 21) %>%
+    expect_error("Object type should be")
+})
+
 test_that("missing counts can be set without a format and it inherits the layer format", {
   t1 <- tplyr_table(mtcars, gear) %>%
     add_layer(
@@ -639,7 +650,29 @@ test_that("nested count layers handle `set_denoms_by` as expected", {
                  " 0 (  0.0%)", " 2 (100.0%)", "12 (100.0%)", " 7 ( 58.3%)",
                  " 5 ( 41.7%)"))
 
+  # Tests added to capture #136
+  expect_snapshot(
+    # Results have been manually verified
+    # Denom for cyl == 4 is 11
+    tplyr_table(mtcars, gear, cols=vs) %>%
+      add_layer(
+        group_count(vars(cyl,grp)) %>%
+          set_denoms_by(cyl)
+      ) %>%
+      build() %>%
+      as.data.frame()
+  )
 
+  expect_snapshot(
+    # Results have been manually verified
+    # Denom for gear == 3, vs = 0 is 12
+    tplyr_table(mtcars, gear, cols=vs) %>%
+      add_layer(
+        group_count(vars(cyl,grp))
+      ) %>%
+      build() %>%
+      as.data.frame()
+  )
 
 })
 
@@ -668,6 +701,7 @@ test_that("test IBM rounding option", {
       group_count(gender, by = "Gender")  %>%
         set_format_strings(f_str("xxx (xxx%)", n, pct))
     )
+
   expect_warning({tabl2 <- build(tabl2)}, "You have enabled IBM Rounding.")
 
   expect_equal(tabl2$var1_Placebo, c("485 ( 49%)", "515 ( 52%)"))
@@ -675,16 +709,36 @@ test_that("test IBM rounding option", {
   options(tplyr.IBMRounding = FALSE)
 })
 
-test_that("nested count layers will error out if second variable is bigger than the first", {
-  mtcars <- mtcars2
-  mtcars$grp <- paste0("grp.", as.numeric(mtcars$cyl) + rep(c(0, 0.5), 16))
+test_that("test specific rounding proplem #124", {
+  vec <- c(2.64, -3.20, -2.88, 2.95)
+  mvec <- mean(vec)
 
-  t <- tplyr_table(mtcars, gear) %>%
+  options(tplyr.IBMRounding = TRUE)
+
+  rounded <- ut_round(mvec, 3)
+
+  expect_equal(rounded, -0.123)
+
+  options(tplyr.IBMRounding = FALSE)
+})
+
+test_that("nested count can accept data if second variable is bigger than the first", {
+  test_adcm <- data.frame(
+    SUBJID = c("1", "2", "3"),
+    ATC2 = c("Antiemetics and antinauseants", "Psycholeptics", "Psycholeptics"),
+    CMDECOD = c("Promethazine hydrochloride", "Promethazine hydrochloride", "Promethazine hydrochloride"),
+    TRT101A = c("TRT1", "TRT2", "TRT1")
+  )
+
+  x <- test_adcm %>%
+    tplyr_table(TRT101A) %>%
     add_layer(
-      group_count(vars(grp, cyl))
-    )
+      group_count(vars(ATC2, CMDECOD))
+    ) %>%
+    build() %>%
+    as.data.frame()
 
-  expect_snapshot_error(build(t))
+  expect_snapshot(x)
 })
 
 test_that("Posix columns don't cause the build to error out.", {
@@ -719,7 +773,7 @@ test_that("set_numeric_threshold works as expected", {
         set_order_count_method("bycount")
     )
 
-  expect_snapshot(build(t1))
+  expect_snapshot(as.data.frame(build(t1)))
 
   t2 <- mtcars %>%
     tplyr_table(gear) %>%
@@ -730,7 +784,7 @@ test_that("set_numeric_threshold works as expected", {
         set_order_count_method("bycount")
     )
 
-  expect_snapshot(build(t2))
+  expect_snapshot(as.data.frame(build(t2)))
 
   t3 <- mtcars %>%
     tplyr_table(gear) %>%
@@ -741,7 +795,7 @@ test_that("set_numeric_threshold works as expected", {
         set_order_count_method("bycount")
     )
 
-  expect_snapshot(build(t3))
+  expect_snapshot(as.data.frame(build(t3)))
 
   t4 <- mtcars %>%
     tplyr_table(gear) %>%
@@ -752,7 +806,7 @@ test_that("set_numeric_threshold works as expected", {
        set_order_count_method("bycount")
     )
 
-  expect_snapshot(build(t4))
+  expect_snapshot(as.data.frame(build(t4)))
 
   t5 <- mtcars %>%
     tplyr_table(gear) %>%
@@ -763,7 +817,7 @@ test_that("set_numeric_threshold works as expected", {
         set_order_count_method("bycount")
     )
 
-  expect_snapshot(build(t5))
+  expect_snapshot(as.data.frame(build(t5)))
 
   t6 <- mtcars %>%
     tplyr_table(gear) %>%
@@ -774,7 +828,7 @@ test_that("set_numeric_threshold works as expected", {
         set_order_count_method("bycount")
     )
 
-  expect_snapshot(build(t6))
+  expect_snapshot(as.data.frame(build(t6)))
 
   load(test_path("adae.Rdata"))
 
@@ -785,7 +839,7 @@ test_that("set_numeric_threshold works as expected", {
         set_numeric_threshold(3, "n", "Placebo")
     )
 
-  expect_snapshot(build(t7))
+  expect_snapshot(as.data.frame(build(t7)))
 
   t8 <- adae %>%
     tplyr_table(TRTA) %>%
@@ -795,7 +849,7 @@ test_that("set_numeric_threshold works as expected", {
         set_order_count_method("bycount")
     )
 
-  expect_snapshot(build(t8))
+  expect_snapshot(as.data.frame(build(t8)))
 })
 
 test_that("denom and distinct_denom values work as expected", {
@@ -810,7 +864,7 @@ test_that("denom and distinct_denom values work as expected", {
         set_order_count_method("bycount")
     )
 
-  expect_snapshot(build(t1))
+  expect_snapshot(as.data.frame(build(t1)))
 
   t2 <- tplyr_table(mtcars, gear) %>%
     add_layer(
@@ -819,7 +873,7 @@ test_that("denom and distinct_denom values work as expected", {
         set_format_strings(f_str("xxx xxx xxx xxx", distinct_n, distinct_total, n, total))
     )
 
-  expect_snapshot(build(t2))
+  expect_snapshot(as.data.frame(build(t2)))
 })
 
 test_that("denoms with distinct population data populates as expected", {
@@ -838,7 +892,7 @@ test_that("denoms with distinct population data populates as expected", {
     ) %>%
     build()
 
-  expect_snapshot(tab)
+  expect_snapshot(as.data.frame(tab))
 })
 
 test_that("nested count layers error out when you try to add a total row", {
@@ -851,6 +905,9 @@ test_that("nested count layers error out when you try to add a total row", {
     )
 
     expect_snapshot_error(build(tab))
+
+  # The weird use of mtcars2 makes us have to overwrite this again
+  mtcars <- mtcars2
 })
 
 test_that("Tables with pop_data can accept a layer level where", {
@@ -867,6 +924,184 @@ test_that("Tables with pop_data can accept a layer level where", {
         set_format_strings(f_str("xxx, [xxx] (xxx.x%) [xxx.x%]", distinct_n, n, distinct_pct, pct))
     )
 
-  expect_snapshot(dput(build(t)))
+  expect_snapshot(as.data.frame(build(t)))
 
+})
+
+test_that("Regression test to make sure cols produce correct denom", {
+  load(test_path('adsl.Rdata'))
+  load(test_path('adae.Rdata'))
+  t <- tplyr_table(adae,TRTAN, cols=SEX) %>%
+    set_pop_data(adsl) %>%
+    set_pop_treat_var(TRT01AN) %>%
+    add_layer(
+      group_count("Subjects with at least one event") %>%
+        set_distinct_by(USUBJID) %>%
+        set_format_strings(f_str("xxx (xx.x) [xx]", distinct_n, distinct_pct, distinct_total))
+    ) %>%
+    build() %>%
+    select(-starts_with('ord')) %>%
+    as.data.frame()
+
+  expect_snapshot(t)
+})
+
+test_that("Error checking for add_missing_subjects_row()", {
+  expect_snapshot_error(
+    tplyr_table(tplyr_adae, TRTA) %>%
+      add_layer(
+        group_count(AEDECOD) %>%
+          add_missing_subjects_row("blah")
+      )
+  )
+
+  expect_snapshot_error(
+    tplyr_table(tplyr_adae, TRTA) %>%
+      add_layer(
+        group_count(AEDECOD) %>%
+          add_missing_subjects_row(f_str("xx", distinct_n), sort_value = "x")
+      )
+  )
+
+  expect_error({
+    tplyr_table(tplyr_adae, TRTA) %>%
+      add_layer(
+        group_shift(vars(AEBODSYS, AEDECOD)) %>%
+          add_missing_subjects_row(f_str("xx", distinct_n))
+      )
+    }, "`add_missing_subjects_row` for shift layers"
+  )
+
+  expect_snapshot_error(
+    tplyr_table(tplyr_adae, TRTA) %>%
+      add_layer(
+        group_desc(RACEN) %>%
+          add_missing_subjects_row(f_str("xx", distinct_n))
+      )
+  )
+
+  ## ----
+
+  expect_snapshot_error(
+    tplyr_table(tplyr_adae, TRTA) %>%
+      add_layer(
+        group_count(AEDECOD) %>%
+          set_missing_subjects_row_label(3)
+      )
+  )
+
+  expect_snapshot_error(
+    tplyr_table(tplyr_adae, TRTA) %>%
+      add_layer(
+        group_count(AEDECOD) %>%
+          set_missing_subjects_row_label(c("x", "y"))
+      )
+  )
+
+  expect_error({
+    tplyr_table(tplyr_adae, TRTA) %>%
+      add_layer(
+        group_shift(vars(AEBODSYS, AEDECOD)) %>%
+          set_missing_subjects_row_label("x")
+      )}, "`set_missing_subjects_row_label` for shift layers"
+  )
+
+  expect_snapshot_error(
+    tplyr_table(tplyr_adae, TRTA) %>%
+      add_layer(
+        group_desc(RACEN) %>%
+          set_missing_subjects_row_label("x")
+      )
+  )
+
+})
+
+test_that("Missing subjects row calculates correctly", {
+  x <- tplyr_table(tplyr_adlb, TRTA, cols=SEX) %>%
+    set_pop_data(tplyr_adsl) %>%
+    set_pop_treat_var(TRT01A) %>%
+    add_layer(
+      group_count(ANRIND, by = vars(PARAM, AVISIT)) %>%
+        set_distinct_by(USUBJID) %>%
+        add_missing_subjects_row(f_str("xx", distinct_n))
+    ) %>%
+    build()
+
+  # Check 1
+  in_res1 <- x %>%
+    filter(row_label3 == "Missing", row_label1 == "Blood Urea Nitrogen (mmol/L)", row_label2 == "Week 12") %>%
+    pull(var1_Placebo_F) %>%
+    as.numeric()
+
+  pop1 <- tplyr_adsl %>%
+    filter(TRT01A == "Placebo", SEX == "F") %>%
+    nrow()
+
+  dat1 <- tplyr_adlb %>%
+    filter(PARAM == "Blood Urea Nitrogen (mmol/L)", AVISIT == "Week 12", TRTA == "Placebo", SEX == "F") %>%
+    distinct(USUBJID) %>%
+    nrow()
+
+  expect_equal(pop1-dat1, in_res1)
+
+  # Check 2
+  in_res2 <- x %>%
+    filter(row_label3 == "Missing", row_label1 == "Gamma Glutamyl Transferase (U/L)", row_label2 == "Week 24") %>%
+    pull(`var1_Xanomeline Low Dose_M`) %>%
+    as.numeric()
+
+  pop2 <- tplyr_adsl %>%
+    filter(TRT01A == "Xanomeline Low Dose", SEX == "M") %>%
+    nrow()
+
+  dat2 <- tplyr_adlb %>%
+    filter(PARAM == "Gamma Glutamyl Transferase (U/L)", AVISIT == "Week 24", TRTA == "Xanomeline Low Dose", SEX == "M") %>%
+    distinct(USUBJID) %>%
+    nrow()
+
+  expect_equal(pop2-dat2, in_res2)
+
+})
+
+test_that("Missing counts on nested count layers function correctly", {
+  x <- tplyr_table(tplyr_adae, TRTA) %>%
+    set_pop_data(tplyr_adsl) %>%
+    set_pop_treat_var(TRT01A) %>%
+    add_layer(
+      group_count(vars(AEBODSYS, AEDECOD)) %>%
+        set_distinct_by(USUBJID) %>%
+        add_missing_subjects_row(f_str("xx (XX.x%)", distinct_n, distinct_pct), sort_value = Inf)
+    ) %>%
+    build()
+
+  expect_equal(nrow(x %>% filter(row_label2 == "   Missing")), 1)
+  expect_equal(tail(x, 1)$ord_layer_2, Inf)
+
+  # Verify that bycount works for missing values and sort value is assigned correctly
+  x <- tplyr_table(tplyr_adae, TRTA) %>%
+    set_pop_data(tplyr_adsl) %>%
+    set_pop_treat_var(TRT01A) %>%
+    add_layer(
+      group_count(vars(AEBODSYS, AEDECOD)) %>%
+        set_distinct_by(USUBJID) %>%
+        set_order_count_method("bycount") %>%
+        set_ordering_cols("Xanomeline High Dose") %>%
+        set_result_order_var(distinct_n) %>%
+        add_missing_subjects_row(f_str("xx (XX.x%)", distinct_n, distinct_pct), sort_value = 99999)
+    ) %>%
+    build()
+
+  expect_equal(tail(x, 1)$ord_layer_2, 99999)
+
+  # Also test that label reassignment flows
+  x <- tplyr_table(tplyr_adsl, TRT01A) %>%
+    add_layer(
+      group_count(vars(SEX, RACE)) %>%
+        set_order_count_method(c("byfactor", "byvarn")) %>%
+        add_missing_subjects_row(f_str("xx (XX.x%)", distinct_n, distinct_pct), sort_value = 99999) %>%
+        set_missing_subjects_row_label("New label")
+    ) %>%
+    build()
+
+  expect_equal(filter(x, row_label2 == "   New label")$ord_layer_2, c(99999, 99999))
 })

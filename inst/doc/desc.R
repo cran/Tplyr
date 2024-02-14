@@ -9,11 +9,9 @@ library(tidyverse)
 library(magrittr)
 library(Tplyr)
 library(knitr)
-load("adlb.Rdata")
-load("adsl.Rdata")
 
 ## ----intro--------------------------------------------------------------------
-tplyr_table(adsl, TRT01P) %>% 
+tplyr_table(tplyr_adsl, TRT01P) %>% 
   add_layer(
     group_desc(AGE, by = "Age (years)", where= SAFFL=="Y") %>% 
       set_format_strings(
@@ -46,7 +44,7 @@ x %>%
 
 
 ## ----quantile_types_default---------------------------------------------------
-tplyr_table(adsl, TRT01P) %>% 
+tplyr_table(tplyr_adsl, TRT01P) %>% 
   add_layer(
     group_desc(CUMDOSE) %>% 
       set_format_strings("Q1, Q3" = f_str('xxxxx, xxxxx', q1, q3))
@@ -57,7 +55,7 @@ tplyr_table(adsl, TRT01P) %>%
 
 ## ----quantile_types_sas-------------------------------------------------------
 options(tplyr.quantile_type = 3)
-tplyr_table(adsl, TRT01P) %>% 
+tplyr_table(tplyr_adsl, TRT01P) %>% 
   add_layer(
     group_desc(CUMDOSE) %>% 
       set_format_strings("Q1, Q3" = f_str('xxxxx, xxxxx', q1, q3))
@@ -70,7 +68,7 @@ tplyr_table(adsl, TRT01P) %>%
 options(tplyr.quantile_type=7)
 
 ## ----multi-custom-------------------------------------------------------------
-tplyr_table(adsl, TRT01P) %>%
+tplyr_table(tplyr_adsl, TRT01P) %>%
   add_layer(
     group_desc(vars(AGE, HEIGHTBL), by = "Sepal Length") %>%
       set_custom_summaries(
@@ -85,7 +83,7 @@ tplyr_table(adsl, TRT01P) %>%
   kable()
 
 ## ----custom_options-----------------------------------------------------------
-tplyr_table(adsl, TRT01P) %>% 
+tplyr_table(tplyr_adsl, TRT01P) %>% 
   add_layer(
     group_desc(AGE) %>% 
       set_format_strings("Mean" = f_str('xx.xx', mean))
@@ -100,7 +98,7 @@ options(tplyr.custom_summaries =
           )
         )
 
-tplyr_table(adsl, TRT01P) %>% 
+tplyr_table(tplyr_adsl, TRT01P) %>% 
   add_layer(
     group_desc(AGE) %>% 
       set_format_strings("Mean" = f_str('xx.xx', mean))

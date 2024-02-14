@@ -10,10 +10,9 @@ library(tidyr)
 library(magrittr)
 library(Tplyr)
 library(knitr)
-load("adsl.Rdata")
 
 ## ----table_creation-----------------------------------------------------------
-t <- tplyr_table(adsl, TRT01P, where = SAFFL == "Y") %>% 
+t <- tplyr_table(tplyr_adsl, TRT01P, where = SAFFL == "Y") %>% 
   add_layer(
     group_count(RACE)
   ) %>% 
@@ -44,14 +43,14 @@ get_meta_result(t, 'd1_2', 'var1_Xanomeline High Dose')
 ## ----unpack-------------------------------------------------------------------
 m <- get_meta_result(t, 'd1_2', 'var1_Xanomeline High Dose')
 
-adsl %>% 
+tplyr_adsl %>% 
   filter(!!!m$filters) %>% 
   select(!!!m$names) %>% 
   head(10) %>% 
   kable()
 
 ## ----to string print, eval=FALSE----------------------------------------------
-#  cat(c("adsl %>%\n",
+#  cat(c("tplyr_adsl %>%\n",
 #    "   filter(\n      ",
 #    paste(purrr::map_chr(m$filters, ~ rlang::as_label(.)), collpase=",\n      "),
 #    ") %>%\n",
@@ -59,7 +58,7 @@ adsl %>%
 #  ))
 
 ## ----to string content, results='asis', echo=FALSE----------------------------
-cat(c("adsl %>%\n",
+cat(c("tplyr_adsl %>%\n",
   "   filter(\n      ",
   paste(purrr::map_chr(m$filters, ~ rlang::as_label(.)), collpase=",\n      "),
   ") %>%\n",

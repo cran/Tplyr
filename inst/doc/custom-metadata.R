@@ -12,11 +12,9 @@ library(Tplyr)
 library(knitr)
 
 ## ----data prep, echo=FALSE----------------------------------------------------
-load("adas.Rdata")
-load("adsl.Rdata")
 
-t <- tplyr_table(adas, TRTP, where=EFFFL == "Y" & ITTFL == "Y" & PARAMCD == "ACTOT" & ANL01FL == "Y") %>% 
-  set_pop_data(adsl) %>% 
+t <- tplyr_table(tplyr_adas, TRTP, where=EFFFL == "Y" & ITTFL == "Y" & PARAMCD == "ACTOT" & ANL01FL == "Y") %>% 
+  set_pop_data(tplyr_adsl) %>% 
   set_pop_treat_var(TRT01P) %>% 
   set_pop_where(EFFFL == "Y" & ITTFL == "Y") %>% 
   set_distinct_by(USUBJID) %>% 
@@ -124,7 +122,7 @@ get_meta_subset(t, 'x4_1', "var1_Xanomeline High Dose") %>%
   kable()
 
 ## ----metadata without Tplyr---------------------------------------------------
-get_meta_subset(eff_meta, 'x4_1', "var1_Xanomeline High Dose", target=adas) %>% 
+get_meta_subset(eff_meta, 'x4_1', "var1_Xanomeline High Dose", target=tplyr_adas) %>% 
   head() %>% 
   kable()
 

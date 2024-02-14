@@ -357,20 +357,20 @@ Summaries</a></li>
 and filter criteria, a great deal of the control of the layer comes from
 <code>set_format_strings()</code> where the actual summaries are
 declared.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AGE, <span class="at">by =</span> <span class="st">&quot;Age (years)&quot;</span>, <span class="at">where=</span> SAFFL<span class="sc">==</span><span class="st">&quot;Y&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;n&quot;</span>        <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&quot;xx&quot;</span>, n),</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;Mean (SD)&quot;</span><span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&quot;xx.x (xx.xx)&quot;</span>, mean, sd),</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;Median&quot;</span>   <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&quot;xx.x&quot;</span>, median),</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;Q1, Q3&quot;</span>   <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&quot;xx, xx&quot;</span>, q1, q3),</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;Min, Max&quot;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&quot;xx, xx&quot;</span>, min, max),</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;Missing&quot;</span>  <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&quot;xx&quot;</span>, missing)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">tplyr_table</span>(tplyr_adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>    <span class="fu">group_desc</span>(AGE, <span class="at">by =</span> <span class="st">&quot;Age (years)&quot;</span>, <span class="at">where=</span> SAFFL<span class="sc">==</span><span class="st">&quot;Y&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>        <span class="st">&quot;n&quot;</span>        <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&quot;xx&quot;</span>, n),</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>        <span class="st">&quot;Mean (SD)&quot;</span><span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&quot;xx.x (xx.xx)&quot;</span>, mean, sd),</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>        <span class="st">&quot;Median&quot;</span>   <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&quot;xx.x&quot;</span>, median),</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>        <span class="st">&quot;Q1, Q3&quot;</span>   <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&quot;xx, xx&quot;</span>, q1, q3),</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>        <span class="st">&quot;Min, Max&quot;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&quot;xx, xx&quot;</span>, min, max),</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>        <span class="st">&quot;Missing&quot;</span>  <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&quot;xx&quot;</span>, missing)</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>      )</span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <colgroup>
 <col width="9%" />
@@ -572,10 +572,20 @@ type=getOption(‘tplyr.quantile_type’))[[4]]</td>
 <div id="notes-about-built-ins" class="section level3">
 <h3>Notes About Built-in’s</h3>
 <p>Note that the only non-default option being used in any of the
-function calls above is <code>na.rm=TRUE</code>. For most of the
-functions, this is likely fine - but with IQR, Q1, and Q3 note that
-there are several different quantile algorithms available in R. The
-default we chose to use is the R default of Type 7:</p>
+function calls above is <code>na.rm=TRUE</code>. It’s important to note
+that for <code>min</code> and <code>max</code>, when
+<code>na.rm=TRUE</code> is used with a vector that is all
+<code>NA</code>, these functions return <code>Inf</code> and
+<code>-Inf</code> respectively. When formatting the numbers, this is
+unexpected and also inconsistent with how other descriptive statistic
+functions, which return <code>NA</code>. Therefore, just for
+<code>min</code> and <code>max</code>, <code>Inf</code>’s are converted
+to <code>NA</code> so that they’ll align with the behavior of the
+<code>empty</code> parameter in <code>f_str()</code>.</p>
+<p>Using default settings of most descriptive statistic functions is
+typically fine, but with IQR, Q1, and Q3 note that there are several
+different quantile algorithms available in R. The default we chose to
+use is the R default of Type 7:</p>
 <p><span class="math display">\[
 m = 1-p. p[k] = (k - 1) / (n - 1). \textrm{In this case, } p[k] =
 mode[F(x[k])]. \textrm{This is used by S.}
@@ -586,14 +596,14 @@ the SAS definition, you can use Type 3. For more information, see the
 <code>stats::quantile()</code> documentation.</p>
 <p>The example below demonstrates using the default quantile algorithm
 in R.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(CUMDOSE) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="st">&quot;Q1, Q3&quot;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&#39;xxxxx, xxxxx&#39;</span>, q1, q3))</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;ord&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">tplyr_table</span>(tplyr_adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>    <span class="fu">group_desc</span>(CUMDOSE) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="st">&quot;Q1, Q3&quot;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&#39;xxxxx, xxxxx&#39;</span>, q1, q3))</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;ord&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <colgroup>
 <col width="14%" />
@@ -624,15 +634,15 @@ matches the SAS definition of:</p>
 \textrm{Nearest even order statistic. γ = 0 if g = 0 and  j is even, and
 1 otherwise.}
 \]</span></p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">tplyr.quantile_type =</span> <span class="dv">3</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(CUMDOSE) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="st">&quot;Q1, Q3&quot;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&#39;xxxxx, xxxxx&#39;</span>, q1, q3))</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;ord&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">options</span>(<span class="at">tplyr.quantile_type =</span> <span class="dv">3</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">tplyr_table</span>(tplyr_adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>    <span class="fu">group_desc</span>(CUMDOSE) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="st">&quot;Q1, Q3&quot;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&#39;xxxxx, xxxxx&#39;</span>, q1, q3))</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;ord&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <colgroup>
 <col width="14%" />
@@ -684,19 +694,19 @@ layer level</li>
 <p>As with any other setting in <strong>Tplyr</strong>, the layer
 setting will always take precedence over any other setting.</p>
 <p>Let’s look at an example.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(<span class="fu">vars</span>(AGE, HEIGHTBL), <span class="at">by =</span> <span class="st">&quot;Sepal Length&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_custom_summaries</span>(</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">geometric_mean =</span> <span class="fu">exp</span>(<span class="fu">sum</span>(<span class="fu">log</span>(.var[.var <span class="sc">&gt;</span> <span class="dv">0</span>]), <span class="at">na.rm=</span><span class="cn">TRUE</span>) <span class="sc">/</span> <span class="fu">length</span>(.var))</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">%&gt;%</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;Geometric Mean (SD)&#39;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&#39;xx.xx (xx.xxx)&#39;</span>, geometric_mean, sd)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;ord&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">tplyr_table</span>(tplyr_adsl, TRT01P) <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>    <span class="fu">group_desc</span>(<span class="fu">vars</span>(AGE, HEIGHTBL), <span class="at">by =</span> <span class="st">&quot;Sepal Length&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>      <span class="fu">set_custom_summaries</span>(</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>        <span class="at">geometric_mean =</span> <span class="fu">exp</span>(<span class="fu">sum</span>(<span class="fu">log</span>(.var[.var <span class="sc">&gt;</span> <span class="dv">0</span>]), <span class="at">na.rm=</span><span class="cn">TRUE</span>) <span class="sc">/</span> <span class="fu">length</span>(.var))</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>      ) <span class="sc">%&gt;%</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>        <span class="st">&#39;Geometric Mean (SD)&#39;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&#39;xx.xx (xx.xxx)&#39;</span>, geometric_mean, sd)</span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>      )</span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;ord&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table style="width:100%;">
 <colgroup>
 <col width="7%" />
@@ -758,13 +768,13 @@ like the default summary functions that we provide? Use the
 <code>tplyr.custom_summaries</code> option to overwrite them in your
 session, and add any new ones that you would like to include.</p>
 <p>For example, here we use the <strong>Tplyr</strong> default mean.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AGE) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="st">&quot;Mean&quot;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&#39;xx.xx&#39;</span>, mean))</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">tplyr_table</span>(tplyr_adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>    <span class="fu">group_desc</span>(AGE) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="st">&quot;Mean&quot;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&#39;xx.xx&#39;</span>, mean))</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <colgroup>
 <col width="10%" />
@@ -798,19 +808,19 @@ session, and add any new ones that you would like to include.</p>
 <p>But now, let’s overwrite <code>mean</code> using a custom summary.
 Let’s use a trimmed mean instead, taking 20% of observations off of both
 ends.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">tplyr.custom_summaries =</span> </span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>          rlang<span class="sc">::</span><span class="fu">quos</span>(</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">mean =</span> <span class="fu">mean</span>(.var, <span class="at">na.rm=</span><span class="cn">TRUE</span>, <span class="at">trim=</span><span class="fl">0.4</span>)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>          )</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">tplyr_table</span>(adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_desc</span>(AGE) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="st">&quot;Mean&quot;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&#39;xx.xx&#39;</span>, mean))</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">options</span>(<span class="at">tplyr.custom_summaries =</span> </span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>          rlang<span class="sc">::</span><span class="fu">quos</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>            <span class="at">mean =</span> <span class="fu">mean</span>(.var, <span class="at">na.rm=</span><span class="cn">TRUE</span>, <span class="at">trim=</span><span class="fl">0.4</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>          )</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>        )</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="fu">tplyr_table</span>(tplyr_adsl, TRT01P) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>    <span class="fu">group_desc</span>(AGE) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="st">&quot;Mean&quot;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&#39;xx.xx&#39;</span>, mean))</span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <colgroup>
 <col width="10%" />

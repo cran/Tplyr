@@ -9,9 +9,6 @@ library(tidyverse)
 library(magrittr)
 library(Tplyr)
 library(knitr)
-load("adae.Rdata")
-load("adsl.Rdata")
-load("adlb.Rdata")
 op <- options()
 
 ## ----options_table, echo=FALSE------------------------------------------------
@@ -39,7 +36,7 @@ suppressMessages(read_csv('tplyr_options.csv')) %>%
 #  
 
 ## ----default_formats2---------------------------------------------------------
-tplyr_table(adsl, TRT01P) %>% 
+tplyr_table(tplyr_adsl, TRT01P) %>% 
   add_layer(
     group_desc(AGE, by = "Age (years)")
   ) %>% 
@@ -51,7 +48,7 @@ tplyr_table(adsl, TRT01P) %>%
   
 
 ## ----scoping1-----------------------------------------------------------------
-tplyr_table(adsl, TRT01P) %>% 
+tplyr_table(tplyr_adsl, TRT01P) %>% 
   set_count_layer_formats(n_counts = f_str("xx (xxx%)", n, pct)) %>% 
   set_desc_layer_formats("Mean (SD)" = f_str("a.a+1 (a.a+2)", mean, sd)) %>% 
   add_layer(
@@ -71,7 +68,7 @@ tplyr_table(adsl, TRT01P) %>%
 options(tplyr.precision_cap = c('int'=2, 'dec'=2))
 
 ## ----precision_cap2-----------------------------------------------------------
-tplyr_table(adsl, TRT01P) %>% 
+tplyr_table(tplyr_adsl, TRT01P) %>% 
   add_layer(
     group_desc(HEIGHTBL, by = "Height at Baseline") %>% 
       set_format_strings(
@@ -96,7 +93,7 @@ options(tplyr.custom_summaries = rlang::quos(
 
 
 ## ----custom_summaries2--------------------------------------------------------
-tplyr_table(adsl, TRT01P) %>% 
+tplyr_table(tplyr_adsl, TRT01P) %>% 
   add_layer(
     group_desc(AGE) %>% 
       set_format_strings('Geometric Mean' = f_str('xx.xx', geometric_mean))
@@ -122,7 +119,7 @@ options(op)
 
 ## ----scipen2------------------------------------------------------------------
 options(tplyr.scipen = -3)
-t <- tplyr_table(adae, TRTA) %>% 
+t <- tplyr_table(tplyr_adae, TRTA) %>% 
   add_layer(
     group_count(AEDECOD) %>% 
       add_risk_diff(c('Xanomeline Low Dose', 'Placebo'))
@@ -136,7 +133,7 @@ suppressWarnings(build(t)) %>% # Chi-squared warnings occur with small samples
 options(op)
 
 ## ----quantile1----------------------------------------------------------------
-tplyr_table(adsl, TRT01P) %>% 
+tplyr_table(tplyr_adsl, TRT01P) %>% 
   add_layer(
     group_desc(CUMDOSE) %>% 
       set_format_strings("Q1, Q3" = f_str('xxxxx, xxxxx', q1, q3))
@@ -147,7 +144,7 @@ tplyr_table(adsl, TRT01P) %>%
 ## ----quantile2----------------------------------------------------------------
 options(tplyr.quantile_type = 3)
 
-tplyr_table(adsl, TRT01P) %>% 
+tplyr_table(tplyr_adsl, TRT01P) %>% 
   add_layer(
     group_desc(CUMDOSE) %>% 
       set_format_strings("Q1, Q3" = f_str('xxxxx, xxxxx', q1, q3))

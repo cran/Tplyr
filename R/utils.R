@@ -12,7 +12,7 @@
 modify_nested_call <- function(c, examine_only=FALSE, ...) {
 
   # Get exports from Tplyr
-  allowable_calls = getNamespaceExports("Tplyr")
+  allowable_calls <- getNamespaceExports("Tplyr")
 
   # Only allow the user to use `Tplyr` functions
   assert_that(
@@ -27,7 +27,7 @@ modify_nested_call <- function(c, examine_only=FALSE, ...) {
                 msg="Functions called within `add_layer` must be part of `Tplyr`")
 
     # Recursively extract the left side of the magrittr call to work your way up
-    e <- call_standardise(c)
+    e <- tplyr_call_standardise(c)
     c <- modify_nested_call(call_args(e)$lhs, examine_only, ...)
     if (!examine_only) {
       # Modify the magittr call by inserting the call retrieved from recursive command back in
@@ -40,7 +40,7 @@ modify_nested_call <- function(c, examine_only=FALSE, ...) {
 
     # Standardize the call to get argument names and pull out the literal first argument
     # Save the call to a new variable in the process
-    e <- call_standardise(c)
+    e <- tplyr_call_standardise(c)
     args <- call_args(e)[1]
 
     # Send the first parameter back down recursively through modify_nested_call and
@@ -154,22 +154,6 @@ replace_by_string_names <- function(dat, by, treat_var = NULL) {
     mutate_at(row_labels, ~ as.character(.x)) # Coerce all row labels into character
 }
 
-#' Get the unique levels/factors of a dataset
-#'
-#' @param e An environment, generally a table or a layer object
-#' @param x A target variable to get the levels/unique values of
-#'
-#' @return Unique target values
-#' @noRd
-get_target_levels <- function(e, x) {
-  # If its a factor just return the levels
-  if(is.factor(env_get(e, "target", inherit = TRUE)[, as_name(x)])) levels(env_get(e, "built_target", inherit = TRUE)[, as_name(x)])
-  # Otherwise return the unique values
-  else {
-    unique(env_get(e, "built_target", inherit = TRUE)[, as_name(x)])
-  }
-}
-
 #' Replace repeating row label variables with blanks in preparation for display.
 #'
 #' Depending on the display package being used, row label values may need to be
@@ -267,22 +251,6 @@ extract_character_from_quo <- function(var_list) {
   var_list[!is_symbol_]
 }
 
-#' Get maximum string format recursivly
-#'
-#' @param lay A layer object
-#'
-#' @return Maximum length of sub layers
-#' @noRd
-get_max_length <- function(lay) {
-  # Initalize max_ to -1
-  max_ <- -1L
-  # Get maximum length of all sub layers
-  if(length(lay$layers) > 0) max_ <- max(map_int(lay$layers, get_max_length))
-
-  # return greatest between sub layers and current layer
-  max(max_, lay$format_strings$size)
-}
-
 #' Clean variable attributes
 #'
 #' @param dat Dataframe to strip of variable attributes
@@ -302,8 +270,8 @@ clean_attr <- function(dat) {
 
 #' Simulate IBM rounding
 #'
-#' This logic is from the github issue
-#' https://github.com/atorus-research/Tplyr/issues/9
+#' This logic is from the stackoverflow issue
+#' https://stackoverflow.com/questions/12688717/round-up-from-5
 #'
 #' @param x The numeric values to round
 #' @param n The number of decimal rounding points
@@ -314,10 +282,13 @@ ut_round <- function(x, n=0)
 {
   # x is the value to be rounded
   # n is the precision of the rounding
-  scale <- 10^n
-  y <- trunc(x * scale + sign(x) * 0.5) / scale
+  posneg <- sign(x)
+  e <- abs(x) * 10^n
+  e <- e + 0.5 + sqrt(.Machine$double.eps)
+  e <- trunc(e)
+  e <- e / 10^n
   # Return the rounded number
-  return(y)
+  return(e * posneg)
 }
 
 #' Assign a row identifier to a layer
