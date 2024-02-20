@@ -57,6 +57,33 @@ tplyr_adsl %>%
 #    paste("   select(", paste(purrr::map_chr(m$names, rlang::as_label), collapse=", "), ")", sep="")
 #  ))
 
+## ----anti_join1---------------------------------------------------------------
+t <- tplyr_table(tplyr_adae, TRTA) %>%
+  set_pop_data(tplyr_adsl) %>%
+  set_pop_treat_var(TRT01A) %>%
+  add_layer(
+    group_count(vars(AEBODSYS, AEDECOD)) %>%
+      set_distinct_by(USUBJID) %>%
+      add_missing_subjects_row(f_str("xx (XX.x%)", distinct_n, distinct_pct), sort_value = Inf)
+  )
+
+x <- build(t, metadata=TRUE)
+
+tail(x) %>% 
+  select(starts_with('row'), var1_Placebo) %>% 
+  kable()
+
+## ----anti_join2---------------------------------------------------------------
+m <- get_meta_result(t, 'c23_1', 'var1_Placebo')
+m
+
+## ----anti_join3---------------------------------------------------------------
+head(get_meta_subset(t, 'c23_1', 'var1_Placebo'))
+
+## ----anti_join4---------------------------------------------------------------
+head(get_meta_subset(t$metadata, 'c23_1', 'var1_Placebo', 
+                     target=t$target, pop_data=t$pop_data))
+
 ## ----to string content, results='asis', echo=FALSE----------------------------
 cat(c("tplyr_adsl %>%\n",
   "   filter(\n      ",

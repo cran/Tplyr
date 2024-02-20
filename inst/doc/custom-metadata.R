@@ -110,6 +110,16 @@ eff_meta <- tibble::tribble(
   "x4_9",    "   95% CI",                          NULL,                        meta_xlh
 )
 
+## ----anti_join1---------------------------------------------------------------
+meta %>% 
+  add_anti_join(
+    join_meta = tplyr_meta(
+      names = quos(TRT01P, EFFFL, ITTFL, SITEGR1),
+      filters = quos(EFFFL == "Y", ITTFL == "Y")
+    ),
+    on = quos(USUBJID)
+  )
+
 ## ----extending metadata-------------------------------------------------------
 t <- append_metadata(t, eff_meta)
 

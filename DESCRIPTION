@@ -1,6 +1,6 @@
 Package: Tplyr
 Title: A Traceability Focused Grammar of Clinical Data Summary
-Version: 1.2.0
+Version: 1.2.1
 Authors@R: 
     c(
     person(given = "Eli",
@@ -59,7 +59,7 @@ RdMacros: lifecycle
 Config/testthat/edition: 3
 LazyData: true
 NeedsCompilation: no
-Packaged: 2024-02-14 17:07:27 UTC; mike.stackhouse
+Packaged: 2024-02-19 21:00:25 UTC; mike.stackhouse
 Author: Eli Miller [aut] (<https://orcid.org/0000-0002-2127-9456>),
   Mike Stackhouse [aut, cre] (<https://orcid.org/0000-0001-6030-723X>),
   Ashley Tarasiewicz [aut],
@@ -71,4 +71,4 @@ Author: Eli Miller [aut] (<https://orcid.org/0000-0002-2127-9456>),
   Atorus Research LLC [cph]
 Maintainer: Mike Stackhouse <mike.stackhouse@atorusresearch.com>
 Repository: CRAN
-Date/Publication: 2024-02-14 21:50:05 UTC
+Date/Publication: 2024-02-20 08:00:02 UTC

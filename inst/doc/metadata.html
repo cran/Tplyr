@@ -345,7 +345,10 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <li><a href="#extracting-the-input-source" id="toc-extracting-the-input-source">Extracting The Input
 Source</a></li>
 <li><a href="#extracting-a-result-cells-metadata" id="toc-extracting-a-result-cells-metadata">Extracting a Result Cell’s
-Metadata</a></li>
+Metadata</a>
+<ul>
+<li><a href="#anti-joins" id="toc-anti-joins">Anti Joins</a></li>
+</ul></li>
 <li><a href="#so-what-does-this-get-me" id="toc-so-what-does-this-get-me">So, What Does This Get Me?</a></li>
 </ul>
 </div>
@@ -769,9 +772,9 @@ can be directly accessed using the function
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">get_meta_result</span>(t, <span class="st">&#39;d1_2&#39;</span>, <span class="st">&#39;var1_Xanomeline High Dose&#39;</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co">#&gt; tplyr_meta: 4 names, 3 filters</span></span>
 <span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co">#&gt; Names:</span></span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co">#&gt;     TRT01P, EFFFL, SAFFL, AGE </span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co">#&gt;      TRT01P, EFFFL, SAFFL, AGE </span></span>
 <span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#&gt; Filters:</span></span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt;     TRT01P == c(&quot;Xanomeline High Dose&quot;), EFFFL == &quot;Y&quot;, SAFFL == &quot;Y&quot;</span></span></code></pre></div>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt;      TRT01P == c(&quot;Xanomeline High Dose&quot;), EFFFL == &quot;Y&quot;, SAFFL == &quot;Y&quot;</span></span></code></pre></div>
 <p>The resulting output is a new object <strong>Tplyr</strong> called
 <code>tplyr_meta()</code>. This is a container of a relevent metadata
 for a specific result. The object itself is a list with two elements:
@@ -878,13 +881,155 @@ what happens in <code>get_meta_subset()</code>. For example:</p>
 <span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>  <span class="st">&quot;) %&gt;%</span><span class="sc">\n</span><span class="st">&quot;</span>,</span>
 <span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="st">&quot;   select(&quot;</span>, <span class="fu">paste</span>(purrr<span class="sc">::</span><span class="fu">map_chr</span>(m<span class="sc">$</span>names, rlang<span class="sc">::</span>as_label), <span class="at">collapse=</span><span class="st">&quot;, &quot;</span>), <span class="st">&quot;)&quot;</span>, <span class="at">sep=</span><span class="st">&quot;&quot;</span>)</span>
 <span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>))</span></code></pre></div>
+<div id="anti-joins" class="section level3">
+<h3>Anti Joins</h3>
+<p>Most data presented within a table refers back to the target dataset
+from which data are being summarized. In some cases, data presented may
+refer to information <em>excluded</em> from the summary. This is the
+case when you use the <strong>Tplyr</strong> function
+<code>add_missing_subjects_row()</code>. In this case, the counts
+presented refer to data excluded from the target which are present in
+the population data. The metadata thus needs to refer to that excluded
+data. To handle this, there’s an additional field called an ‘Anti Join’.
+Consider this example:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">tplyr_table</span>(tplyr_adae, TRTA) <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  <span class="fu">set_pop_data</span>(tplyr_adsl) <span class="sc">%&gt;%</span></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  <span class="fu">set_pop_treat_var</span>(TRT01A) <span class="sc">%&gt;%</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>    <span class="fu">group_count</span>(<span class="fu">vars</span>(AEBODSYS, AEDECOD)) <span class="sc">%&gt;%</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>      <span class="fu">set_distinct_by</span>(USUBJID) <span class="sc">%&gt;%</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>      <span class="fu">add_missing_subjects_row</span>(<span class="fu">f_str</span>(<span class="st">&quot;xx (XX.x%)&quot;</span>, distinct_n, distinct_pct), <span class="at">sort_value =</span> <span class="cn">Inf</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>  )</span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">build</span>(t, <span class="at">metadata=</span><span class="cn">TRUE</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="fu">tail</span>(x) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">&#39;row&#39;</span>), var1_Placebo) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<colgroup>
+<col width="8%" />
+<col width="49%" />
+<col width="25%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">row_id</th>
+<th align="left">row_label1</th>
+<th align="left">row_label2</th>
+<th align="left">var1_Placebo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">c18_1</td>
+<td align="left">SKIN AND SUBCUTANEOUS TISSUE DISORDERS</td>
+<td align="left">SKIN EXFOLIATION</td>
+<td align="left">0 ( 0.0%)</td>
+</tr>
+<tr class="even">
+<td align="left">c19_1</td>
+<td align="left">SKIN AND SUBCUTANEOUS TISSUE DISORDERS</td>
+<td align="left">SKIN IRRITATION</td>
+<td align="left">3 ( 3.5%)</td>
+</tr>
+<tr class="odd">
+<td align="left">c20_1</td>
+<td align="left">SKIN AND SUBCUTANEOUS TISSUE DISORDERS</td>
+<td align="left">SKIN ODOUR ABNORMAL</td>
+<td align="left">0 ( 0.0%)</td>
+</tr>
+<tr class="even">
+<td align="left">c21_1</td>
+<td align="left">SKIN AND SUBCUTANEOUS TISSUE DISORDERS</td>
+<td align="left">SKIN ULCER</td>
+<td align="left">1 ( 1.2%)</td>
+</tr>
+<tr class="odd">
+<td align="left">c22_1</td>
+<td align="left">SKIN AND SUBCUTANEOUS TISSUE DISORDERS</td>
+<td align="left">URTICARIA</td>
+<td align="left">0 ( 0.0%)</td>
+</tr>
+<tr class="even">
+<td align="left">c23_1</td>
+<td align="left">SKIN AND SUBCUTANEOUS TISSUE DISORDERS</td>
+<td align="left">Missing</td>
+<td align="left">65 ( 75.6%)</td>
+</tr>
+</tbody>
+</table>
+<p>The missing row in this example counts the subjects within their
+respective treatment groups who do <em>not</em> have any adverse events
+for the body system “SKIN AND SUBCUTANEOUS TISSUE DISORDERS”. Here’s
+what the metadata for the result for the Placebo treatment group looks
+like.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">get_meta_result</span>(t, <span class="st">&#39;c23_1&#39;</span>, <span class="st">&#39;var1_Placebo&#39;</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>m</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="co">#&gt; tplyr_meta: 3 names, 4 filters</span></span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="co">#&gt; Names:</span></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="co">#&gt;      TRTA, AEBODSYS, AEDECOD </span></span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="co">#&gt; Filters:</span></span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a><span class="co">#&gt;      TRTA == c(&quot;Placebo&quot;), AEBODSYS == c(&quot;SKIN AND SUBCUTANEOUS TISSUE DISORDERS&quot;), TRUE, TRUE </span></span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a><span class="co">#&gt; Anti-join:</span></span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a><span class="co">#&gt;     Join Meta:</span></span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a><span class="co">#&gt;         tplyr_meta: 1 names, 3 filters</span></span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a><span class="co">#&gt;         Names:</span></span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a><span class="co">#&gt;              TRT01A </span></span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a><span class="co">#&gt;         Filters:</span></span>
+<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a><span class="co">#&gt;              TRT01A == c(&quot;Placebo&quot;), TRUE, TRUE </span></span>
+<span id="cb9-15"><a href="#cb9-15" tabindex="-1"></a><span class="co">#&gt;     On:</span></span>
+<span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a><span class="co">#&gt;         USUBJID</span></span></code></pre></div>
+<p>This result has the addition field of ‘Anti-join’. This element has
+two fields, which are the join metadata, and the “on” field, which
+specifies a merging variable to be used when “anti-joining” with the
+target data. The join metadata here refers to the data of interest from
+the population data. Note that while the metadata for the target data
+has variable names and filter conditions referring to AEBODSYS and
+AEDECOD, these variables are <em>not</em> present within the join
+metadata, because that information is not present within the population
+data.</p>
+<p>While the usual joins we work with focus on the overlap between two
+sets, an anti-join looks at the non-overlap. The metadata provided here
+will specifically give us “The subjects within the Placebo treatment
+group who do <strong>not</strong> have an adverse event within the body
+system ‘SKIN AND SUBCUTANEOUS TISSUE DISORDERS’”.</p>
+<p>Extracting this metadata works very much the same way as extracting
+other results.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">get_meta_subset</span>(t, <span class="st">&#39;c23_1&#39;</span>, <span class="st">&#39;var1_Placebo&#39;</span>))</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 2</span></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="co">#&gt;   USUBJID     TRT01A </span></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;  </span></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="co">#&gt; 1 01-701-1015 Placebo</span></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="co">#&gt; 2 01-701-1047 Placebo</span></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="co">#&gt; 3 01-701-1118 Placebo</span></span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="co">#&gt; 4 01-701-1153 Placebo</span></span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a><span class="co">#&gt; 5 01-701-1203 Placebo</span></span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a><span class="co">#&gt; 6 01-701-1234 Placebo</span></span></code></pre></div>
+<p>If you’re not working with the <code>tplyr_table</code> object, then
+there’s some additional information you need to provide to the
+function.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">get_meta_subset</span>(t<span class="sc">$</span>metadata, <span class="st">&#39;c23_1&#39;</span>, <span class="st">&#39;var1_Placebo&#39;</span>, </span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>                     <span class="at">target=</span>t<span class="sc">$</span>target, <span class="at">pop_data=</span>t<span class="sc">$</span>pop_data))</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 2</span></span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="co">#&gt;   USUBJID     TRT01A </span></span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;  </span></span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="co">#&gt; 1 01-701-1015 Placebo</span></span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a><span class="co">#&gt; 2 01-701-1047 Placebo</span></span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a><span class="co">#&gt; 3 01-701-1118 Placebo</span></span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a><span class="co">#&gt; 4 01-701-1153 Placebo</span></span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a><span class="co">#&gt; 5 01-701-1203 Placebo</span></span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a><span class="co">#&gt; 6 01-701-1234 Placebo</span></span></code></pre></div>
 <pre><code>tplyr_adsl %&gt;%
     filter(
-       TRT01P == c(&quot;Xanomeline High Dose&quot;) ,
-       EFFFL == &quot;Y&quot; ,
-       SAFFL == &quot;Y&quot; ,
+       TRTA == c(&quot;Placebo&quot;) ,
+       AEBODSYS == c(&quot;SKIN AND SUBCUTANEOUS TISSUE DISORDERS&quot;) ,
+       TRUE ,
+       TRUE ,
        ) %&gt;%
-    select(TRT01P, EFFFL, SAFFL, AGE)</code></pre>
+    select(TRTA, AEBODSYS, AEDECOD)</code></pre>
+</div>
 </div>
 <div id="so-what-does-this-get-me" class="section level2">
 <h2>So, What Does This Get Me?</h2>
