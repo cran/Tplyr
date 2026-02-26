@@ -1,4 +1,4 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -103,6 +103,9 @@ tplyr_table(tplyr_adsl, TRT01P) %>%
     group_desc(AGE) %>% 
       set_format_strings("Mean" = f_str('xx.xx', mean))
   ) %>% 
-  build() %>% 
+  build() %>%
   kable()
+
+## ----echo=FALSE---------------------------------------------------------------
+options(tplyr.custom_summaries = NULL)
 

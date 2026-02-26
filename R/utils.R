@@ -186,22 +186,8 @@ apply_row_masks <- function(dat, row_breaks=FALSE, ...) {
   # Capture the break_by variables
   break_by <- enquos(...)
 
-  # Get the row labels that need to be masked
-  nlist <- names(dat)[str_detect(names(dat), "row_label")]
-
-  # Iterate each variable
-  for (name in nlist){
-    dat <- dat %>%
-      # Identify if the value was repeating (ugly compensation for first row)
-      mutate(mask = ifelse(!(is.na(lag(!!sym(name)))) & !!sym(name) == lag(!!sym(name)), TRUE, FALSE),
-             # If repeating then blank out
-             !!name := ifelse(mask == TRUE, '', !!sym(name))
-      )
-  }
-  # Drop the dummied mask variable
-  dat <- dat %>% select(-mask)
-
-  # Break rows if specified
+  # Insert break rows before masking so the blank rows reset the lag()
+  # comparison and prevent masking across layer boundaries
   if (row_breaks) {
 
     # Default to ord_layer_index
@@ -235,6 +221,21 @@ apply_row_masks <- function(dat, row_breaks=FALSE, ...) {
       mutate_if(is.character, ~replace_na(., ""))
   }
 
+  # Get the row labels that need to be masked
+  nlist <- names(dat)[str_detect(names(dat), "row_label")]
+
+  # Iterate each variable
+  for (name in nlist){
+    dat <- dat %>%
+      # Identify if the value was repeating (ugly compensation for first row)
+      mutate(mask = ifelse(!(is.na(lag(!!sym(name)))) & !!sym(name) == lag(!!sym(name)), TRUE, FALSE),
+             # If repeating then blank out
+             !!name := ifelse(mask == TRUE, '', !!sym(name))
+      )
+  }
+  # Drop the dummied mask variable
+  dat <- dat %>% select(-mask)
+
   dat
 }
 
@@ -256,11 +257,13 @@ extract_character_from_quo <- function(var_list) {
 #' @param dat Dataframe to strip of variable attributes
 #'
 #' @return Dataframe with variable attributes removed, except for factor levels
+#'   and other structurally necessary attributes (e.g. units for difftime,
+#'   tzone for POSIXct)
 #' @noRd
 clean_attr <- function(dat) {
   for (n in names(dat)) {
     for (a in names(attributes(dat[[n]]))) {
-      if (!a  %in% c('levels', 'class', 'names', 'row.names', 'groups')) {
+      if (!a  %in% c('levels', 'class', 'names', 'row.names', 'groups', 'units', 'tzone')) {
         attr(dat[[n]], a) <- NULL
       }
     }

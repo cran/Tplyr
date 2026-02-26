@@ -48,6 +48,7 @@ overflow: visible;
 }
 </style>
 <style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -364,8 +365,8 @@ count layer, and in fact re-uses a good deal of the same underlying
 code. But we handle some of the complexity for you to make the interface
 easy to use and the behavior similar to that of the
 <code>group_count()</code> and <code>group_desc()</code> APIs. Given
-that shift tables are built on count layers, many of functions that work
-with count layers behave in the same way when using shift layers.
+that shift tables are built on count layers, many functions that work
+with count layers behave in the same way when used on shift layers.
 However, the following cannot be used in shift layers:</p>
 <ul>
 <li>Functions related to nested counts, including
@@ -375,13 +376,13 @@ However, the following cannot be used in shift layers:</p>
 <code>set_missing_count()</code>, <code>add_total_row()</code>,
 <code>set_total_row_label()</code></li>
 <li>Risk difference, including <code>add_risk_diff()</code></li>
-<li>and finally, result based sorting methods, including
+<li>and finally, result-based sorting methods, including
 <code>set_order_count_method()</code>, <code>set_ordering_cols()</code>,
 <code>set_result_order_var()</code></li>
 </ul>
 <p>One thing to note - the <code>group_shift()</code> API is intended to
 be used on shift tables where one group is presented in rows and the
-other group in columns. Occasionally, shift tables will have a row based
+other group in columns. Occasionally, shift tables will have a row-based
 approach that shows “Low to High”, “Normal to High”, etc. For those
 situations, <code>group_count()</code> will do just fine.</p>
 <div id="a-basic-example" class="section level2">
@@ -607,7 +608,7 @@ will typically be your “to” variable. Behind the scenes,
 present the data.</p>
 <p>For the most part, the last example gets us where we want to go - but
 there’s still some that’s left to be desired. It doesn’t look like there
-are any ‘L’ values for BNRIND in the dataset so we are not getting and
+are any ‘L’ values for BNRIND in the dataset so we are not getting any
 rows containing ‘L’. Let’s see if we can fix that by dummying in the
 possible values.</p>
 </div>
@@ -826,10 +827,11 @@ possible values.</p>
 </tr>
 </tbody>
 </table>
-<p>There we go. This is another situation where using factors in R let’s
-us dummy values within the dataset. Furthermore, since factors are
-ordered, it automatically corrected the sort order of the row labels
-too.</p>
+<p>There we go. This is another situation where using factors in R
+enables us to dummy values within the dataset. Furthermore, since
+factors are ordered, Tplyr automatically corrected the sort order of the
+row labels too. Now, instead of alphabetically (H then L then N), our
+rows are sorted by factor levels (L then N then H).</p>
 </div>
 <div id="where-to-go-from-here" class="section level2">
 <h2>Where to go from here</h2>

@@ -48,6 +48,7 @@ overflow: visible;
 }
 </style>
 <style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -393,7 +394,7 @@ following example.</p>
 <span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a><span class="co">#&gt; 1 AMERICAN INDIAN OR ALASKA NATIVE &quot; 0 ( 0.0%)&quot;   &quot; 1 ( 1.2%)&quot;               </span></span>
 <span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a><span class="co">#&gt; 2 BLACK OR AFRICAN AMERICAN        &quot; 8 ( 9.3%)&quot;   &quot; 9 (10.7%)&quot;               </span></span>
 <span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a><span class="co">#&gt; 3 WHITE                            &quot;78 (90.7%)&quot;   &quot;74 (88.1%)&quot;               </span></span>
-<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a><span class="co">#&gt; 4 Mean (SD)                        &quot;76.3 ( 8.59)&quot; &quot;75.9 ( 7.89)&quot;</span></span></code></pre></div>
+<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a><span class="co">#&gt; 4 Mean (SD)                        &quot;75.2 ( 8.59)&quot; &quot;74.4 ( 7.89)&quot;</span></span></code></pre></div>
 <p>For each layer type, when you want to configure string formatting you
 use the function <code>set_format_strings()</code>. Inside
 <code>set_format_strings()</code> you provide <code>f_str()</code>
@@ -708,12 +709,12 @@ done by using the character ‘a’ instead of ‘x’ in the format string.</p>
 <span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 5</span></span>
 <span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="co">#&gt;   row_label1 row_label2 row_label3 var1_Placebo       var1_Xanomeline High Dos…¹</span></span>
 <span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;              &lt;chr&gt;                     </span></span>
-<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="co">#&gt; 1 CA         Week 12    Mean (SD)  2.18312 (0.074711) 2.17897 (0.062553)        </span></span>
-<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#&gt; 2 CA         Week 24    Mean (SD)  2.16233 (0.046617) 2.19560 (0.099174)        </span></span>
-<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co">#&gt; 3 CA         Week 8     Mean (SD)  2.17065 (0.102771) 2.19560 (0.199489)        </span></span>
-<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="co">#&gt; 4 URATE      Week 12    Mean (SD)  249.816 (105.3868) 264.686 ( 85.1772)        </span></span>
-<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="co">#&gt; 5 URATE      Week 24    Mean (SD)  226.024 (111.8899) 273.608 (126.6612)        </span></span>
-<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a><span class="co">#&gt; 6 URATE      Week 8     Mean (SD)  237.920 ( 45.8806) 291.452 ( 36.6659)        </span></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="co">#&gt; 1 CA         Week 12    Mean (SD)  2.19144 (0.074711) 2.18134 (0.062553)        </span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#&gt; 2 CA         Week 24    Mean (SD)  2.16838 (0.046617) 2.18063 (0.099174)        </span></span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co">#&gt; 3 CA         Week 8     Mean (SD)  2.19144 (0.102771) 2.23926 (0.199489)        </span></span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="co">#&gt; 4 URATE      Week 12    Mean (SD)  298.887 (105.3868) 304.835 ( 85.1772)        </span></span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="co">#&gt; 5 URATE      Week 24    Mean (SD)  269.643 (111.8899) 281.539 (126.6612)        </span></span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a><span class="co">#&gt; 6 URATE      Week 8     Mean (SD)  234.946 ( 45.8806) 273.608 ( 36.6659)        </span></span>
 <span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a><span class="co">#&gt; # ℹ abbreviated name: ¹​`var1_Xanomeline High Dose`</span></span></code></pre></div>
 <p>Note that the decimal precision varies between different lab test
 results. This feature is beneficial when decimal precision rules must be

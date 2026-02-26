@@ -48,6 +48,7 @@ overflow: visible;
 }
 </style>
 <style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -377,7 +378,7 @@ we go.</p>
 <div id="population-data-in-the-denominator" class="section level2">
 <h2>Population Data in the Denominator</h2>
 <p>What do you do when your target dataset doesn’t <em>have</em> the
-information necessary to create your denominator? For example - when you
+information necessary to create your denominator? For example, when you
 create an adverse event table, the adverse event dataset likely only
 contains records for subjects who experienced an adverse event. But
 subjects who did <em>not</em> have an adverse event are still part of
@@ -571,15 +572,15 @@ single dataset. Just kidding! Let’s get weird.</p>
 <div id="denominator-grouping" class="section level2">
 <h2>Denominator Grouping</h2>
 <p>When you’re looking within a single dataset, there are a couple
-factors that you need to consider for a denominator. The first is which
-grouping variables create those denominators. Let’s look at this from
-two perspectives - count layers and shift layers.</p>
+factors that you need to consider for a denominator. Firstly, which
+grouping variables create those denominators? Let’s look at this from
+two perspectives: count layers and shift layers.</p>
 <div id="count-layers" class="section level3">
 <h3>Count layers</h3>
 <p>Most of the complexity of denominators comes from nuanced situations.
-A solid 80% of the time, defaults will work. For example, in a frequency
-table, you will typically want data within a column to sum to 100%. For
-example:</p>
+Tplyr is designed with practical defaults that suit most clinical
+summaries. For example, in a frequency table, you will typically want
+data within a column to sum to 100%, like so:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>tplyr_adsl <span class="ot">&lt;-</span> tplyr_adsl <span class="sc">%&gt;%</span> </span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">DCSREAS =</span> <span class="fu">ifelse</span>(DCSREAS <span class="sc">==</span> <span class="st">&#39;&#39;</span>, <span class="st">&#39;Completed&#39;</span>, DCSREAS))</span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>         </span>
@@ -1610,15 +1611,15 @@ percentages.</p>
 <th align="left">row_label1</th>
 <th align="left">row_label2</th>
 <th align="left">row_label3</th>
+<th align="left">var1_Placebo_H</th>
 <th align="left">var1_Placebo_L</th>
 <th align="left">var1_Placebo_N</th>
-<th align="left">var1_Placebo_H</th>
+<th align="left">var1_Xanomeline High Dose_H</th>
 <th align="left">var1_Xanomeline High Dose_L</th>
 <th align="left">var1_Xanomeline High Dose_N</th>
-<th align="left">var1_Xanomeline High Dose_H</th>
+<th align="left">var1_Xanomeline Low Dose_H</th>
 <th align="left">var1_Xanomeline Low Dose_L</th>
 <th align="left">var1_Xanomeline Low Dose_N</th>
-<th align="left">var1_Xanomeline Low Dose_H</th>
 <th align="right">ord_layer_index</th>
 <th align="right">ord_layer_1</th>
 <th align="right">ord_layer_2</th>
@@ -1648,15 +1649,15 @@ percentages.</p>
 <td align="left">Creatine Kinase (U/L)</td>
 <td align="left">Week 8</td>
 <td align="left">N</td>
-<td align="left">0 ( 0.00%)</td>
-<td align="left">6 (22.22%)</td>
 <td align="left">1 (25.00%)</td>
 <td align="left">0 ( 0.00%)</td>
-<td align="left">9 (52.94%)</td>
+<td align="left">6 (22.22%)</td>
 <td align="left">1 (33.33%)</td>
 <td align="left">0 ( 0.00%)</td>
-<td align="left">6 (42.86%)</td>
+<td align="left">9 (52.94%)</td>
 <td align="left">0 ( 0.00%)</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">6 (42.86%)</td>
 <td align="right">1</td>
 <td align="right">35</td>
 <td align="right">8</td>
@@ -1702,15 +1703,15 @@ percentages.</p>
 <td align="left">Creatine Kinase (U/L)</td>
 <td align="left">Week 12</td>
 <td align="left">N</td>
-<td align="left">0 ( 0.00%)</td>
-<td align="left">11 (40.74%)</td>
 <td align="left">1 (25.00%)</td>
 <td align="left">0 ( 0.00%)</td>
-<td align="left">6 (35.29%)</td>
+<td align="left">11 (40.74%)</td>
 <td align="left">1 (33.33%)</td>
 <td align="left">0 ( 0.00%)</td>
-<td align="left">6 (42.86%)</td>
+<td align="left">6 (35.29%)</td>
 <td align="left">1 (100.00%)</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">6 (42.86%)</td>
 <td align="right">1</td>
 <td align="right">35</td>
 <td align="right">12</td>
@@ -1723,9 +1724,9 @@ percentages.</p>
 <td align="left">0 ( 0.00%)</td>
 <td align="left">0 ( 0.00%)</td>
 <td align="left">0 ( 0.00%)</td>
-<td align="left">0 ( 0.00%)</td>
-<td align="left">0 ( 0.00%)</td>
 <td align="left">1 (33.33%)</td>
+<td align="left">0 ( 0.00%)</td>
+<td align="left">0 ( 0.00%)</td>
 <td align="left">0 ( 0.00%)</td>
 <td align="left">0 ( 0.00%)</td>
 <td align="left">0 ( 0.00%)</td>
@@ -1758,18 +1759,19 @@ choosing. This is done on top of any filtering specified in the
 any table level filtering.</p>
 <p>Yeah we know - there are a lot of different places that filtering can
 happen…</p>
-<p>So let’s take the example shown below. The first layer has no layer
-level filtering applied, so the table level <code>where</code> is the
-only filter applied. The second layer has a layer level filter applied,
-so the denominators will be based on that layer level filter. Notice how
-in this case, the percentages in the second layer add up to 100%. This
-is because the denominator only includes values used in that layer.</p>
-<p>The third layer has a layer level filter applied, but additionally
+<p>So let’s take the example shown below. The first layer has no
+layer-level filtering applied, so the table-level <code>where</code> is
+the only filter applied. The second layer has a layer-level filter
+applied, so the denominators will be based on that layer-level filter.
+Notice how in this case, the percentages in the second layer add up to
+100%. This is because the denominator only includes values used in that
+layer.</p>
+<p>The third layer has a layer-level filter applied, but additionally
 uses <code>set_denom_where()</code>. The <code>set_denom_where()</code>
-in this example is actually <em>removing</em> the layer level filter for
+in this example is actually <em>removing</em> the layer-level filter for
 the denominators. This is because in R, when you filter using
 <code>TRUE</code>, the filter returns all records. So by using
-<code>TRUE</code> in <code>set_denom_where()</code>, the layer level
+<code>TRUE</code> in <code>set_denom_where()</code>, the layer-level
 filter is effectively removed. This causes the denominator to include
 all values available from the table and not just those selected for that
 layer - so for this layer, the percentages will <em>not add up to
@@ -1992,31 +1994,31 @@ desired for missing values and values that you determine to be
 considered ‘missing’. For example, you may have NA values in the target
 variable, and then values like “Not Collected” that you also wish to
 consider “missing”. <code>set_missing_count()</code> allows you to group
-those together. Actually - you’re able to establish as many different
+those together. Actually you’re able to establish as many different
 “missing” groups as you want - even though that scenario is fairly
 unlikely.</p>
-<p>In the example below 50 random values are removed and NA is specified
-as the missing string. This leads us to another parameter -
-<code>denom_ignore</code>. By default, if you specify missing values
-they will still be considered within the denominator, but when you have
-missing counts, you may wish to exclude them from the totals being
-summarized. By setting <code>denom_ignore</code> to TRUE, your
+<p>In the example below, 50 random values are removed and NA is
+specified as the missing string. This leads us to another parameter:
+<code>denom_ignore</code>. By default, Tplyr will include missing values
+within the denominator, but you may wish to exclude them from the totals
+being summarized. By setting <code>denom_ignore</code> to TRUE, your
 denominators will ignore any groups of missing values that you’ve
 specified.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>tplyr_adae2 <span class="ot">&lt;-</span> tplyr_adae</span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>tplyr_adae2[<span class="fu">sample</span>(<span class="fu">nrow</span>(tplyr_adae2), <span class="dv">50</span>), <span class="st">&quot;AESEV&quot;</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">tplyr_table</span>(tplyr_adae2, TRTA) <span class="sc">%&gt;%</span></span>
-<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>    <span class="fu">group_count</span>(AESEV) <span class="sc">%&gt;%</span></span>
-<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="fu">f_str</span>(<span class="st">&quot;xxx (xx.xx%)&quot;</span>, n, pct)) <span class="sc">%&gt;%</span></span>
-<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a>      <span class="fu">set_missing_count</span>(<span class="fu">f_str</span>(<span class="st">&quot;xxx&quot;</span>, n), <span class="at">sort_value=</span><span class="cn">Inf</span>, <span class="at">denom_ignore=</span><span class="cn">TRUE</span>, <span class="at">Missing =</span> <span class="cn">NA</span>)</span>
-<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a>  <span class="fu">arrange</span>(ord_layer_1)</span>
-<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a></span>
-<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a>t <span class="sc">%&gt;%</span> </span>
-<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>tplyr_adae2 <span class="ot">&lt;-</span> tplyr_adae</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>tplyr_adae2[<span class="fu">sample</span>(<span class="fu">nrow</span>(tplyr_adae2), <span class="dv">50</span>), <span class="st">&quot;AESEV&quot;</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">tplyr_table</span>(tplyr_adae2, TRTA) <span class="sc">%&gt;%</span></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>    <span class="fu">group_count</span>(AESEV) <span class="sc">%&gt;%</span></span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="fu">f_str</span>(<span class="st">&quot;xxx (xx.xx%)&quot;</span>, n, pct)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>      <span class="fu">set_missing_count</span>(<span class="fu">f_str</span>(<span class="st">&quot;xxx&quot;</span>, n), <span class="at">sort_value=</span><span class="cn">Inf</span>, <span class="at">denom_ignore=</span><span class="cn">TRUE</span>, <span class="at">Missing =</span> <span class="cn">NA</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a>  <span class="fu">arrange</span>(ord_layer_1)</span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a>t <span class="sc">%&gt;%</span> </span>
+<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <colgroup>
 <col width="10%" />
@@ -2039,58 +2041,58 @@ specified.</p>
 <tbody>
 <tr class="odd">
 <td align="left">MILD</td>
-<td align="left">25 (58.14%)</td>
-<td align="left">68 (78.16%)</td>
-<td align="left">44 (45.83%)</td>
+<td align="left">21 (55.26%)</td>
+<td align="left">69 (76.67%)</td>
+<td align="left">47 (47.96%)</td>
 <td align="right">1</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="left">MODERATE</td>
-<td align="left">18 (41.86%)</td>
-<td align="left">18 (20.69%)</td>
-<td align="left">48 (50.00%)</td>
+<td align="left">17 (44.74%)</td>
+<td align="left">20 (22.22%)</td>
+<td align="left">47 (47.96%)</td>
 <td align="right">1</td>
 <td align="right">2</td>
 </tr>
 <tr class="odd">
 <td align="left">SEVERE</td>
 <td align="left">0 ( 0.00%)</td>
-<td align="left">1 ( 1.15%)</td>
-<td align="left">4 ( 4.17%)</td>
+<td align="left">1 ( 1.11%)</td>
+<td align="left">4 ( 4.08%)</td>
 <td align="right">1</td>
 <td align="right">3</td>
 </tr>
 <tr class="even">
 <td align="left">Missing</td>
-<td align="left">4</td>
-<td align="left">24</td>
-<td align="left">22</td>
+<td align="left">9</td>
+<td align="left">21</td>
+<td align="left">20</td>
 <td align="right">1</td>
 <td align="right">Inf</td>
 </tr>
 </tbody>
 </table>
 <p>We did one more other thing worth explaining in the example above -
-gave the missing count its own sort value. If you leave this field null,
-it will simply be the maximum value in the order layer plus 1, to put
-the Missing counts at the bottom during an ascending sort. But tables
-can be sorted a lot of different ways, as you’ll see in the sort
+we gave the missing count its own sort value. If you leave this field
+null, it will simply be the maximum value in the order layer plus 1, to
+put the Missing counts at the bottom during an ascending sort. But
+tables can be sorted a lot of different ways, as you’ll see in the sort
 vignette. So instead of trying to come up with novel ways for you to
-control where the missing row goes - we decided to just let you specify
+control where the missing row goes, we decided to just let you specify
 your own value.</p>
 </div>
 <div id="missing-subjects" class="section level2">
 <h2>Missing Subjects</h2>
 <p>Missing counts and counting missing subjects work two different ways
 within Tplyr. Missing counts, as described above, will examine the
-records present in the data and collect and missing values. But for
+records present in the data and collect any missing values. But for
 these results to be counted, they need to first be provided within the
 input data itself. On the other hand, missing subjects are calculated by
-looking at the difference between the potential number of subjects
-within the column (i.e. the combination of the treatment variables and
-column variables) and the number of subjects actually present. Consider
-this example:</p>
+looking at the difference between the <em>potential</em> number of
+subjects within the column (i.e. the combination of the treatment
+variables and column variables) and the number of subjects
+<em>actually</em> present. Consider this example:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>  missing_subs <span class="ot">&lt;-</span> <span class="fu">tplyr_table</span>(tplyr_adae, TRTA) <span class="sc">%&gt;%</span></span>
 <span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>    <span class="fu">set_pop_data</span>(tplyr_adsl) <span class="sc">%&gt;%</span></span>
 <span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>    <span class="fu">set_pop_treat_var</span>(TRT01A) <span class="sc">%&gt;%</span></span>
@@ -2154,9 +2156,9 @@ this example:</p>
 </tr>
 <tr class="even">
 <td align="left">Missing Subjects</td>
-<td align="left">65 ( 75.6%)</td>
-<td align="left">42 ( 50.0%)</td>
-<td align="left">42 ( 50.0%)</td>
+<td align="left">85 (98.8%)</td>
+<td align="left">83 (98.8%)</td>
+<td align="left">83 (98.8%)</td>
 </tr>
 </tbody>
 </table>
@@ -2167,9 +2169,8 @@ applied for this can be configured using
 <code>set_missing_subjects_row_label()</code>, and the row label itself
 will default to ‘Missing’. Depending on your sorting needs, a
 <code>sort_value</code> can be applied to whatever numeric value you
-provide. Lastly, you can provide an <code>f_str()</code> to format the
-missing subjects row separately from the rest of the layer, but whatever
-format is applied to the layer will apply otherwise.</p>
+provide. You can also provide an <code>f_str()</code> to format the
+missing subjects row separately from the rest of the layer.</p>
 <p>Note that in nested count layers, missing subject rows will generate
 for each independent group within the outer layer. Outer layers cannot
 have missing subject rows calculated individually. This would best be
@@ -2217,20 +2218,21 @@ to <code>TRUE</code>, the missing counts are included in the total row.
 This probably isn’t how you would choose to display things, but here
 we’re trying to show the flexibility built into
 <strong>Tplyr</strong>.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>tplyr_adsl2 <span class="ot">&lt;-</span> tplyr_adsl</span>
-<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>tplyr_adsl2[<span class="fu">sample</span>(<span class="fu">nrow</span>(tplyr_adsl2), <span class="dv">50</span>), <span class="st">&quot;AGEGR1&quot;</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a><span class="fu">tplyr_table</span>(tplyr_adsl2, TRT01P) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
-<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a>    <span class="fu">group_count</span>(AGEGR1, <span class="at">by=</span>SEX) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a>      <span class="fu">set_denoms_by</span>(TRT01P, SEX) <span class="sc">%&gt;%</span>  <span class="co"># This gives me a Total row each group</span></span>
-<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a>      <span class="fu">add_total_row</span>(<span class="fu">f_str</span>(<span class="st">&quot;xxx&quot;</span>, n), <span class="at">count_missings=</span><span class="cn">TRUE</span>, <span class="at">sort_value=</span><span class="sc">-</span><span class="cn">Inf</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a>      <span class="fu">set_total_row_label</span>(<span class="st">&quot;All Age Groups&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a>      <span class="fu">set_missing_count</span>(<span class="fu">f_str</span>(<span class="st">&quot;xx (xx.x%)&quot;</span>, n, pct), <span class="at">Missing =</span> <span class="cn">NA</span>, <span class="at">sort_value=</span><span class="cn">Inf</span>)</span>
-<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a>  <span class="fu">arrange</span>(ord_layer_1, ord_layer_2) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>tplyr_adsl2 <span class="ot">&lt;-</span> tplyr_adsl</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>tplyr_adsl2[<span class="fu">sample</span>(<span class="fu">nrow</span>(tplyr_adsl2), <span class="dv">50</span>), <span class="st">&quot;AGEGR1&quot;</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a><span class="fu">tplyr_table</span>(tplyr_adsl2, TRT01P) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a>  <span class="fu">add_layer</span>(</span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a>    <span class="fu">group_count</span>(AGEGR1, <span class="at">by=</span>SEX) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a>      <span class="fu">set_denoms_by</span>(TRT01P, SEX) <span class="sc">%&gt;%</span>  <span class="co"># This gives me a Total row each group</span></span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a>      <span class="fu">add_total_row</span>(<span class="fu">f_str</span>(<span class="st">&quot;xxx&quot;</span>, n), <span class="at">count_missings=</span><span class="cn">TRUE</span>, <span class="at">sort_value=</span><span class="sc">-</span><span class="cn">Inf</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a>      <span class="fu">set_total_row_label</span>(<span class="st">&quot;All Age Groups&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a>      <span class="fu">set_missing_count</span>(<span class="fu">f_str</span>(<span class="st">&quot;xx (xx.x%)&quot;</span>, n, pct), <span class="at">Missing =</span> <span class="cn">NA</span>, <span class="at">sort_value=</span><span class="cn">Inf</span>)</span>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a>  <span class="fu">arrange</span>(ord_layer_1, ord_layer_2) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <colgroup>
 <col width="8%" />
@@ -2268,8 +2270,8 @@ we’re trying to show the flexibility built into
 <tr class="even">
 <td align="left">F</td>
 <td align="left">65-80</td>
-<td align="left">19 ( 35.8%)</td>
-<td align="left">24 ( 60.0%)</td>
+<td align="left">15 ( 28.3%)</td>
+<td align="left">25 ( 62.5%)</td>
 <td align="left">21 ( 42.0%)</td>
 <td align="right">1</td>
 <td align="right">1</td>
@@ -2278,9 +2280,9 @@ we’re trying to show the flexibility built into
 <tr class="odd">
 <td align="left">F</td>
 <td align="left">&lt;65</td>
-<td align="left">7 ( 13.2%)</td>
-<td align="left">5 ( 12.5%)</td>
-<td align="left">5 ( 10.0%)</td>
+<td align="left">9 ( 17.0%)</td>
+<td align="left">3 ( 7.5%)</td>
+<td align="left">2 ( 4.0%)</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">2</td>
@@ -2288,8 +2290,8 @@ we’re trying to show the flexibility built into
 <tr class="even">
 <td align="left">F</td>
 <td align="left">&gt;80</td>
-<td align="left">17 ( 32.1%)</td>
-<td align="left">6 ( 15.0%)</td>
+<td align="left">21 ( 39.6%)</td>
+<td align="left">5 ( 12.5%)</td>
 <td align="left">14 ( 28.0%)</td>
 <td align="right">1</td>
 <td align="right">1</td>
@@ -2298,9 +2300,9 @@ we’re trying to show the flexibility built into
 <tr class="odd">
 <td align="left">F</td>
 <td align="left">Missing</td>
-<td align="left">10 (18.9%)</td>
-<td align="left">5 (12.5%)</td>
-<td align="left">10 (20.0%)</td>
+<td align="left">8 (15.1%)</td>
+<td align="left">7 (17.5%)</td>
+<td align="left">13 (26.0%)</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">Inf</td>
@@ -2318,7 +2320,7 @@ we’re trying to show the flexibility built into
 <tr class="odd">
 <td align="left">M</td>
 <td align="left">65-80</td>
-<td align="left">13 ( 39.4%)</td>
+<td align="left">17 ( 51.5%)</td>
 <td align="left">23 ( 52.3%)</td>
 <td align="left">15 ( 44.1%)</td>
 <td align="right">1</td>
@@ -2328,9 +2330,9 @@ we’re trying to show the flexibility built into
 <tr class="even">
 <td align="left">M</td>
 <td align="left">&lt;65</td>
-<td align="left">5 ( 15.2%)</td>
+<td align="left">4 ( 12.1%)</td>
 <td align="left">4 ( 9.1%)</td>
-<td align="left">3 ( 8.8%)</td>
+<td align="left">2 ( 5.9%)</td>
 <td align="right">1</td>
 <td align="right">2</td>
 <td align="right">2</td>
@@ -2339,8 +2341,8 @@ we’re trying to show the flexibility built into
 <td align="left">M</td>
 <td align="left">&gt;80</td>
 <td align="left">8 ( 24.2%)</td>
-<td align="left">7 ( 15.9%)</td>
-<td align="left">8 ( 23.5%)</td>
+<td align="left">9 ( 20.5%)</td>
+<td align="left">7 ( 20.6%)</td>
 <td align="right">1</td>
 <td align="right">2</td>
 <td align="right">3</td>
@@ -2348,9 +2350,9 @@ we’re trying to show the flexibility built into
 <tr class="even">
 <td align="left">M</td>
 <td align="left">Missing</td>
-<td align="left">7 (21.2%)</td>
-<td align="left">10 (22.7%)</td>
-<td align="left">8 (23.5%)</td>
+<td align="left">4 (12.1%)</td>
+<td align="left">8 (18.2%)</td>
+<td align="left">10 (29.4%)</td>
 <td align="right">1</td>
 <td align="right">2</td>
 <td align="right">Inf</td>
@@ -2402,9 +2404,9 @@ you’ll see this:</p>
 <tr class="odd">
 <td align="left">F</td>
 <td align="left">All Age Groups</td>
-<td align="left">43</td>
-<td align="left">35</td>
-<td align="left">40</td>
+<td align="left">45</td>
+<td align="left">33</td>
+<td align="left">37</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">-Inf</td>
@@ -2412,9 +2414,9 @@ you’ll see this:</p>
 <tr class="even">
 <td align="left">F</td>
 <td align="left">65-80</td>
-<td align="left">19 ( 44.2%)</td>
-<td align="left">24 ( 68.6%)</td>
-<td align="left">21 ( 52.5%)</td>
+<td align="left">15 ( 33.3%)</td>
+<td align="left">25 ( 75.8%)</td>
+<td align="left">21 ( 56.8%)</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">1</td>
@@ -2422,9 +2424,9 @@ you’ll see this:</p>
 <tr class="odd">
 <td align="left">F</td>
 <td align="left">&lt;65</td>
-<td align="left">7 ( 16.3%)</td>
-<td align="left">5 ( 14.3%)</td>
-<td align="left">5 ( 12.5%)</td>
+<td align="left">9 ( 20.0%)</td>
+<td align="left">3 ( 9.1%)</td>
+<td align="left">2 ( 5.4%)</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">2</td>
@@ -2432,9 +2434,9 @@ you’ll see this:</p>
 <tr class="even">
 <td align="left">F</td>
 <td align="left">&gt;80</td>
-<td align="left">17 ( 39.5%)</td>
-<td align="left">6 ( 17.1%)</td>
-<td align="left">14 ( 35.0%)</td>
+<td align="left">21 ( 46.7%)</td>
+<td align="left">5 ( 15.2%)</td>
+<td align="left">14 ( 37.8%)</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">3</td>
@@ -2442,9 +2444,9 @@ you’ll see this:</p>
 <tr class="odd">
 <td align="left">F</td>
 <td align="left">Missing</td>
-<td align="left">10</td>
-<td align="left">5</td>
-<td align="left">10</td>
+<td align="left">8</td>
+<td align="left">7</td>
+<td align="left">13</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">Inf</td>
@@ -2452,9 +2454,9 @@ you’ll see this:</p>
 <tr class="even">
 <td align="left">M</td>
 <td align="left">All Age Groups</td>
-<td align="left">26</td>
-<td align="left">34</td>
-<td align="left">26</td>
+<td align="left">29</td>
+<td align="left">36</td>
+<td align="left">24</td>
 <td align="right">1</td>
 <td align="right">2</td>
 <td align="right">-Inf</td>
@@ -2462,9 +2464,9 @@ you’ll see this:</p>
 <tr class="odd">
 <td align="left">M</td>
 <td align="left">65-80</td>
-<td align="left">13 ( 50.0%)</td>
-<td align="left">23 ( 67.6%)</td>
-<td align="left">15 ( 57.7%)</td>
+<td align="left">17 ( 58.6%)</td>
+<td align="left">23 ( 63.9%)</td>
+<td align="left">15 ( 62.5%)</td>
 <td align="right">1</td>
 <td align="right">2</td>
 <td align="right">1</td>
@@ -2472,9 +2474,9 @@ you’ll see this:</p>
 <tr class="even">
 <td align="left">M</td>
 <td align="left">&lt;65</td>
-<td align="left">5 ( 19.2%)</td>
-<td align="left">4 ( 11.8%)</td>
-<td align="left">3 ( 11.5%)</td>
+<td align="left">4 ( 13.8%)</td>
+<td align="left">4 ( 11.1%)</td>
+<td align="left">2 ( 8.3%)</td>
 <td align="right">1</td>
 <td align="right">2</td>
 <td align="right">2</td>
@@ -2482,9 +2484,9 @@ you’ll see this:</p>
 <tr class="odd">
 <td align="left">M</td>
 <td align="left">&gt;80</td>
-<td align="left">8 ( 30.8%)</td>
-<td align="left">7 ( 20.6%)</td>
-<td align="left">8 ( 30.8%)</td>
+<td align="left">8 ( 27.6%)</td>
+<td align="left">9 ( 25.0%)</td>
+<td align="left">7 ( 29.2%)</td>
 <td align="right">1</td>
 <td align="right">2</td>
 <td align="right">3</td>
@@ -2492,9 +2494,9 @@ you’ll see this:</p>
 <tr class="even">
 <td align="left">M</td>
 <td align="left">Missing</td>
-<td align="left">7</td>
-<td align="left">10</td>
+<td align="left">4</td>
 <td align="left">8</td>
+<td align="left">10</td>
 <td align="right">1</td>
 <td align="right">2</td>
 <td align="right">Inf</td>
@@ -2502,7 +2504,7 @@ you’ll see this:</p>
 </tbody>
 </table>
 <p>Now the table is more intuitive. We used
-<code>set_missing_count()</code> to update our denominators, so missing
+<code>set_missing_count()</code> to update our denominators, so missings
 have been excluded. Now, the total row intuitively matches the
 denominators used within each group, and we can see how many missing
 records were excluded.</p>

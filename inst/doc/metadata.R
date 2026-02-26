@@ -1,4 +1,4 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -50,12 +50,12 @@ tplyr_adsl %>%
   kable()
 
 ## ----to string print, eval=FALSE----------------------------------------------
-#  cat(c("tplyr_adsl %>%\n",
-#    "   filter(\n      ",
-#    paste(purrr::map_chr(m$filters, ~ rlang::as_label(.)), collpase=",\n      "),
-#    ") %>%\n",
-#    paste("   select(", paste(purrr::map_chr(m$names, rlang::as_label), collapse=", "), ")", sep="")
-#  ))
+# cat(c("tplyr_adsl %>%\n",
+#   "   filter(\n      ",
+#   paste(purrr::map_chr(m$filters, ~ rlang::as_label(.)), collpase=",\n      "),
+#   ") %>%\n",
+#   paste("   select(", paste(purrr::map_chr(m$names, rlang::as_label), collapse=", "), ")", sep="")
+# ))
 
 ## ----anti_join1---------------------------------------------------------------
 t <- tplyr_table(tplyr_adae, TRTA) %>%
@@ -92,6 +92,6 @@ cat(c("tplyr_adsl %>%\n",
   paste("   select(", paste(purrr::map_chr(m$names, rlang::as_label), collapse=", "), ")", sep="")
 ))
 
-## ---- out.width=850, out.extra='style="border: 1px solid #464646;" allowfullscreen="" allow="autoplay"', echo=FALSE----
+## ----out.width=850, out.extra='style="border: 1px solid #464646;" allowfullscreen="" allow="autoplay"', echo=FALSE----
 knitr::include_app("https://michael-stackhouse.shinyapps.io/Tplyr-shiny-demo/", height = "900px")
 

@@ -1,10 +1,10 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 
-## ---- include = FALSE, setup--------------------------------------------------
+## ----include = FALSE, setup---------------------------------------------------
 library(Tplyr)
 library(dplyr, warn.conflicts = FALSE)
 library(knitr)
@@ -118,6 +118,7 @@ t %>%
   kable()
 
 ## -----------------------------------------------------------------------------
+set.seed(1234)
 tplyr_adae2 <- tplyr_adae
 tplyr_adae2[sample(nrow(tplyr_adae2), 50), "AESEV"] <- NA
 
@@ -151,6 +152,7 @@ t %>%
     kable()
 
 ## -----------------------------------------------------------------------------
+set.seed(1234)
 tplyr_adsl2 <- tplyr_adsl
 tplyr_adsl2[sample(nrow(tplyr_adsl2), 50), "AGEGR1"] <- NA
 

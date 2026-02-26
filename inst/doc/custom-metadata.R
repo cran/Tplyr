@@ -1,4 +1,4 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -136,6 +136,6 @@ get_meta_subset(eff_meta, 'x4_1', "var1_Xanomeline High Dose", target=tplyr_adas
   head() %>% 
   kable()
 
-## ---- out.width=850, out.extra='style="border: 1px solid #464646;" allowfullscreen="" allow="autoplay"', echo=FALSE----
+## ----out.width=850, out.extra='style="border: 1px solid #464646;" allowfullscreen="" allow="autoplay"', echo=FALSE----
 knitr::include_app("https://michael-stackhouse.shinyapps.io/Tplyr-efficacy-shiny-demo", height = "900px")
 

@@ -48,6 +48,7 @@ overflow: visible;
 }
 </style>
 <style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -819,7 +820,7 @@ ends.</p>
 <span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>    <span class="fu">group_desc</span>(AGE) <span class="sc">%&gt;%</span> </span>
 <span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>      <span class="fu">set_format_strings</span>(<span class="st">&quot;Mean&quot;</span> <span class="ot">=</span> <span class="fu">f_str</span>(<span class="st">&#39;xx.xx&#39;</span>, mean))</span>
 <span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>  <span class="fu">build</span>() <span class="sc">%&gt;%</span></span>
 <span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <colgroup>

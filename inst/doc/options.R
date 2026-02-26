@@ -1,4 +1,4 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -16,24 +16,24 @@ suppressMessages(read_csv('tplyr_options.csv')) %>%
   kable(align="cl", col.names = c('Option', 'Description'))
 
 ## ----default_formats1, eval=FALSE---------------------------------------------
-#  options(
-#      # Count layer defaults
-#    tplyr.count_layer_default_formats =
-#      list(n_counts = f_str("xxx (xx%)", n, pct),
-#           riskdiff = f_str('xx.xxx', dif)
-#           ),
-#  
-#    # Desc layer defaults
-#    tplyr.desc_layer_default_formats =
-#      list("n"        = f_str("xxx", n),
-#           "Mean (SD)"= f_str("a.a+1 (a.a+2)", mean, sd),
-#           "Median"   = f_str("a.a+4", median)
-#           ),
-#  
-#    # Shift layer defaults
-#    tplyr.shift_layer_default_formats = list(f_str("xxx", n))
-#  )
-#  
+# options(
+#     # Count layer defaults
+#   tplyr.count_layer_default_formats =
+#     list(n_counts = f_str("xxx (xx%)", n, pct),
+#          riskdiff = f_str('xx.xxx', dif)
+#          ),
+# 
+#   # Desc layer defaults
+#   tplyr.desc_layer_default_formats =
+#     list("n"        = f_str("xxx", n),
+#          "Mean (SD)"= f_str("a.a+1 (a.a+2)", mean, sd),
+#          "Median"   = f_str("a.a+4", median)
+#          ),
+# 
+#   # Shift layer defaults
+#   tplyr.shift_layer_default_formats = list(f_str("xxx", n))
+# )
+# 
 
 ## ----default_formats2---------------------------------------------------------
 tplyr_table(tplyr_adsl, TRT01P) %>% 
@@ -152,6 +152,9 @@ tplyr_table(tplyr_adsl, TRT01P) %>%
   build() %>% 
     select(-starts_with("ord")) %>% 
   kable()
+
+## ----include=FALSE------------------------------------------------------------
+options(op)
 
 ## ----rounding_1---------------------------------------------------------------
 tplyr_table(mtcars, gear) %>%

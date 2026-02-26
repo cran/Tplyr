@@ -48,6 +48,7 @@ overflow: visible;
 }
 </style>
 <style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -507,9 +508,9 @@ changes. In the table below, we didn’t use
 <tr class="even">
 <td align="left">Age (years)</td>
 <td align="left">Mean (SD)</td>
-<td align="left">76.3 ( 8.59)</td>
-<td align="left">75.9 ( 7.89)</td>
-<td align="left">77.4 ( 8.29)</td>
+<td align="left">75.2 ( 8.59)</td>
+<td align="left">74.4 ( 7.89)</td>
+<td align="left">75.7 ( 8.29)</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">2</td>
@@ -643,9 +644,9 @@ options remain set from the block above.</p>
 <tr class="odd">
 <td align="left">Age (Years)</td>
 <td align="left">Mean (SD)</td>
-<td align="left">76.3 ( 8.59)</td>
-<td align="left">75.9 ( 7.89)</td>
-<td align="left">77.4 ( 8.29)</td>
+<td align="left">75.2 ( 8.59)</td>
+<td align="left">74.4 ( 7.89)</td>
+<td align="left">75.7 ( 8.29)</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">1</td>
@@ -771,9 +772,9 @@ level will override the <code>tplyr.precision_cap</code> option.</p>
 <tr class="odd">
 <td align="left">Height at Baseline</td>
 <td align="left">Mean (SD)</td>
-<td align="left">162.4 (11.52)</td>
-<td align="left">166.4 (10.13)</td>
-<td align="left">162.1 (10.42)</td>
+<td align="left">162.6 (11.52)</td>
+<td align="left">165.8 (10.13)</td>
+<td align="left">163.4 (10.42)</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">1</td>
@@ -781,9 +782,9 @@ level will override the <code>tplyr.precision_cap</code> option.</p>
 <tr class="even">
 <td align="left">Height at Baseline (Limited)</td>
 <td align="left">Mean (SD)</td>
-<td align="left">162 (11.5)</td>
+<td align="left">163 (11.5)</td>
 <td align="left">166 (10.1)</td>
-<td align="left">162 (10.4)</td>
+<td align="left">163 (10.4)</td>
 <td align="right">2</td>
 <td align="right">1</td>
 <td align="right">1</td>
@@ -942,7 +943,7 @@ unexpected outputs.</p>
 <tr class="odd">
 <td align="left">ACTINIC KERATOSIS</td>
 <td align="left">0 ( 0.0%)</td>
-<td align="left">1 (9e-01%)</td>
+<td align="left">1 ( 0.9%)</td>
 <td align="left">0 ( 0.0%)</td>
 <td align="right">1</td>
 <td align="left">0.000 ( 0.000, 0.000)</td>
@@ -1109,7 +1110,7 @@ languages that IBM rounding.<strong>Tplyr</strong> offers the option
 <span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 6</span></span>
 <span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a><span class="co">#&gt;   row_label1 var1_3 var1_4 var1_5 ord_layer_index ord_layer_1</span></span>
 <span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;            &lt;int&gt;       &lt;int&gt;</span></span>
-<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a><span class="co">#&gt; 1 mean       17.47  18.75  15.50                1           1</span></span></code></pre></div>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a><span class="co">#&gt; 1 mean       17.69  18.96  15.64                1           1</span></span></code></pre></div>
 <p>Using IBM rounding</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>withr<span class="sc">::</span><span class="fu">with_options</span>(</span>
 <span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">tplyr.IBMRounding =</span> <span class="cn">TRUE</span>),</span>
@@ -1128,7 +1129,7 @@ languages that IBM rounding.<strong>Tplyr</strong> offers the option
 <span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 6</span></span>
 <span id="cb13-16"><a href="#cb13-16" tabindex="-1"></a><span class="co">#&gt;   row_label1 var1_3 var1_4 var1_5 ord_layer_index ord_layer_1</span></span>
 <span id="cb13-17"><a href="#cb13-17" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;            &lt;int&gt;       &lt;int&gt;</span></span>
-<span id="cb13-18"><a href="#cb13-18" tabindex="-1"></a><span class="co">#&gt; 1 mean       17.47  18.75  15.50                1           1</span></span></code></pre></div>
+<span id="cb13-18"><a href="#cb13-18" tabindex="-1"></a><span class="co">#&gt; 1 mean       17.69  18.97  15.64                1           1</span></span></code></pre></div>
 </div>
 
 
