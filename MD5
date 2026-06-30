@@ -1,7 +1,7 @@
-fa107e320a70372513c0ff484a6839c9 *DESCRIPTION
+df61af2dc8b384ee3a1721db4e625173 *DESCRIPTION
 407543166fb6be94a17389b5957d4264 *LICENSE
 d6d59911d23a5327ebd330c24bbbe190 *NAMESPACE
-1fbb975be41a3997dafc9fc565ed19b8 *NEWS.md
+59b70d10cf302cd9651efe2033dd0824 *NEWS.md
 d38688c68dd977c906885847d8b2c23a *R/apply_conditional_format.R
 fe4c8499f17d2ef72a14b1945486f5dc *R/apply_formats.R
 80a5ad64b9e2e1fba617249ed98d17b3 *R/assertions.R
@@ -40,7 +40,7 @@ e6f25c8cd6a4e21d5133f33cf5581972 *R/riskdiff.R
 5ab862d440c9271f8379d935e78a82e8 *R/set_limit_data_by.R
 ba1f28ce545e1a29297f404829ade197 *R/shift.R
 d7873e1653e7a67d860652a8940f3060 *R/shift_bindings.R
-618f388c7fea6e66ab992394a8c4d25f *R/sort.R
+91f787ff0119b1ad21129e45d69ef8d5 *R/sort.R
 b2ed4c732907a1c7a9da8d794cea8691 *R/stats.R
 a23e9826202be985dc1cbb753c92ec6d *R/str_extractors.R
 ffb41f3f17e12ab1f116319116aa1f01 *R/str_indent_wrap.R
@@ -60,7 +60,7 @@ bf37556b49835d7b8014bc6ed08f067f *data/tplyr_adpe.rda
 9b40a2517794c6b410d80c1d8840c68e *inst/design/nested-layer-refactor-plan.md
 1c7675e2dd9d80c159e775411c73e693 *inst/doc/Tplyr.R
 a672efeb352359b859efba57ffb07a93 *inst/doc/Tplyr.Rmd
-321898d2257dda14022ca05bb1679308 *inst/doc/Tplyr.html
+2f095d5926b43eeca78f65673fc9241a *inst/doc/Tplyr.html
 fc69a549fe1c2c691c27c375c5968e65 *inst/doc/count.R
 a4756ee0f6465e051f38cc474d43befe *inst/doc/count.Rmd
 5d38c4c7ccc1e79ce16aa45831b0aa48 *inst/doc/count.html
@@ -263,7 +263,7 @@ b4b9357f9c7ddad0f4f31a98bb1a352a *tests/testthat/test-properties_layer.R
 ef21a259fbe63756fe05e0ab994045d3 *tests/testthat/test-riskdiff.R
 fa13de4ad1c376abbbd73152762c28fd *tests/testthat/test-set_limit_data_by.R
 10481acff4e91be344a1918a929f5602 *tests/testthat/test-shift.R
-9d8621bbbfa90e82e1970083bdae22a3 *tests/testthat/test-sort.R
+54d80ecb70a8c1015d12739bf33a5678 *tests/testthat/test-sort.R
 66402c54ce7120e2a4e9065f84a2b1f7 *tests/testthat/test-str_extractors.R
 7d3ae4617ff1f42a1c017d2173df80f9 *tests/testthat/test-str_indent_wrap.R
 240c7425b0ebcaac88d3f90d64b8eaf1 *tests/testthat/test-table.R
